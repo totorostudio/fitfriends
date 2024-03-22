@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
+import { AccountController } from './account.controller';
 import { PrismaClientModule } from '../../libs/models';
 
 @Module({
