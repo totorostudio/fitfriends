@@ -4,7 +4,7 @@ export enum Gender {
   Unknown = 'неважно',
 }
 
-export enum Role {
+export enum UserRole {
   Coach = 'тренер',
   Customer = 'пользователь',
 }
@@ -48,4 +48,10 @@ export enum PaymentType {
   Visa = 'visa',
   Mir = 'mir',
   Umoney = 'umoney',
+}
+
+export enum WorkoutGender {
+  Male = 'для мужчин',
+  Female = 'для женщин',
+  Common = 'для всех',
 }

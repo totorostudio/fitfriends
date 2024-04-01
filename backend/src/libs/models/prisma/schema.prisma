@@ -18,7 +18,7 @@ model User {
   createdAt      DateTime  @default(now()) @map("created_at")
   name           String
   email          String    @unique
-  password       String
+  passwordHash   String    @map("password")
   avatar         String?
   gender         String
   birthday       DateTime?

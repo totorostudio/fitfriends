@@ -1,33 +1,37 @@
-import { Gender, Role, Metro, Level, TrainingType, TrainingTime } from ".";
+import { Gender, UserRole, Metro, Level, TrainingType, TrainingTime } from ".";
+
+export interface FullUser extends CoachUser, CustomerUser {
+  passwordHash?: string;
+}
+
+export interface AuthUser extends CoachUser, CustomerUser {
+  passwordHash: string;
+}
 
 export interface BaseUser {
-  id: string;
+  id?: string;
   createdAt: Date;
-  name: string;
   email: string;
-  password: string;
+  name: string;
   avatar?: string;
   gender: Gender;
   birthday?: Date;
-  role: Role;
+  userRole: UserRole;
   description?: string;
   metro: Metro;
   background: string;
+  level: Level;
+  trainingType: TrainingType[];
+  isReady: boolean;
 };
 
 export interface CustomerUser extends BaseUser {
-  level: Level;
-  trainingType: TrainingType[];
-  trainingTime: TrainingTime;
-  calories: number;
-  caloriesPerDay: number;
-  isReady: boolean;
+  trainingTime?: TrainingTime;
+  calories?: number;
+  caloriesPerDay?: number;
 };
 
 export interface CoachUser extends BaseUser {
-  level: Level;
-  trainingType: TrainingType[];
-  sertificate: string;
-  awards: string;
-  isReady: boolean;
+  sertificate?: string;
+  awards?: string;
 };

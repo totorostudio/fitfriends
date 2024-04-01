@@ -9,7 +9,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Fit Friends')
-    .setDescription('Fit Friends API description')
+    .setDescription('Документация API проекта')
     .setVersion('1.0')
     .build();
 

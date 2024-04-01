@@ -4,7 +4,7 @@ const DEFAULT_PASSWORD = '123456';
 
 function getUsers() {
   return [
-    {
+    /*{
       name: 'Василий',
       email: 'vasya@local.mail',
       password: DEFAULT_PASSWORD,
@@ -29,6 +29,34 @@ function getUsers() {
       background: '/public/images/tanyas.jpg',
       level: 'новичок',
       trainingType: ['йога', 'стрейчинг'],
+      trainingTime: '10-30 мин',
+      isReady: true,
+    },*/
+    {
+      name: 'Семен',
+      email: 'semen@local.mail',
+      password: DEFAULT_PASSWORD,
+      gender: 'мужской',
+      role: 'пользователь',
+      description: 'Я - Семен, и я буду беби-йодой через 2 месяца.',
+      metro: 'Звёздная',
+      background: '/public/images/semen.jpg',
+      level: 'новичок',
+      trainingType: ['бокс', 'стрейчинг'],
+      trainingTime: '10-30 мин',
+      isReady: true,
+    },
+    {
+      name: 'Евгения',
+      email: 'evgeniya@local.mail',
+      password: DEFAULT_PASSWORD,
+      gender: 'женский',
+      role: 'пользователь',
+      description: 'Я - Женя, и я буду балериной через 3 месяца.',
+      metro: 'Звёздная',
+      background: '/public/images/evgeniya.jpg',
+      level: 'новичок',
+      trainingType: ['бег', 'стрейчинг'],
       trainingTime: '10-30 мин',
       isReady: true,
     },
