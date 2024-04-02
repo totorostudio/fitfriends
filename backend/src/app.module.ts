@@ -5,9 +5,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RefreshTokenModule } from './modules/refresh-token/refresh-token.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './libs/guards';
+import { AppConfigModule } from './libs/config';
 
 @Module({
   imports: [
+    AppConfigModule,
     AuthModule,
     RefreshTokenModule,
     UserModule,
