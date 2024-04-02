@@ -1,6 +1,6 @@
 import {
   Calories,
-  MAX_WORKOUTS_TYPES,
+  MAX_TRAINING_TYPES,
   OrderCountValue,
   PriceValue,
   UserAwardsLength,
@@ -39,7 +39,7 @@ export const DtoValidationMessage = {
     invalidFormat: `Допустимо одно из значений: ${transformObjectValuesToString(Level)}`,
   },
   trainingType: {
-    length: `Максимальное количество типов тренировок: ${MAX_WORKOUTS_TYPES}`,
+    length: `Максимальное количество типов тренировок: ${MAX_TRAINING_TYPES}`,
     invalidItems: `Допустимо одно из значений: ${transformObjectValuesToString(TrainingType)}`,
   },
   trainingTime: {

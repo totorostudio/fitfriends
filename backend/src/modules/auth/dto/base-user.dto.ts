@@ -20,7 +20,7 @@ export class BaseUserDto {
   @IsISO8601()
   @IsOptional()
   @Expose()
-  public dateOfBirth?: Date;
+  public birthday?: Date;
 
   @ApiProperty({
     description: 'User email',
@@ -58,7 +58,7 @@ export class BaseUserDto {
   })
   @IsEnum(UserRole, { message: DtoValidationMessage.role.invalidFormat })
   @Expose()
-  public role: UserRole;
+  public userRole: UserRole;
 
   @ApiProperty({
     description: 'Пол пользователя',
@@ -119,7 +119,7 @@ export class BaseUserDto {
     message: DtoValidationMessage.trainingType.invalidItems,
   })
   @Expose()
-  public trainingTypes: TrainingType[];
+  public trainingType: TrainingType[];
 
   @ApiProperty({
     description: 'Is user ready for workout?',

@@ -31,46 +31,46 @@ export class AuthService {
       name,
       avatar,
       gender,
-      dateOfBirth,
-      role,
+      birthday,
+      userRole,
       description,
       metro,
       background,
       level,
-      trainingTypes,
+      trainingType,
       isReady,
       password,
     } = dto;
 
-    const existedUser = await this.userRepository.findByEmail(email);
+    const existedUser = (await this.userRepository.findByEmail(email));
 
     if (existedUser) {
       throw new ConflictException(UserMessage.Exists);
     }
 
     const newUser = {
+      createdAt: new Date(),
       email,
       name,
       avatar,
       gender,
-      dateOfBirth: dateOfBirth ? dayjs(dateOfBirth).toDate() : undefined,
-      role,
+      birthday: birthday ? dayjs(birthday).toDate() : undefined,
+      userRole,
       description,
       metro,
       background: background ?? avatar,
       level,
-      trainingTypes,
+      trainingType,
       isReady,
-      passwordHash: '',
-      createdAt: new Date(),
+      password: '',
     };
 
     const customerUserInfo =
       dto instanceof CreateCustomerDto
         ? {
-            caloriesToLose: dto.calories,
+            calories: dto.calories,
             caloriesPerDay: dto.caloriesPerDay,
-            timeForWorkout: dto.trainingTime,
+            trainingTime: dto.trainingTime,
           }
         : {};
 
@@ -78,7 +78,7 @@ export class AuthService {
       dto instanceof CreateCoachDto
         ? {
             certificate: dto.certificate,
-            achievements: dto.awards,
+            awards: dto.awards,
           }
         : {};
 
@@ -92,7 +92,7 @@ export class AuthService {
 
   public async verifyUser(dto: LoginUserDto): Promise<UserEntity> {
     const { email, password } = dto;
-    const existUser = await this.userRepository.findByEmail(email);
+    const existUser = await this.userRepository.findByEmail(email) as UserEntity;
 
     if (!existUser) {
       throw new NotFoundException(UserMessage.NotFound);

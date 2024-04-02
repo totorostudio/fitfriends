@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 import { IsOptional, IsISO8601, IsString, Length, IsEnum, IsArray, ArrayMaxSize, IsBoolean } from "class-validator";
-import { MAX_WORKOUTS_TYPES, UserDescriptionLength, UserNameLength } from 'src/app.const';
+import { MAX_TRAINING_TYPES, UserDescriptionLength, UserNameLength } from 'src/app.const';
 import { DtoValidationMessage } from 'src/libs/messages';
 import { Gender, Level, Metro, TrainingType } from "src/libs/types";
 
@@ -91,7 +91,7 @@ export class BaseUserDto {
   })
   @IsOptional()
   @IsArray()
-  @ArrayMaxSize(MAX_WORKOUTS_TYPES, {
+  @ArrayMaxSize(MAX_TRAINING_TYPES, {
     message: DtoValidationMessage.trainingType.length,
   })
   @IsEnum(TrainingType, {
