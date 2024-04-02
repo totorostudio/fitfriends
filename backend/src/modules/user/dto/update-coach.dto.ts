@@ -5,7 +5,7 @@ import { BaseUserDto } from ".";
 import { UserAwardsLength } from "src/app.const";
 import { DtoValidationMessage } from "src/libs/messages";
 
-export class UpdateCoachDto extends BaseUserDto {
+export class CoachDto extends BaseUserDto {
   @ApiPropertyOptional({
     description: 'Coach certificate',
     example: 'certificate.jpg',

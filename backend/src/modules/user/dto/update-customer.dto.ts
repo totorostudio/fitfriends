@@ -6,7 +6,7 @@ import { TrainingTime } from "src/libs/types";
 import { DtoValidationMessage } from "src/libs/messages";
 import { Calories } from "src/app.const";
 
-export class UpdateCustomerDto extends BaseUserDto {
+export class CustomerDto extends BaseUserDto {
   @ApiPropertyOptional({
     description: 'Предпочитаемая длительность тренировки',
     example: '10-30 мин',

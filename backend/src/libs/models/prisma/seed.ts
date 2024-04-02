@@ -31,7 +31,7 @@ function getUsers() {
       trainingType: ['йога', 'стрейчинг'],
       trainingTime: '10-30 мин',
       isReady: true,
-    },*/
+    },
     {
       name: 'Семен',
       email: 'semen@local.mail',
@@ -59,6 +59,20 @@ function getUsers() {
       trainingType: ['бег', 'стрейчинг'],
       trainingTime: '10-30 мин',
       isReady: true,
+    },*/
+    {
+      name: 'Бравый Тренер',
+      email: 'trainer@local.mail',
+      password: DEFAULT_PASSWORD,
+      gender: 'мужской',
+      role: 'тренер',
+      description: 'Я - Тренер, я Супертренер!',
+      metro: 'Пионерская»',
+      background: '/public/images/trainer.jpg',
+      level: 'новичок',
+      trainingType: ['бокс', 'кроссфит', 'аэробика'],
+      trainingTime: '80-100 мин',
+      isReady: true,
     },
   ]
 }
@@ -70,7 +84,7 @@ async function seedDb(prismaClient: PrismaClient) {
       data: {
         name: user.name,
         email: user.email,
-        password: user.password,
+        passwordHash: user.password,
         gender: user.gender,
         role: user.role,
         description: user.description,

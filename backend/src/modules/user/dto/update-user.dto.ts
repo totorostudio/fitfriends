@@ -1,9 +1,9 @@
 import { UserRole } from 'src/libs/types';
-import { UpdateCustomerDto, UpdateCoachDto } from '.';
+import { CustomerDto, CoachDto } from '.';
 
 export const UpdateUserDto = {
-  [UserRole.Customer]: UpdateCustomerDto,
-  [UserRole.Coach]: UpdateCoachDto,
+  [UserRole.Customer]: CustomerDto,
+  [UserRole.Coach]: CoachDto,
 };
 
 export type UpdateUserDtoType = typeof UpdateUserDto;

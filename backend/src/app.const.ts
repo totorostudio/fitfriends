@@ -11,7 +11,7 @@ export const DEFAULT_PAGE = 1;
 
 export const DEFAULT_SORT_DIRECTION = 'asc';
 
-export const MAX_WORKOUTS_TYPES = 3;
+export const MAX_TRAINING_TYPES = 3;
 
 export enum UserNameLength {
   Min = 1,

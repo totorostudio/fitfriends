@@ -3,7 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
-import { PrismaClientModule } from 'src/libs/models/prisma/prisma-client.module';
+import { PrismaClientModule } from 'src/libs/models';
 import { HttpClientParam } from 'src/app.const';
 
 @Module({
