@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaClientService } from '../../libs/models/prisma/prisma-client.service';
-import { BasePostgresRepository } from '../../libs/models/repository/base-postgres.repository';
-import { FullUser } from '../../libs/types';
+import { PrismaClientService } from 'src/libs/models/prisma/prisma-client.service';
+import { BasePostgresRepository } from 'src/libs/models/repository/base-postgres.repository';
+import { FullUser } from 'src/libs/types';
 import { UserEntity } from './user.entity';
-import { DefaultPojoType } from '../../libs/models/repository/entity.interface';
-import { BaseQuery } from '../../libs/query/base-query';
-import { DEFAULT_SORT_DIRECTION, LIST_LIMIT } from '../../app.const';
+import { DefaultPojoType } from 'src/libs/models/repository/entity.interface';
+import { BaseQuery } from 'src/libs/query/base-query';
+import { DEFAULT_PAGE, DEFAULT_SORT_DIRECTION, LIST_LIMIT } from 'src/app.const';
+import { Pagination } from 'src/libs/types';
+import { calculatePages } from 'src/libs/helpers';
 
 @Injectable()
 export class UserRepository extends BasePostgresRepository<UserEntity> {
@@ -17,10 +19,11 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
     });
   }
 
-  public async find(query?: BaseQuery): Promise<UserEntity[]> {
+  public async find(query?: BaseQuery): Promise<Pagination<UserEntity>> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const limit = Number(query?.limit) || LIST_LIMIT;
     const page = query?.page ? (query.page - 1) * limit : 0;
+    const recordsCount = await this.client.user.count();
 
     const prismaQuery: Prisma.UserFindManyArgs = {
       orderBy: { id: sortDirection },
@@ -29,8 +32,14 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
     };
 
     const documents = await this.client.user.findMany(prismaQuery);
-    const users: UserEntity[] = documents.map(document => this.createEntityFromDocument(document));
-    return users;
+    const entities: UserEntity[] = documents.map(document => this.createEntityFromDocument(document));
+    return {
+      entities,
+      currentPage: query?.page ?? DEFAULT_PAGE,
+      totalPages: calculatePages(recordsCount, limit),
+      itemsPerPage: limit,
+      totalItems: recordsCount,
+    };
   }
 
   public async findByEmail(email: string): Promise<FullUser | null> {

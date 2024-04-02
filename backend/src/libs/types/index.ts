@@ -9,3 +9,4 @@ export * from './balance.interface';
 export * from './token.interface';
 export * from './validate-config-error-message.enum';
 export * from './sort.enum';
+export * from './pagination.interface';

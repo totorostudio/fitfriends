@@ -15,7 +15,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiResponse({
-    type: [UserRdo],
+    type: UsersRdo,
     status: HttpStatus.OK,
     description: 'Список пользователей',
   })

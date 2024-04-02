@@ -5,7 +5,9 @@ export enum HttpClientParam {
   Timeout = 5000
 }
 
-export const LIST_LIMIT = 2;
+export const LIST_LIMIT = 3;
+
+export const DEFAULT_PAGE = 1;
 
 export const DEFAULT_SORT_DIRECTION = 'asc';
 

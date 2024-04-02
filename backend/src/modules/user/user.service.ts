@@ -28,7 +28,7 @@ export class UserService {
     const userEntities = await this.userRepository.find(query);
     return fillDto(UsersRdo, {
       ...userEntities,
-      users: userEntities.map((entity) =>
+      users: userEntities.entities.map((entity) =>
         fillDto(UserRdo, entity.toPOJO()),
       ),
     });

@@ -14,3 +14,7 @@ export function reduceValidationErrors(
     messages: constraints ? Object.values(constraints) : [],
   }));
 }
+
+export function calculatePages(totalItems: number, itemsPerPage: number): number {
+  return Math.ceil(totalItems / itemsPerPage);
+}
