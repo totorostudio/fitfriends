@@ -1,6 +1,6 @@
 import { Logger, Injectable, NotFoundException } from '@nestjs/common';
-import { UserRepository } from '../user/user.repository';
-import { BaseQuery } from '../../libs/query/base-query';
+import { UserRepository } from './user.repository';
+import { BaseQuery } from 'src/libs/query/base-query';
 import { fillDto } from 'src/libs/helpers';
 import { UserEntity } from './user.entity';
 import { UserRdo, UsersRdo } from './rdo';
