@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaClientService } from '../../libs/models/prisma/prisma-client.service';
 import { BasePostgresRepository } from '../../libs/models/repository/base-postgres.repository';
@@ -42,6 +42,25 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
       where: { id },
     });
     return this.createEntityFromDocument(document);
+  }
+
+  public async update(id: string, userUpdateInput: Prisma.UserUpdateInput): Promise<UserEntity | null> {
+    try {
+      const updatedDocument = await this.client.user.update({
+        where: {id},
+        data: userUpdateInput,
+      });
+
+      return this.createEntityFromDocument(updatedDocument);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`User with id ${id} not found`);
+        }
+      }
+
+      throw error;
+    }
   }
 }
 

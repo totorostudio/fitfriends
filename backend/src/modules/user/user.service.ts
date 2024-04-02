@@ -4,7 +4,7 @@ import { BaseQuery } from '../../libs/query/base-query';
 import { fillDto } from 'src/libs/helpers';
 import { UserEntity } from './user.entity';
 import { UserRdo, UsersRdo } from './rdo';
-import { UpdateUserDto } from './dto';
+import { UpdateUserDto, UpdateUserDtoType } from './dto';
 
 @Injectable()
 export class UserService {
@@ -54,7 +54,7 @@ export class UserService {
     return existUser;
   }
 
-  public async updateUser(userId: string, dto: UpdateUserDto) {
+  public async updateUser(userId: string, dto: UpdateUserDtoType) {
     const existsUser = await this.getUserEntity(userId);
     let hasChanges = false;
 
