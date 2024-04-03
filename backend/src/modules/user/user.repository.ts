@@ -5,7 +5,6 @@ import { BasePostgresRepository } from 'src/libs/models/repository/base-postgres
 import { FullUser } from 'src/libs/types';
 import { UserEntity } from './user.entity';
 import { DefaultPojoType } from 'src/libs/models/repository/entity.interface';
-import { BaseQuery } from 'src/libs/query/base-query';
 import { DEFAULT_PAGE, DEFAULT_SORT_DIRECTION, LIST_LIMIT } from 'src/app.const';
 import { Pagination } from 'src/libs/types';
 import { calculatePages } from 'src/libs/helpers';
@@ -24,14 +23,35 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const limit = Number(query?.limit) || LIST_LIMIT;
     const page = query?.page ? (query.page - 1) * limit : 0;
-    const recordsCount = await this.client.user.count();
+
+    const whereClause: Prisma.UserWhereInput = {};
+
+    if (query?.trainingType) {
+      whereClause.trainingType = {
+        hasSome: query.trainingType,
+      };
+    }
+
+    if (query?.metro) {
+      whereClause.metro = query.metro;
+    }
+
+    if (query?.level) {
+      whereClause.level = query.level;
+    }
+
+    if (query?.role) {
+      whereClause.role = query.role;
+    }
 
     const prismaQuery: Prisma.UserFindManyArgs = {
+      where: whereClause,
       orderBy: { id: sortDirection },
       take: limit,
       skip: page,
     };
 
+    const recordsCount = await this.client.user.count({ where: whereClause });
     const documents = await this.client.user.findMany(prismaQuery);
     const entities: UserEntity[] = documents.map(document => this.createEntityFromDocument(document));
     return {
