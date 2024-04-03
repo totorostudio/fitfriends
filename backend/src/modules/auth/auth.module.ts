@@ -15,15 +15,14 @@ import { RefreshTokenService } from '../refresh-token/refresh-token.service';
       inject: [ConfigService],
       useFactory: getJwtOptions,
     }),
-    forwardRef(() => UserModule),
+    UserModule,
     RefreshTokenModule,
   ],
   providers: [
-    RefreshTokenService,
+    AuthService,
     JwtAccessStrategy,
     JwtRefreshStrategy,
     LocalStrategy,
-    AuthService,
   ],
   controllers: [AuthController],
 })

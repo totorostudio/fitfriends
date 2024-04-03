@@ -10,7 +10,7 @@ import { AuthUserRdo, LoggedUserRdo } from './rdo';
 import { RequestWithRefreshTokenPayload, RequestWithTokenPayload, RequestWithUser } from 'src/libs/requests';
 import { CreateUserDto, CreateUserDtoType } from './dto';
 
-@ApiTags('auth')
+@ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -22,7 +22,7 @@ export class AuthController {
   @ApiResponse({
     type: AuthUserRdo,
     status: HttpStatus.CREATED,
-    description: 'The new user has been successfully created.',
+    description: 'Новый пользователь успешно создан.',
   })
   @Public()
   @UseGuards(NotAuthGuard)
@@ -77,7 +77,7 @@ export class AuthController {
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
-    description: 'Get a new access/refresh tokens',
+    description: 'Получить новые access/refresh токены',
   })
   @Public()
   @UseGuards(JwtRefreshGuard)

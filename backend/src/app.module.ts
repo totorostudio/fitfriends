@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -10,19 +10,19 @@ import { AppConfigModule } from './libs/config';
 @Module({
   imports: [
     UserModule,
-    //AppConfigModule,
-    //AuthModule,
-    //RefreshTokenModule,
+    AppConfigModule,
+    AuthModule,
+    RefreshTokenModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
   ],
   controllers: [],
   providers: [
-    /*{
+    {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },*/
+    },
   ],
 })
 export class AppModule {}

@@ -11,8 +11,6 @@ import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
 @Module({
   imports: [
     PrismaClientModule,
-    //forwardRef(() => AuthModule),
-    //RefreshTokenModule,
     HttpModule.register({
       timeout: HttpClientParam.Timeout,
       maxRedirects: HttpClientParam.MaxRedirect,
