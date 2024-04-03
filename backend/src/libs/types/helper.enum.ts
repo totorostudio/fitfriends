@@ -10,7 +10,7 @@ export enum UserRole {
 }
 
 export enum Metro {
-  Pionerskaya = 'Пионерская»',
+  Pionerskaya = 'Пионерская',
   Petrogradskaya = 'Петроградская',
   Udelnaya = 'Удельная',
   Zvezdnaya = 'Звёздная',

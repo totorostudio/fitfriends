@@ -9,9 +9,9 @@ import { AppConfigModule } from './libs/config';
 
 @Module({
   imports: [
-    AppConfigModule,
-    AuthModule,
-    RefreshTokenModule,
+    //AppConfigModule,
+    //AuthModule,
+    //RefreshTokenModule,
     UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -19,10 +19,10 @@ import { AppConfigModule } from './libs/config';
   ],
   controllers: [],
   providers: [
-    {
+    /*{
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
+    },*/
   ],
 })
 export class AppModule {}

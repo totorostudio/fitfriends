@@ -8,6 +8,7 @@ import { FullUserRdo, UsersRdo, UsersRdoExample } from './rdo';
 import { BaseUserDto, UpdateUserDto, UpdateUserDtoType } from './dto';
 import { UserDtoValidationPipe } from 'src/libs/pipes/user-dto-validation.pipe';
 import { UUIDValidationPipe } from 'src/libs/pipes/uuid-validation.pipe';
+import { UsersQuery } from './user.query';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -23,7 +24,7 @@ export class UserController {
   })
   @Role(UserRole.Customer)
   @Get('/')
-  public async index(@Query() query: BaseQuery): Promise<UsersRdo> {
+  public async index(@Query() query: UsersQuery): Promise<UsersRdo> {
     return this.userService.getAllUsers(query);
   }
 

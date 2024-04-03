@@ -5,6 +5,7 @@ import { fillDto } from 'src/libs/helpers';
 import { UserEntity } from './user.entity';
 import { UserRdo, UsersRdo } from './rdo';
 import { UpdateUserDto, UpdateUserDtoType } from './dto';
+import { UsersQuery } from './user.query';
 
 @Injectable()
 export class UserService {
@@ -24,7 +25,7 @@ export class UserService {
     return existsUser;
   }
 
-  public async getAllUsers(query?: BaseQuery): Promise<UsersRdo> {
+  public async getAllUsers(query?: UsersQuery): Promise<UsersRdo> {
     const userEntities = await this.userRepository.find(query);
     return fillDto(UsersRdo, {
       ...userEntities,

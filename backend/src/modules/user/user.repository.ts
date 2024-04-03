@@ -9,6 +9,7 @@ import { BaseQuery } from 'src/libs/query/base-query';
 import { DEFAULT_PAGE, DEFAULT_SORT_DIRECTION, LIST_LIMIT } from 'src/app.const';
 import { Pagination } from 'src/libs/types';
 import { calculatePages } from 'src/libs/helpers';
+import { UsersQuery } from './user.query';
 
 @Injectable()
 export class UserRepository extends BasePostgresRepository<UserEntity> {
@@ -19,7 +20,7 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
     });
   }
 
-  public async find(query?: BaseQuery): Promise<Pagination<UserEntity>> {
+  public async find(query?: UsersQuery): Promise<Pagination<UserEntity>> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const limit = Number(query?.limit) || LIST_LIMIT;
     const page = query?.page ? (query.page - 1) * limit : 0;
