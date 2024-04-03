@@ -21,7 +21,7 @@ export class BaseUserDto {
   @IsOptional()
   @IsISO8601()
   @Expose()
-  public dateOfBirth?: Date;
+  public birthday?: Date;
 
   @ApiPropertyOptional({
     description: 'Имя пользователя',
@@ -65,7 +65,7 @@ export class BaseUserDto {
     message: DtoValidationMessage.metro.invalidFormat,
   })
   @Expose()
-  public location?: Metro;
+  public metro?: Metro;
 
   @ApiPropertyOptional({
     description: 'Фоновая картинка пользователя',
@@ -74,7 +74,7 @@ export class BaseUserDto {
   @IsOptional()
   @IsString()
   @Expose()
-  public backgroundImage?: string;
+  public background?: string;
 
   @ApiPropertyOptional({
     description: 'Уровень пользователя',
@@ -99,7 +99,7 @@ export class BaseUserDto {
     message: DtoValidationMessage.trainingType.invalidItems,
   })
   @Expose()
-  public workoutTypes?: TrainingType[];
+  public trainingType?: TrainingType[];
 
   @ApiPropertyOptional({
     description: 'Готовность к тренировке?',

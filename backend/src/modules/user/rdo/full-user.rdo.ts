@@ -8,7 +8,7 @@ export class FullUserRdo extends UserRdo {
     example: '01-01-1990',
   })
   @Expose()
-  public dateOfBirth?: string;
+  public birthday?: string;
 
   @ApiProperty({
     description: 'Email пользователя',
@@ -29,7 +29,7 @@ export class FullUserRdo extends UserRdo {
     example: 'background-image.png',
   })
   @Expose()
-  public backgroundImage: string;
+  public background: string;
 
   @ApiPropertyOptional({
     description: 'Сертификаты тренера',

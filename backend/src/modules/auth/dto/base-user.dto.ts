@@ -7,14 +7,15 @@ import { Gender, Level, Metro, TrainingType, UserRole } from "src/libs/types";
 
 export class BaseUserDto {
   @ApiProperty({
-    description: 'User avatar url',
+    description: 'Аватар пользователя',
     example: 'image.jpg',
   })
+  @IsOptional()
   @Expose()
   public avatar: string;
 
   @ApiPropertyOptional({
-    description: 'User birth date',
+    description: 'День рождения пользователя',
     example: '1981-03-12',
   })
   @IsISO8601()
@@ -23,7 +24,7 @@ export class BaseUserDto {
   public birthday?: Date;
 
   @ApiProperty({
-    description: 'User email',
+    description: 'Email пользователя',
     example: 'user@user.ru',
   })
   @IsEmail({}, { message: DtoValidationMessage.email.invalidFormat })
@@ -31,8 +32,8 @@ export class BaseUserDto {
   public email: string;
 
   @ApiProperty({
-    description: 'User name',
-    example: 'John',
+    description: 'Имя пользователя',
+    example: 'Иван',
   })
   @IsString()
   @Length(UserNameLength.Min, UserNameLength.Max, {
@@ -42,7 +43,7 @@ export class BaseUserDto {
   public name: string;
 
   @ApiProperty({
-    description: 'User password',
+    description: 'Пароль пользователя',
     example: '123456',
   })
   @IsString()
@@ -53,7 +54,7 @@ export class BaseUserDto {
   public password: string;
 
   @ApiProperty({
-    description: 'User role',
+    description: 'Роль пользователя',
     example: 'пользователь',
   })
   @IsEnum(UserRole, { message: DtoValidationMessage.role.invalidFormat })
@@ -69,7 +70,7 @@ export class BaseUserDto {
   public gender: Gender;
 
   @ApiProperty({
-    description: 'User description',
+    description: 'Описание пользователя',
     example: 'Описание пользователя текстом',
   })
   @IsString()
@@ -99,7 +100,7 @@ export class BaseUserDto {
   public background?: string;
 
   @ApiProperty({
-    description: 'User level',
+    description: 'Уровень подготовки пользователя',
     example: 'новичок',
   })
   @IsEnum(Level, { message: DtoValidationMessage.level.invalidFormat })
@@ -107,7 +108,7 @@ export class BaseUserDto {
   public level: Level;
 
   @ApiProperty({
-    description: 'User`s workouts types',
+    description: 'Типы тренировок',
     example: 'йога, бег',
   })
   @IsArray()
@@ -122,7 +123,7 @@ export class BaseUserDto {
   public trainingType: TrainingType[];
 
   @ApiProperty({
-    description: 'Is user ready for workout?',
+    description: 'Готовность к тренировке?',
     example: 'true',
   })
   @IsBoolean()
