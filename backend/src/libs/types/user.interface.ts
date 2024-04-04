@@ -22,6 +22,7 @@ export interface BaseUser {
   background: string;
   level: Level;
   trainingType: TrainingType[];
+  friends: string[];
   isReady: boolean;
 };
 

@@ -1,3 +1,5 @@
+export const CURRENT_USER = 'ecb62905-03bd-499d-8518-7fd684616e2a';
+
 export const SALT_ROUNDS = 10;
 
 export enum HttpClientParam {

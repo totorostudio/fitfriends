@@ -23,6 +23,7 @@ export class UserEntity implements FullUser, Entity<string> {
   public caloriesPerDay?: number;
   public sertificate?: string;
   public awards?: string;
+  public friends: string[];
   public isReady: boolean;
 
   constructor(user: FullUser) {
@@ -50,6 +51,7 @@ export class UserEntity implements FullUser, Entity<string> {
       caloriesPerDay: this.caloriesPerDay,
       sertificate: this.sertificate,
       awards: this.awards,
+      friends: this.friends,
       isReady: this.isReady,
     };
   }
@@ -73,6 +75,7 @@ export class UserEntity implements FullUser, Entity<string> {
     this.caloriesPerDay = data.caloriesPerDay;
     this.sertificate = data.sertificate;
     this.awards = data.awards;
+    this.friends = data.friends;
     this.isReady = data.isReady;
   }
 

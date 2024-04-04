@@ -6,10 +6,12 @@ import { RefreshTokenModule } from './modules/refresh-token/refresh-token.module
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './libs/guards';
 import { AppConfigModule } from './libs/config';
+import { FriendsModule } from './modules/friends/friends.module';
 
 @Module({
   imports: [
     UserModule,
+    FriendsModule,
     AppConfigModule,
     AuthModule,
     RefreshTokenModule,
@@ -19,10 +21,10 @@ import { AppConfigModule } from './libs/config';
   ],
   controllers: [],
   providers: [
-    {
+    /*{
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
+    },*/
   ],
 })
 export class AppModule {}

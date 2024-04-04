@@ -61,6 +61,7 @@ export class AuthService {
       background: background ?? avatar,
       level,
       trainingType,
+      friends: [],
       isReady,
       password: '',
     };

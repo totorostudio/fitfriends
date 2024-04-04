@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { genSalt, hash } from 'bcrypt';
+import { SALT_ROUNDS } from 'src/app.const';
 
 const DEFAULT_PASSWORD = '123456';
 
@@ -72,19 +74,28 @@ function getUsers() {
       level: 'новичок',
       trainingType: ['бокс', 'кроссфит', 'аэробика'],
       trainingTime: '80-100 мин',
+      friends: [],
       isReady: true,
     },
   ]
 }
 
+async function setPassword(password: string) {
+  const salt = await genSalt(SALT_ROUNDS);
+  const passwordHash = await hash(password, salt);
+  return passwordHash;
+}
+
 async function seedDb(prismaClient: PrismaClient) {
   const mockUsers = getUsers();
+
   for (const user of mockUsers) {
+    const passwordHash = await setPassword(user.password);
     await prismaClient.user.create({
       data: {
         name: user.name,
         email: user.email,
-        passwordHash: user.password,
+        passwordHash: passwordHash,
         gender: user.gender,
         role: user.role,
         description: user.description,

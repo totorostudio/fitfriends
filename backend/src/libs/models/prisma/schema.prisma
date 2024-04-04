@@ -33,6 +33,7 @@ model User {
   caloriesPerDay Int?      @map("calories_per_day")
   sertificate    String?
   awards         String?
+  friends        String[]
   isReady        Boolean   @default(false) @map("is_ready")
 
   @@map("users")
