@@ -1,6 +1,6 @@
 import { IsIn, IsNumber, IsOptional, Max, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
-import * as lodash from 'lodash';
+import lodash from 'lodash';
 import { TrainingTime } from 'src/libs//types';
 import { BaseQuery } from 'src/libs/query';
 import { ApiPropertyOptional } from '@nestjs/swagger';
@@ -34,7 +34,7 @@ export class TrainingQuery extends BaseQuery {
   @Min(0, { message: 'Целое положительное число' })
   public caloriesTo?: number;
 
-  @ApiPropertyOptional({ description: 'Рейтинг', type: Number  })
+  @ApiPropertyOptional({ description: 'Рейтинг (целое число от 0 до 5)', type: Number  })
   @Transform(({ value }) => +value)
   @IsNumber()
   @IsOptional()

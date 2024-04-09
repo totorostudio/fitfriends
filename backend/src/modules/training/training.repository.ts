@@ -10,6 +10,7 @@ import { calculatePages } from 'src/libs/helpers';
 import { TrainingEntity } from './training.entity';
 import { TrainingQuery } from './training.query';
 import { UpdateFriendsRdo } from '../friends/rdo/update-friends.rdo';
+import { TrainingRdo } from './rdo';
 
 @Injectable()
 export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
@@ -28,19 +29,23 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
     const whereClause: Prisma.TrainingWhereInput = {};
 
     const priceConditions: Prisma.TrainingWhereInput[] = [];
+
     if (query?.priceFrom !== undefined) {
-      priceConditions.push({ price: { gte: query.priceFrom } });
+      priceConditions.push({ price: { gte: +query.priceFrom } });
     }
+
     if (query?.priceTo !== undefined) {
-      priceConditions.push({ price: { lte: query.priceTo } });
+      priceConditions.push({ price: { lte: +query.priceTo } });
     }
 
     const caloriesConditions: Prisma.TrainingWhereInput[] = [];
+
     if (query?.caloriesFrom !== undefined) {
-      caloriesConditions.push({ calories: { gte: query.caloriesFrom } });
+      caloriesConditions.push({ calories: { gte: +query.caloriesFrom } });
     }
+
     if (query?.caloriesTo !== undefined) {
-      caloriesConditions.push({ calories: { lte: query.caloriesTo } });
+      caloriesConditions.push({ calories: { lte: +query.caloriesTo } });
     }
 
     if (priceConditions.length > 0 || caloriesConditions.length > 0) {
@@ -48,8 +53,9 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
     }
 
     if (query?.rating !== undefined) {
-      whereClause.rating = query.rating;
+      whereClause.rating = +query.rating;
     }
+
     if (query?.trainingTime && query.trainingTime.length > 0) {
       whereClause.trainingTime = { in: query.trainingTime };
     }
@@ -73,71 +79,41 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
     };
   }
 
-  public async add(currentUserId: string, friendId: string): Promise<UpdateFriendsRdo> {
-
-    const currentUser = await this.client.user.findUnique({
-      where: { id: currentUserId },
-      select: { friends: true },
+  public async findById(id: string): Promise<TrainingEntity | null> {
+    const document = await this.client.training.findUnique({
+      where: { id },
     });
-
-    const friendUser = await this.client.user.findUnique({
-      where: { id: friendId },
-      select: { friends: true },
-    });
-
-    if (!currentUser || !friendUser) {
-      throw new Error('Один из пользователей не найден');
-    }
-
-    const updatedCurrentUserFriendsList = currentUser.friends.includes(friendId) ? currentUser.friends : [...currentUser.friends, friendId];
-    const updatedFriendUserFriendsList = friendUser.friends.includes(currentUserId) ? friendUser.friends : [...friendUser.friends, currentUserId];
-
-    await this.client.user.update({
-      where: { id: currentUserId },
-      data: { friends: updatedCurrentUserFriendsList },
-    });
-
-    await this.client.user.update({
-      where: { id: friendId },
-      data: { friends: updatedFriendUserFriendsList },
-    });
-
-    return {
-      message: `Друг c id ${friendId} успешно добавлен`,
-    };
+    return this.createEntityFromDocument(document);
   }
 
-  public async remove(currentUserId: string, friendId: string): Promise<UpdateFriendsRdo> {
-    const currentUser = await this.client.user.findUnique({
-      where: { id: currentUserId },
-      select: { friends: true },
-    });
+  public async update(id: string, trainingUpdateInput: Prisma.TrainingUpdateInput): Promise<TrainingEntity | null> {
+    try {
+      const updatedDocument = await this.client.training.update({
+        where: {id},
+        data: trainingUpdateInput,
+      });
 
-    if (!currentUser) throw new Error('Пользователь не найден');
+      return this.createEntityFromDocument(updatedDocument);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`User with id ${id} not found`);
+        }
+      }
 
-    const updatedCurrentUserFriendsList = currentUser.friends.filter(f => f !== friendId);
+      throw error;
+    }
+  }
 
-    await this.client.user.update({
-      where: { id: currentUserId },
-      data: { friends: updatedCurrentUserFriendsList },
-    });
+  public async save(trainingInput: TrainingEntity): Promise<TrainingEntity> {
+    try {
+      const createdDocument = await this.client.training.create({
+        data: trainingInput,
+      });
 
-    const friendUser = await this.client.user.findUnique({
-      where: { id: friendId },
-      select: { friends: true },
-    });
-
-    if (!friendUser) throw new Error('User не найден в друзьях, не смогли удалить из друзей');
-
-    const updatedFriendUserFriendsList = friendUser.friends.filter(f => f !== currentUserId);
-
-    await this.client.user.update({
-      where: { id: friendId },
-      data: { friends: updatedFriendUserFriendsList },
-    });
-
-    return {
-      message: `Пользователь c id ${friendId} успешно удален из друзей`,
+      return this.createEntityFromDocument(createdDocument);
+    } catch (error) {
+      throw error;
     }
   }
 }

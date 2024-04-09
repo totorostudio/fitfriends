@@ -1,4 +1,4 @@
-export const CURRENT_USER = 'ecb62905-03bd-499d-8518-7fd684616e2a';
+export const CURRENT_USER = '0fe7dbca-7249-4c1d-bc5e-c60b3b369783';
 
 export const SALT_ROUNDS = 10;
 

@@ -6,7 +6,7 @@ import { Role } from 'src/libs/decorators/role.decorator';
 import { BaseQuery } from 'src/libs/query/base-query';
 import { FullUserRdo, UsersRdo, UsersRdoExample } from './rdo';
 import { BaseUserDto, UpdateUserDto, UpdateUserDtoType } from './dto';
-import { UserDtoValidationPipe } from 'src/libs/pipes/user-dto-validation.pipe';
+import { UserDtoValidationPipe } from 'src/libs/pipes';
 import { UUIDValidationPipe } from 'src/libs/pipes/uuid-validation.pipe';
 import { UsersQuery } from './user.query';
 

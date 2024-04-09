@@ -5,7 +5,7 @@ import { UserRole } from 'src/libs/types';
 import { Role } from 'src/libs/decorators/role.decorator';
 import { BaseQuery } from 'src/libs/query/base-query';
 import { UsersRdo, UsersRdoExample } from 'src/modules/user/rdo';
-import { UserDtoValidationPipe } from 'src/libs/pipes/user-dto-validation.pipe';
+import { UserDtoValidationPipe } from 'src/libs/pipes';
 import { UUIDValidationPipe } from 'src/libs/pipes/uuid-validation.pipe';
 import { UsersQuery } from 'src/modules/user/user.query';
 import { CURRENT_USER } from 'src/app.const';

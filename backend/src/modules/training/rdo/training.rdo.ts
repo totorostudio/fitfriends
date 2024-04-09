@@ -88,7 +88,7 @@ export class TrainingRdo {
   public video: string;
 
   @ApiProperty({
-    description: 'рейтинг тренировки',
+    description: 'Рейтинг тренировки',
     example: 5,
   })
   @Expose()

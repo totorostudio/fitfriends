@@ -69,6 +69,18 @@ model Training {
   @@map("trainings")
 }
 
+model Review {
+  id             String   @id @default(uuid()) @map("id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  userId         String   @map("user_id")
+  trainingId     String   @map("training_id")
+  grade          Int
+  text           String
+
+  @@map("reviews")
+}
+
+
 // npx prisma migrate dev --name "Added model for User" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma migrate dev --name "Updated model Training" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
