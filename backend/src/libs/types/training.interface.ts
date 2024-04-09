@@ -1,8 +1,8 @@
 import { Gender, Level, TrainingType, TrainingTime } from ".";
 
 export interface Training {
-  id: string;
-  createdAt: Date;
+  id?: string;
+  createdAt?: Date;
   title: string;
   background: string;
   level: Level;
@@ -14,6 +14,6 @@ export interface Training {
   gender: Gender;
   video: string;
   rating: number;
-  userId: string;
+  coachId: string;
   isFeatured: boolean;
 }

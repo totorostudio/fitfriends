@@ -5,7 +5,7 @@ import { Metro, Level, UserRole, Gender, TrainingType } from 'src/libs/types';
 export class UserRdo {
   @ApiProperty({
     description: 'Уникальный ID пользователя',
-    example: '13',
+    example: '25684',
   })
   @Expose()
   public id: string;

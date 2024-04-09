@@ -18,3 +18,9 @@ export function reduceValidationErrors(
 export function calculatePages(totalItems: number, itemsPerPage: number): number {
   return Math.ceil(totalItems / itemsPerPage);
 }
+
+export function getRandomEnumValue<E>(enumObject: E): E[keyof E] {
+  const values = Object.values(enumObject) as E[keyof E][];
+  const randomIndex = Math.floor(Math.random() * values.length);
+  return values[randomIndex];
+}

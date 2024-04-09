@@ -1,10 +1,7 @@
-import { Logger, Injectable, NotFoundException } from '@nestjs/common';
+import { Logger, Injectable } from '@nestjs/common';
 import { FriendsRepository } from './friends.repository';
-import { BaseQuery } from 'src/libs/query/base-query';
 import { fillDto } from 'src/libs/helpers';
-import { UserEntity } from 'src/modules/user/user.entity';
 import { UserRdo, UsersRdo } from 'src/modules/user/rdo';
-import { UpdateUserDto, UpdateUserDtoType } from 'src/modules/user/dto';
 import { UsersQuery } from 'src/modules/user/user.query';
 import { UpdateFriendsDto } from './dto/update-friends.dto';
 
@@ -15,16 +12,6 @@ export class FriendsService {
   constructor(
     private readonly friendsRepository: FriendsRepository
   ) {}
-
-  public async getUserEntity(userId: string): Promise<UserEntity> {
-    const existsUser = await this.friendsRepository.findById(userId);
-
-    if (!existsUser) {
-      throw new NotFoundException(`User with id ${userId} not found`);
-    }
-
-    return existsUser;
-  }
 
   public async getFriends(currentUserId: string, query?: UsersQuery): Promise<UsersRdo> {
     const userEntities = await this.friendsRepository.find(currentUserId, query);

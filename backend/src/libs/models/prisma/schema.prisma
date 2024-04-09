@@ -49,12 +49,34 @@ model RefreshToken {
   @@map("refresh_sessions")
 }
 
+model Training {
+  id             String   @id @default(uuid()) @map("id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  title          String
+  background     String
+  level          String
+  trainingType   String   @map("training_type")
+  trainingTime   String   @map("training_time")
+  price          Int
+  calories       Int
+  description    String
+  gender         String
+  video          String
+  rating         Int
+  coachId        String    @map("coach_id")
+  isFeatured     Boolean   @default(false) @map("is_featured")
+
+  @@map("trainings")
+}
+
 // npx prisma migrate dev --name "Added model for User" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
-// npx prisma migrate dev --name "Updated model User" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+// npx prisma migrate dev --name "Updated model Training" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma validate --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma migrate dev --schema ./src/libs/models/prisma/schema.prisma --skip-generate --skip-seed
 // npx prisma migrate reset --schema ./src/libs/models/prisma/schema.prisma --force --skip-generate --skip-seed
 // npx prisma generate --schema ./src/libs/models/prisma/schema.prisma
-// npx ts-node ./src/libs/models/prisma/seed.ts
+// npx ts-node -P ./src/libs/models/prisma/seed/tsconfig.seed.json ./src/libs/models/prisma/seed/seed.ts 5 5
+// npx ts-node -r tsconfig-paths/register -P ./src/libs/models/prisma/seed/tsconfig.seed.json ./src/libs/models/prisma/seed/seed.ts 5 5
+// npx ts-node ./src/libs/models/prisma/seed/seed.ts
 // import { PrismaClient } from '@prisma/client'

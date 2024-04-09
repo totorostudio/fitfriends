@@ -1,7 +1,7 @@
 import { compare, genSalt, hash } from 'bcrypt';
 import { FullUser, UserRole, Gender, Metro, Level, TrainingType, TrainingTime } from '../../libs/types';
-import { Entity } from '../../libs/models/repository/entity.interface';
-import { SALT_ROUNDS } from '../../app.const';
+import { Entity } from 'src/libs/models';
+import { SALT_ROUNDS } from 'src/app.const';
 
 export class UserEntity implements FullUser, Entity<string> {
   public id?: string;
