@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientService } from 'src/libs/models/prisma/prisma-client.service';
 import { BasePostgresRepository } from 'src/libs/models/repository/base-postgres.repository';
-import { Review } from 'src/libs/types';
+import { Pagination, Review } from 'src/libs/types';
 import { DefaultPojoType } from 'src/libs/models/repository/entity.interface';
 import { ReviewEntity } from './review.entity';
+import { BaseQuery } from 'src/libs/query';
+import { DEFAULT_PAGE, DEFAULT_SORT_DIRECTION, LIST_LIMIT } from 'src/app.const';
+import { Prisma } from '@prisma/client';
+import { calculatePages } from 'src/libs/helpers';
 
 @Injectable()
 export class ReviewRepository extends BasePostgresRepository<ReviewEntity> {
@@ -15,15 +19,35 @@ export class ReviewRepository extends BasePostgresRepository<ReviewEntity> {
   }
 
   public async save(reviewInput: ReviewEntity): Promise<ReviewEntity> {
-    try {
-      const createdDocument = await this.client.review.create({
-        data: reviewInput,
-      });
+    const createdDocument = await this.client.review.create({
+      data: reviewInput,
+    });
 
-      return this.createEntityFromDocument(createdDocument);
-    } catch (error) {
-      throw error;
-    }
+    return this.createEntityFromDocument(createdDocument);
+  }
+
+  public async find(trainingId: string, query?: BaseQuery): Promise<Pagination<ReviewEntity>> {
+    const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
+    const limit = Number(query?.limit) || LIST_LIMIT;
+    const page = query?.page ? (query.page - 1) * limit : 0;
+
+    const prismaQuery: Prisma.ReviewFindManyArgs = {
+      where: { trainingId: trainingId },
+      orderBy: { createdAt: sortDirection },
+      take: limit,
+      skip: page,
+    };
+
+    const recordsCount = await this.client.review.count({ where: { trainingId: trainingId } });
+    const documents = await this.client.review.findMany(prismaQuery);
+    const entities: ReviewEntity[] = documents.map(document => this.createEntityFromDocument(document));
+    return {
+      entities,
+      currentPage: query?.page ?? DEFAULT_PAGE,
+      totalPages: calculatePages(recordsCount, limit),
+      itemsPerPage: limit,
+      totalItems: recordsCount,
+    };
   }
 }
 

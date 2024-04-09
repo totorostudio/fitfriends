@@ -2,8 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewRepository } from './review.repository';
 import { ReviewEntity } from './review.entity';
-import { ReviewRdo } from './rdo';
+import { ReviewRdo, ReviewsRdo } from './rdo';
 import { fillDto } from 'src/libs/helpers';
+import { BaseQuery } from 'src/libs/query';
 
 @Injectable()
 export class ReviewService {
@@ -33,7 +34,13 @@ export class ReviewService {
     return fillDto(ReviewRdo, review.toPOJO());
   }
 
-  findAll() {
-    return `This action returns all review`;
+  public async find(trainingId: string, query?: BaseQuery): Promise<ReviewsRdo> {
+    const reviewEntities = await this.reviewRepository.find(trainingId, query);
+    return fillDto(ReviewsRdo, {
+      ...reviewEntities,
+      users: reviewEntities.entities.map((entity) =>
+        fillDto(ReviewRdo, entity.toPOJO()),
+      ),
+    });
   }
 }
