@@ -1,34 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ValidationPipe } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UUIDValidationPipe } from 'src/libs/pipes';
+import { CURRENT_USER } from 'src/app.const';
+import { ReviewRdo } from './rdo';
 
+@ApiTags('Отзывы')
 @Controller('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewService.create(createReviewDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.reviewService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewService.update(+id, updateReviewDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewService.remove(+id);
+  @ApiResponse({
+    type: ReviewRdo,
+    status: HttpStatus.CREATED,
+    description: 'Новый отзыв успешно добавлен.',
+  })
+  @Post('/')
+  public async createReview(
+    @Body(new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    })) dto: CreateReviewDto
+  ) {
+    return this.reviewService.create(CURRENT_USER, dto);
   }
 }

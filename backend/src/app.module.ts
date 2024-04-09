@@ -8,12 +8,14 @@ import { JwtAuthGuard } from './libs/guards';
 import { AppConfigModule } from './libs/config';
 import { FriendsModule } from './modules/friends/friends.module';
 import { TrainingModule } from './modules/training/training.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
     UserModule,
     FriendsModule,
     TrainingModule,
+    ReviewModule,
     AppConfigModule,
     AuthModule,
     RefreshTokenModule,

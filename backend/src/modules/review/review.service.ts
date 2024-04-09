@@ -1,26 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { ReviewRepository } from './review.repository';
+import { ReviewEntity } from './review.entity';
+import { ReviewRdo } from './rdo';
+import { fillDto } from 'src/libs/helpers';
 
 @Injectable()
 export class ReviewService {
-  create(createReviewDto: CreateReviewDto) {
-    return 'This action adds a new review';
+  private readonly logger = new Logger(ReviewService.name);
+
+  constructor(
+    private readonly reviewRepository: ReviewRepository
+  ) {}
+
+  public async create(userId: string, createReviewDto: CreateReviewDto): Promise<ReviewRdo> {
+    const {
+      trainingId,
+      grade,
+      text
+    } = createReviewDto;
+
+    const newReview = {
+      userId,
+      trainingId,
+      grade,
+      text
+    };
+
+    const reviewEntity = new ReviewEntity(newReview);
+
+    const review = await this.reviewRepository.save(reviewEntity);
+    return fillDto(ReviewRdo, review.toPOJO());
   }
 
   findAll() {
     return `This action returns all review`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
-  }
-
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} review`;
   }
 }

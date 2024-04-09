@@ -1,4 +1,4 @@
-export const TrainingRdoExample = {
+export const TrainingsRdoExample = {
   totalPages: 1,
   totalItems: 2,
   currentPage: 1,

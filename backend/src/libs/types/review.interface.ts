@@ -1,6 +1,6 @@
 export interface Review {
-  id: string;
-  createdAt: Date;
+  id?: string;
+  createdAt?: Date;
   userId: string;
   trainingId: string;
   grade: number;

@@ -3,9 +3,7 @@ import { TrainingService } from './training.service';
 import { CreateTrainingDto } from './dto/create-training.dto';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/libs/decorators';
-import { UserRole } from 'src/libs/types';
-import { TrainingRdo, TrainingRdoExample, TrainingsRdo } from './rdo';
+import { TrainingRdo, TrainingsRdoExample, TrainingsRdo } from './rdo';
 import { TrainingQuery } from './training.query';
 import { UUIDValidationPipe } from 'src/libs/pipes';
 import { CURRENT_USER } from 'src/app.const';
@@ -17,7 +15,7 @@ export class TrainingController {
 
   @ApiResponse({
     schema: {
-      example: TrainingRdoExample
+      example: TrainingsRdoExample
     },
     status: HttpStatus.OK,
     description: 'Каталог тренировок',

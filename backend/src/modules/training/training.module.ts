@@ -14,7 +14,6 @@ import { TrainingRepository } from './training.repository';
       timeout: HttpClientParam.Timeout,
       maxRedirects: HttpClientParam.MaxRedirect,
     }),
-    UserModule,
     //NotifyModule,
   ],
   controllers: [TrainingController],
