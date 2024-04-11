@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaClientService } from '../prisma/prisma-client.service';
 
 import { DefaultPojoType, Entity, EntityIdType } from './entity.interface';
@@ -14,6 +15,8 @@ export abstract class BasePostgresRepository<
     private readonly createEntity: (document: DocumentType) => EntityType,
   ) {}
 
+  protected abstract getTableName(): string;
+
   protected createEntityFromDocument(document: DocumentType): EntityType | null {
     if (! document) {
       return null;
@@ -23,23 +26,46 @@ export abstract class BasePostgresRepository<
   }
 
   protected async findOne(model: string, where: object): Promise<EntityType | null> {
-    return this.client[model].findUnique({ where });
+    const document = await this.client[model].findUnique({ where });
+    return this.createEntityFromDocument(document);
   }
 
-  public async findById(id: EntityType['id']): Promise<EntityType | null> {
-    throw new Error('Not implemented');
+  public async findById(id: EntityIdType): Promise<EntityType | null> {
+    const tableName = this.getTableName();
+
+    const document = await this.client[tableName].findUnique({
+      where: { id }
+    });
+
+    return this.createEntityFromDocument(document);
   }
 
   public async save(entity: EntityType): Promise<EntityType> {
-    throw new Error('Not implemented');
+    const tableName = this.getTableName();
+    const document = await this.client[tableName].create({
+      data: entity,
+    });
+
+    return this.createEntityFromDocument(document);
   }
 
-  public async update(id: EntityType['id'], entity: EntityType): Promise<EntityType> {
-    throw new Error('Not implemented');
+  public async update(id: EntityIdType, entity: EntityType): Promise<EntityType> {
+    const tableName = this.getTableName();
+    const updatedDocument = await this.client[tableName].update({
+      where: { id },
+      data: entity
+    });
+
+    return this.createEntityFromDocument(updatedDocument);
   }
 
-  public async deleteById(id: EntityType['id']): Promise<void> {
-    throw new Error('Not implemented');
+  public async deleteById(id: EntityIdType): Promise<void> {
+    const tableName = this.getTableName();
+    await this.client[tableName].delete({
+      where: { id }
+    }).catch((error: PrismaClientKnownRequestError) => {
+      console.error(`Error deleting ${tableName} with ID ${id}:`, error);
+      throw new Error('Delete operation failed');
+    });
   }
-
 }

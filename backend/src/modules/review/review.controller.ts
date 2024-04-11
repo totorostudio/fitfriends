@@ -3,7 +3,7 @@ import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUIDValidationPipe } from 'src/libs/pipes';
-import { CURRENT_USER } from 'src/app.const';
+import { CURRENT_USER_ID } from 'src/app.const';
 import { ReviewRdo, ReviewsRdoExample } from './rdo';
 import { BaseQuery } from 'src/libs/query';
 
@@ -40,6 +40,6 @@ export class ReviewController {
       transform: true,
     })) dto: CreateReviewDto
   ) {
-    return this.reviewService.create(CURRENT_USER, dto);
+    return this.reviewService.create(CURRENT_USER_ID, dto);
   }
 }

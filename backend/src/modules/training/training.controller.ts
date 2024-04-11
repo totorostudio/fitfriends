@@ -6,7 +6,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TrainingRdo, TrainingsRdoExample, TrainingsRdo } from './rdo';
 import { TrainingQuery } from './training.query';
 import { UUIDValidationPipe } from 'src/libs/pipes';
-import { CURRENT_USER } from 'src/app.const';
+import { CURRENT_USER_ID } from 'src/app.const';
 
 @ApiTags('Тренировки')
 @Controller('training')
@@ -38,7 +38,7 @@ export class TrainingController {
       transform: true,
     })) dto: CreateTrainingDto
   ) {
-    return this.trainingService.create(CURRENT_USER, dto);
+    return this.trainingService.create(CURRENT_USER_ID, dto);
   }
 
   @ApiResponse({

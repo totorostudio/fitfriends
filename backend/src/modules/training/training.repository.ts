@@ -21,6 +21,10 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
     });
   }
 
+  protected getTableName(): string {
+    return 'trainings';
+  }
+
   public async find(query?: TrainingQuery): Promise<Pagination<TrainingEntity>> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const limit = Number(query?.limit) || LIST_LIMIT;

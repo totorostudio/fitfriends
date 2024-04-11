@@ -11,7 +11,7 @@ import {
   TrainingTitleLength
 } from 'src/app.const';
 import { transformObjectValuesToString } from 'src/libs/helpers';
-import { Gender, UserRole, PaymentType, OrderType, Level, Metro, TrainingTime, TrainingType, WorkoutGender } from 'src/libs/types';
+import { Gender, UserRole, PaymentType, OrderType, Level, Metro, TrainingTime, TrainingType, WorkoutGender, BookingStatus } from 'src/libs/types';
 
 export const DtoValidationMessage = {
   name: {
@@ -71,5 +71,8 @@ export const DtoValidationMessage = {
   },
   orderType: {
     invalidFormat: `Допустимо одно из значений: ${transformObjectValuesToString(OrderType)}`,
+  },
+  bookingStatus: {
+    invalidFormat: `Допустимо одно из значений: ${transformObjectValuesToString(BookingStatus)}`,
   },
 };

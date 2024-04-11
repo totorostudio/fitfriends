@@ -80,9 +80,20 @@ model Review {
   @@map("reviews")
 }
 
+model Booking {
+  id             String   @id @default(uuid()) @map("id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  senderId       String   @map("sender_id")
+  recipientId    String   @map("recipient_id")
+  status         String
 
-// npx prisma migrate dev --name "Added model for User" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
-// npx prisma migrate dev --name "Updated model Training" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+  @@map("bookings")
+}
+
+
+// npx prisma migrate dev --name "Added model for Booking" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+// npx prisma migrate dev --name "Updated model Booking" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma validate --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma migrate dev --schema ./src/libs/models/prisma/schema.prisma --skip-generate --skip-seed

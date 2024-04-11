@@ -23,7 +23,7 @@ services:
       - fitfriends
 
   fitfriends.pgadmin:
-    image: dpage/pgadmin4:8.4
+    image: dpage/pgadmin4:8.5
     container_name: fitfriends.pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}

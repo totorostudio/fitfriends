@@ -18,6 +18,10 @@ export class ReviewRepository extends BasePostgresRepository<ReviewEntity> {
     });
   }
 
+  protected getTableName(): string {
+    return 'reviews';
+  }
+
   public async save(reviewInput: ReviewEntity): Promise<ReviewEntity> {
     const createdDocument = await this.client.review.create({
       data: reviewInput,

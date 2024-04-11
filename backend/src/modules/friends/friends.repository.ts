@@ -20,6 +20,10 @@ export class FriendsRepository extends BasePostgresRepository<UserEntity> {
     });
   }
 
+  protected getTableName(): string {
+    return 'users';
+  }
+
   public async find(currentUserId: string, query?: UsersQuery): Promise<Pagination<UserEntity>> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const limit = Number(query?.limit) || LIST_LIMIT;

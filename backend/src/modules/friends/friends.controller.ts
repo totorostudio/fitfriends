@@ -8,7 +8,7 @@ import { UsersRdo, UsersRdoExample } from 'src/modules/user/rdo';
 import { UserDtoValidationPipe } from 'src/libs/pipes';
 import { UUIDValidationPipe } from 'src/libs/pipes/uuid-validation.pipe';
 import { UsersQuery } from 'src/modules/user/user.query';
-import { CURRENT_USER } from 'src/app.const';
+import { CURRENT_USER_ID } from 'src/app.const';
 import { UpdateFriendsDto } from './dto/update-friends.dto';
 import { UpdateFriendsRdo } from './rdo/update-friends.rdo';
 
@@ -27,7 +27,7 @@ export class FriendsController {
   @Role(UserRole.Customer)
   @Get('/')
   public async index(@Query() query: BaseQuery): Promise<UsersRdo> {
-    return this.friendsService.getFriends(CURRENT_USER, query);
+    return this.friendsService.getFriends(CURRENT_USER_ID, query);
   }
 
   @ApiBody({ type: UpdateFriendsDto })
@@ -38,7 +38,7 @@ export class FriendsController {
   })
   @Post('/add')
   public async add(@Body() dto: UpdateFriendsDto) {
-    return this.friendsService.addFriend(CURRENT_USER, dto);
+    return this.friendsService.addFriend(CURRENT_USER_ID, dto);
   }
 
   @ApiBody({ type: UpdateFriendsDto })
@@ -49,6 +49,6 @@ export class FriendsController {
   })
   @Post('/remove')
   public async remove(@Body() dto: UpdateFriendsDto) {
-    return this.friendsService.removeFriend(CURRENT_USER, dto);
+    return this.friendsService.removeFriend(CURRENT_USER_ID, dto);
   }
 }

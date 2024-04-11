@@ -1,4 +1,6 @@
-export const CURRENT_USER = '002703b8-7ec1-4e94-b17d-1b9699149b85';
+import { BookingStatus } from "./libs/types";
+
+export const CURRENT_USER_ID = '002703b8-7ec1-4e94-b17d-1b9699149b85';
 
 export const SALT_ROUNDS = 10;
 
@@ -14,6 +16,8 @@ export const DEFAULT_PAGE = 1;
 export const DEFAULT_SORT_DIRECTION = 'asc';
 
 export const MAX_TRAINING_TYPES = 3;
+
+export const DEFAULT_BOOKING_STATUS = BookingStatus.Pending;
 
 export enum UserNameLength {
   Min = 1,

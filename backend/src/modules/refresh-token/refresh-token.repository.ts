@@ -12,6 +12,10 @@ export class RefreshTokenRepository extends BasePostgresRepository<RefreshTokenE
     super(prismaService, RefreshTokenEntity.fromObject);
   }
 
+  protected getTableName(): string {
+    return 'refresh_sessions';
+  }
+
   async createRefreshToken(data: Prisma.RefreshTokenCreateInput): Promise<RefreshToken> {
     const refreshToken = await this.prismaService.refreshToken.create({
       data,
