@@ -15,7 +15,7 @@ export abstract class BasePostgresRepository<
     private readonly createEntity: (document: DocumentType) => EntityType,
   ) {}
 
-  protected abstract getTableName(): string;
+  protected abstract getModelName(): string;
 
   protected createEntityFromDocument(document: DocumentType): EntityType | null {
     if (! document) {
@@ -28,12 +28,12 @@ export abstract class BasePostgresRepository<
   protected async findOne(model: string, where: object): Promise<EntityType | null> {
     const document = await this.client[model].findUnique({ where });
     return this.createEntityFromDocument(document);
-  }
+  }  // TODO переписать по новой логике
 
   public async findById(id: EntityIdType): Promise<EntityType | null> {
-    const tableName = this.getTableName();
+    const modelName = this.getModelName();
 
-    const document = await this.client[tableName].findUnique({
+    const document = await this.client[modelName].findUnique({
       where: { id }
     });
 
@@ -41,8 +41,8 @@ export abstract class BasePostgresRepository<
   }
 
   public async save(entity: EntityType): Promise<EntityType> {
-    const tableName = this.getTableName();
-    const document = await this.client[tableName].create({
+    const modelName = this.getModelName();
+    const document = await this.client[modelName].create({
       data: entity,
     });
 
@@ -50,8 +50,8 @@ export abstract class BasePostgresRepository<
   }
 
   public async update(id: EntityIdType, entity: EntityType): Promise<EntityType> {
-    const tableName = this.getTableName();
-    const updatedDocument = await this.client[tableName].update({
+    const modelName = this.getModelName();
+    const updatedDocument = await this.client[modelName].update({
       where: { id },
       data: entity,
     });
@@ -60,11 +60,11 @@ export abstract class BasePostgresRepository<
   }
 
   public async deleteById(id: EntityIdType): Promise<void> {
-    const tableName = this.getTableName();
-    await this.client[tableName].delete({
+    const modelName = this.getModelName();
+    await this.client[modelName].delete({
       where: { id }
     }).catch((error: PrismaClientKnownRequestError) => {
-      console.error(`Error deleting ${tableName} with ID ${id}:`, error);
+      console.error(`Error deleting ${modelName} with ID ${id}:`, error);
       throw new Error('Delete operation failed');
     });
   }

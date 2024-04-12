@@ -15,8 +15,8 @@ export class BookingRepository extends BasePostgresRepository<BookingEntity> {
     });
   }
 
-  protected getTableName(): string {
-    return 'booking';
+  protected getModelName(): string {
+    return ('booking');
   }
 
   /*public async save(bookingInput: BookingEntity): Promise<BookingEntity> {

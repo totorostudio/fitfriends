@@ -21,8 +21,8 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
     });
   }
 
-  protected getTableName(): string {
-    return 'training';
+  protected getModelName(): string {
+    return ('training');
   }
 
   public async find(query?: TrainingQuery): Promise<Pagination<TrainingEntity>> {

@@ -12,8 +12,8 @@ export class RefreshTokenRepository extends BasePostgresRepository<RefreshTokenE
     super(prismaService, RefreshTokenEntity.fromObject);
   }
 
-  protected getTableName(): string {
-    return 'refreshToken';
+  protected getModelName(): string {
+    return ('refreshToken');
   }
 
   async createRefreshToken(data: Prisma.RefreshTokenCreateInput): Promise<RefreshToken> {

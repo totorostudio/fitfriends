@@ -19,8 +19,8 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
     });
   }
 
-  protected getTableName(): string {
-    return 'user';
+  protected getModelName(): string {
+    return ('user');
   }
 
   public async find(query?: UsersQuery): Promise<Pagination<UserEntity>> {
@@ -68,7 +68,7 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
   }
 
   public async findByEmail(email: string): Promise<FullUser | null> {
-    return this.findOne('users', { email });
+    return this.findOne('users', { email }); //TODO проверить что users корректно, по идее должно быть user
   }
 
   public async findById(id: string): Promise<UserEntity | null> {

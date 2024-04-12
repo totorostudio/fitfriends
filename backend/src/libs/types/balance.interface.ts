@@ -1,4 +1,6 @@
 export interface Balance {
-  trainingIds: string[];
-  availableCount: number;
-};
+  id?: string;
+  userId: string;
+  trainingId: string;
+  count: number;
+}
