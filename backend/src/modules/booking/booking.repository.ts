@@ -16,7 +16,7 @@ export class BookingRepository extends BasePostgresRepository<BookingEntity> {
   }
 
   protected getTableName(): string {
-    return 'bookings';
+    return 'booking';
   }
 
   /*public async save(bookingInput: BookingEntity): Promise<BookingEntity> {

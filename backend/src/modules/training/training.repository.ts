@@ -22,7 +22,7 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
   }
 
   protected getTableName(): string {
-    return 'trainings';
+    return 'training';
   }
 
   public async find(query?: TrainingQuery): Promise<Pagination<TrainingEntity>> {

@@ -53,7 +53,7 @@ export abstract class BasePostgresRepository<
     const tableName = this.getTableName();
     const updatedDocument = await this.client[tableName].update({
       where: { id },
-      data: entity
+      data: entity,
     });
 
     return this.createEntityFromDocument(updatedDocument);

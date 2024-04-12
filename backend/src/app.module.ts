@@ -9,6 +9,7 @@ import { AppConfigModule } from './libs/config';
 import { FriendsModule } from './modules/friends/friends.module';
 import { TrainingModule } from './modules/training/training.module';
 import { ReviewModule } from './modules/review/review.module';
+import { BookingModule } from './modules/booking/booking.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ReviewModule } from './modules/review/review.module';
     FriendsModule,
     TrainingModule,
     ReviewModule,
+    BookingModule,
     AppConfigModule,
     AuthModule,
     RefreshTokenModule,

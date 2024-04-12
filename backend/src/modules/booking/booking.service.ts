@@ -57,7 +57,7 @@ export class BookingService {
       );
     }
 
-    if (currentUserId !== booking.recipientId || currentUserId !== booking.senderId) {
+    if (currentUserId !== booking.recipientId) {
       throw new ForbiddenException();
     }
 
@@ -68,6 +68,7 @@ export class BookingService {
     }
 
     booking.status = status;
+    booking.updatedAt = new Date();
 
     const updated_booking = await this.bookingRepository.update(bookingId, booking);
 

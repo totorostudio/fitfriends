@@ -20,7 +20,7 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
   }
 
   protected getTableName(): string {
-    return 'users';
+    return 'user';
   }
 
   public async find(query?: UsersQuery): Promise<Pagination<UserEntity>> {

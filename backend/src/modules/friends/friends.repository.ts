@@ -21,7 +21,7 @@ export class FriendsRepository extends BasePostgresRepository<UserEntity> {
   }
 
   protected getTableName(): string {
-    return 'users';
+    return 'user';
   }
 
   public async find(currentUserId: string, query?: UsersQuery): Promise<Pagination<UserEntity>> {
