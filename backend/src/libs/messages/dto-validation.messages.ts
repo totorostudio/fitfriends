@@ -1,7 +1,7 @@
 import {
   Calories,
   MAX_TRAINING_TYPES,
-  OrderCountValue,
+  OrderQuantityValue,
   PriceValue,
   UserAwardsLength,
   UserDescriptionLength,
@@ -11,7 +11,7 @@ import {
   TrainingTitleLength
 } from 'src/app.const';
 import { transformObjectValuesToString } from 'src/libs/helpers';
-import { Gender, UserRole, PaymentType, OrderType, Level, Metro, TrainingTime, TrainingType, WorkoutGender, BookingStatus } from 'src/libs/types';
+import { Gender, UserRole, PaymentType, OrderType, Level, Metro, TrainingTime, TrainingType, TrainingGender, BookingStatus } from 'src/libs/types';
 
 export const DtoValidationMessage = {
   name: {
@@ -58,13 +58,13 @@ export const DtoValidationMessage = {
     length: `Допустимая длина заголовка от ${TrainingTitleLength.Min} до ${TrainingTitleLength.Max}`,
   },
   trainingGender: {
-    invalidFormat: `Допустимо одно из значений: ${transformObjectValuesToString(WorkoutGender)}`,
+    invalidFormat: `Допустимо одно из значений: ${transformObjectValuesToString(TrainingGender)}`,
   },
   price: {
     value: `Значение должно быть больше чем ${PriceValue.Min}`,
   },
-  orderCount: {
-    value: `Допустимо значение из диапазона: ${OrderCountValue.Min}-${OrderCountValue.Max}`,
+  orderQuantity: {
+    value: `Допустимо значение из диапазона: ${OrderQuantityValue.Min}-${OrderQuantityValue.Max}`,
   },
   paymentType: {
     invalidFormat: `Допустимо одно из значений: ${transformObjectValuesToString(PaymentType)}`,

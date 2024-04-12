@@ -18,7 +18,7 @@ export class CreateCustomerDto extends BaseUserDto {
   public calories: number;
 
   @ApiProperty({
-    description: 'Calories to lose per day',
+    description: 'Калорий к сбросу в день',
     example: '1000',
   })
   @IsInt()
@@ -28,7 +28,7 @@ export class CreateCustomerDto extends BaseUserDto {
   public caloriesPerDay: number;
 
   @ApiProperty({
-    description: 'User`s preferable workout duration',
+    description: 'Желательная длительность тренировки',
     example: '10-30 мин',
   })
   @IsEnum(TrainingTime, {

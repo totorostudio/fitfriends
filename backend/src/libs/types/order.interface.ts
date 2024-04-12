@@ -1,9 +1,9 @@
 import { OrderType, PaymentType } from ".";
 
 export interface Order {
-  id: string;
-  createdAt: Date;
-  userId: string; //TODO нет в тз?
+  id?: string;
+  createdAt?: Date;
+  userId: string;
   orderType: OrderType;
   trainingId: string;
   price: number;

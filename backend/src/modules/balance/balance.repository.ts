@@ -38,7 +38,7 @@ export class BalanceRepository extends BasePostgresRepository<BalanceEntity> {
     return BalanceEntity.fromObject(balance);
   }
 
-  public async findMany(currentUserId: string, query?: BaseQuery): Promise<Pagination<BalanceEntity>> {
+  public async find(currentUserId: string, query?: BaseQuery): Promise<Pagination<BalanceEntity>> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const limit = Number(query?.limit) || LIST_LIMIT;
     const page = query?.page ? (query.page - 1) * limit : 0;

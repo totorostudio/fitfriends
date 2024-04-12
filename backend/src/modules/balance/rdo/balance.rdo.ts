@@ -11,7 +11,7 @@ export class BalanceRdo {
   public count: number;
 
   @ApiProperty({
-    description: 'Workout',
+    description: 'Тренировка',
     type: TrainingRdo,
   })
   @Type(() => TrainingRdo)

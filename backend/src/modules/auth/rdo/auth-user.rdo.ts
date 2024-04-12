@@ -5,28 +5,28 @@ import { TrainingTime } from 'src/libs/types';
 
 export class AuthUserRdo extends FullUserRdo {
   @ApiPropertyOptional({
-    description: 'Calories to lose',
+    description: 'Калорий к сбросу',
     example: '3200',
   })
   @Expose()
   public calories?: number;
 
   @ApiPropertyOptional({
-    description: 'Calories to lose per day',
+    description: 'Калорий к сбросу в день',
     example: '1000',
   })
   @Expose()
   public caloriesPerDay?: number;
 
   @ApiPropertyOptional({
-    description: 'User`s preferable workout duration',
+    description: 'Желательная длительность тренировки',
     example: '10-30 мин',
   })
   @Expose()
   public trainingTime?: TrainingTime;
 
   @ApiPropertyOptional({
-    description: 'User`s achievements',
+    description: 'Список достижений',
     example: 'Мой список достижений',
   })
   @Expose()

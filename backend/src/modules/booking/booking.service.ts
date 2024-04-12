@@ -53,7 +53,7 @@ export class BookingService {
 
     if (!booking) {
       throw new NotFoundException(
-        `Workout request with id ${bookingId} not found.`,
+        `Заявка на тренировку с id ${bookingId} не найдена.`,
       );
     }
 

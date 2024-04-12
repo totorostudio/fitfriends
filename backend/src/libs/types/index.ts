@@ -12,3 +12,4 @@ export * from './sort.enum';
 export * from './pagination.interface';
 export * from './refresh-token.interface';
 export * from './booking-status.enum';
+export * from './sort-order.enum';

@@ -19,14 +19,6 @@ export class BookingRepository extends BasePostgresRepository<BookingEntity> {
     return ('booking');
   }
 
-  /*public async save(bookingInput: BookingEntity): Promise<BookingEntity> {
-    const createdDocument = await this.client.booking.create({
-      data: bookingInput,
-    });
-
-    return this.createEntityFromDocument(createdDocument);
-  }*/
-
   public async isPending(senderId: string, recipientId: string ): Promise<boolean> {
     const request = await this.client.booking.findFirst({
       where: {

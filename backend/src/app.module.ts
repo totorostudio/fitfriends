@@ -10,6 +10,8 @@ import { FriendsModule } from './modules/friends/friends.module';
 import { TrainingModule } from './modules/training/training.module';
 import { ReviewModule } from './modules/review/review.module';
 import { BookingModule } from './modules/booking/booking.module';
+import { OrderModule } from './modules/order/order.module';
+import { BalanceModule } from './modules/balance/balance.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { BookingModule } from './modules/booking/booking.module';
     TrainingModule,
     ReviewModule,
     BookingModule,
+    BalanceModule,
+    OrderModule,
     AppConfigModule,
     AuthModule,
     RefreshTokenModule,

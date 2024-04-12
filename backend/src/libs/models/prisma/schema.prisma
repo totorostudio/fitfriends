@@ -101,7 +101,21 @@ model Balance {
   @@map("balances")
 }
 
-// npx prisma migrate dev --name "Added model for Balance" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+model Order {
+  id             String   @id @default(uuid()) @map("id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  userId         String   @map("user_id")
+  orderType      String   @map("order_type")
+  trainingId     String   @map("training_id")
+  price          Int
+  quantity       Int
+  cost           Int
+  paymentType    String   @map("payment_type")
+
+  @@map("orders")
+}
+
+// npx prisma migrate dev --name "Added model for Order" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma migrate dev --name "Updated model Booking" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma validate --schema ./src/libs/models/prisma/schema.prisma

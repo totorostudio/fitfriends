@@ -1,4 +1,4 @@
-import { BookingStatus } from "./libs/types";
+import { BookingStatus, SortOrder } from "./libs/types";
 
 export const CURRENT_USER_ID = '0fe7dbca-7249-4c1d-bc5e-c60b3b369783';
 
@@ -18,6 +18,8 @@ export const DEFAULT_SORT_DIRECTION = 'asc';
 export const MAX_TRAINING_TYPES = 3;
 
 export const DEFAULT_BOOKING_STATUS = BookingStatus.Pending;
+
+export const DEFAULT_ORDER_SORT = SortOrder.Cost;
 
 export enum UserNameLength {
   Min = 1,
@@ -44,7 +46,7 @@ export enum Calories {
   Max = 5000,
 }
 
-export enum OrderCountValue {
+export enum OrderQuantityValue {
   Min = 1,
   Max = 50,
 }

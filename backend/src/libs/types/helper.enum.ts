@@ -50,7 +50,7 @@ export enum PaymentType {
   Umoney = 'umoney',
 }
 
-export enum WorkoutGender {
+export enum TrainingGender {
   Male = 'для мужчин',
   Female = 'для женщин',
   Common = 'для всех',
