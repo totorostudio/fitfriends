@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { CreateNotifyDto } from './dto/create-notify.dto';
-import { UpdateNotifyDto } from './dto/update-notify.dto';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { fillDto } from 'src/libs/helpers';
+import { NotifyEntity } from './notify.entity';
+import { NotifyRdo } from './rdo';
+import { NotifyRepository } from './notify.repository';
 
 @Injectable()
 export class NotifyService {
-  create(createNotifyDto: CreateNotifyDto) {
-    return 'This action adds a new notify';
+  constructor(
+    private readonly notifyRepository: NotifyRepository,
+  ) {}
+
+  public async create(userId: string, text: string): Promise<NotifyRdo> {
+    const newNotify = NotifyEntity.fromObject({
+      userId,
+      text,
+    });
+
+    const notifyEntity = new NotifyEntity(newNotify);
+    const notify = await this.notifyRepository.save(notifyEntity);
+
+    return fillDto(NotifyRdo, notify.toPOJO());
   }
 
-  findAll() {
-    return `This action returns all notify`;
+  public async find(userId: string): Promise<NotifyRdo[]> {
+    const notify = await this.notifyRepository.find(userId);
+
+    return notify.map((notify) =>
+      fillDto(NotifyRdo, notify.toPOJO()),
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notify`;
-  }
 
-  update(id: number, updateNotifyDto: UpdateNotifyDto) {
-    return `This action updates a #${id} notify`;
-  }
+  public async remove(notifyId: string, userId: string): Promise<void> {
+    const existsNotify = await this.notifyRepository.findById(notifyId);
 
-  remove(id: number) {
-    return `This action removes a #${id} notify`;
+    if (!existsNotify) {
+      throw new NotFoundException(`Оповещение с ID ${notifyId} не найдено.`);
+    }
+
+    if (existsNotify.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.notifyRepository.deleteById(notifyId);
   }
 }

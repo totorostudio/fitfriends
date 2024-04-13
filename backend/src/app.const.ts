@@ -1,4 +1,4 @@
-import { BookingStatus, SortOrder } from "./libs/types";
+import { BookingStatus, SortOrder } from "src/libs/types";
 
 export const CURRENT_USER_ID = '0fe7dbca-7249-4c1d-bc5e-c60b3b369783';
 
@@ -10,6 +10,8 @@ export enum HttpClientParam {
 }
 
 export const LIST_LIMIT = 3;
+
+export const NOTIFY_LIMIT = 5;
 
 export const DEFAULT_PAGE = 1;
 

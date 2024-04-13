@@ -115,7 +115,16 @@ model Order {
   @@map("orders")
 }
 
-// npx prisma migrate dev --name "Added model for Order" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+model Notify {
+  id             String   @id @default(uuid()) @map("id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  userId         String   @map("user_id")
+  text           String
+
+  @@map("notifications")
+}
+
+// npx prisma migrate dev --name "Added model for Notify" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma migrate dev --name "Updated model Booking" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma validate --schema ./src/libs/models/prisma/schema.prisma

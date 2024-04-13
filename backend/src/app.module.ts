@@ -12,6 +12,7 @@ import { ReviewModule } from './modules/review/review.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { OrderModule } from './modules/order/order.module';
 import { BalanceModule } from './modules/balance/balance.module';
+import { NotifyModule } from './modules/notify/notify.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BalanceModule } from './modules/balance/balance.module';
     BookingModule,
     BalanceModule,
     OrderModule,
+    NotifyModule,
     AppConfigModule,
     AuthModule,
     RefreshTokenModule,

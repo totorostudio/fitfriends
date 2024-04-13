@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Delete, HttpStatus } from '@nestjs/common';
 import { NotifyService } from './notify.service';
-import { CreateNotifyDto } from './dto/create-notify.dto';
-import { UpdateNotifyDto } from './dto/update-notify.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CURRENT_USER_ID } from 'src/app.const';
+import { UUIDValidationPipe } from 'src/libs/pipes';
+import { NotifyRdo } from './rdo';
 
+@ApiTags('Оповещения')
 @Controller('notify')
 export class NotifyController {
   constructor(private readonly notifyService: NotifyService) {}
 
-  @Post()
-  create(@Body() createNotifyDto: CreateNotifyDto) {
-    return this.notifyService.create(createNotifyDto);
-  }
-
+  @ApiResponse({
+    type: [NotifyRdo],
+    status: HttpStatus.OK,
+    description: 'User`s notifications',
+  })
   @Get()
-  findAll() {
-    return this.notifyService.findAll();
+  public async find() {
+    return this.notifyService.find(CURRENT_USER_ID);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.notifyService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNotifyDto: UpdateNotifyDto) {
-    return this.notifyService.update(+id, updateNotifyDto);
-  }
-
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The notification has been successfully deleted',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.notifyService.remove(+id);
+  public async delete(
+    @Param('id', UUIDValidationPipe) id: string,
+  ) {
+    await this.notifyService.remove(id, CURRENT_USER_ID);
   }
 }
