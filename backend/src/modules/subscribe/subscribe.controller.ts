@@ -1,34 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Param, Delete, HttpStatus, Req, UseGuards } from '@nestjs/common';
 import { SubscribeService } from './subscribe.service';
-import { CreateSubscribeDto } from './dto/create-subscribe.dto';
-import { UpdateSubscribeDto } from './dto/update-subscribe.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public, Role } from 'src/libs/decorators';
+import { UserRole } from 'src/libs/types';
+import { UUIDValidationPipe } from 'src/libs/pipes';
+import { RoleGuard } from 'src/libs/guards';
+import { RequestWithTokenPayload } from 'src/libs/requests';
 
+@ApiTags('Уведомления о новых тренировках')
 @Controller('subscribe')
 export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Уведомления успешно отправлены',
+  })
+  @Public()
   @Post()
-  create(@Body() createSubscribeDto: CreateSubscribeDto) {
-    return this.subscribeService.create(createSubscribeDto);
+  public async send() {
+    await this.subscribeService.sendNotices();
   }
 
-  @Get()
-  findAll() {
-    return this.subscribeService.findAll();
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Подписка на уведомления о новых тренировках тренера успешно добавлена',
+  })
+  @Role(UserRole.Customer)
+  @Post(':coachId')
+  public async create(
+    @Param('coachId', UUIDValidationPipe) coachId: string,
+    @Req() { tokenPayload }: RequestWithTokenPayload,
+  ) {
+    await this.subscribeService.addNewSubscription(tokenPayload, coachId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subscribeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubscribeDto: UpdateSubscribeDto) {
-    return this.subscribeService.update(+id, updateSubscribeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subscribeService.remove(+id);
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Уведомление успешно удалено',
+  })
+  @Role(UserRole.Customer)
+  @UseGuards(RoleGuard)
+  @Delete(':coachId')
+  public async delete(
+    @Param('coachId', UUIDValidationPipe) coachId: string,
+    @Req() { tokenPayload }: RequestWithTokenPayload,
+  ) {
+    await this.subscribeService.removeSubscription(tokenPayload.sub, coachId);
   }
 }

@@ -13,7 +13,7 @@ export class NotifyController {
   @ApiResponse({
     type: [NotifyRdo],
     status: HttpStatus.OK,
-    description: 'User`s notifications',
+    description: 'Список 5 последних оповещений пользователя',
   })
   @Get()
   public async find() {
@@ -22,7 +22,7 @@ export class NotifyController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'The notification has been successfully deleted',
+    description: 'Оповещение успешно удалено',
   })
   @Delete(':id')
   public async delete(

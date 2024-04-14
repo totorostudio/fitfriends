@@ -9,6 +9,8 @@ type Environment = (typeof ENVIRONMENTS)[number];
 export interface AppConfig {
   environment: string;
   port: number;
+  uploadDirectory: string;
+  filesServePath: string;
 }
 
 const validationSchema = Joi.object({
@@ -16,6 +18,8 @@ const validationSchema = Joi.object({
     .valid(...ENVIRONMENTS)
     .required(),
   port: Joi.number().port().default(DEFAULT_PORT),
+  uploadDirectory: Joi.string().required(),
+  filesServePath: Joi.string().required(),
 });
 
 function validateConfig(config: AppConfig): void {
@@ -29,6 +33,8 @@ function getConfig(): AppConfig {
   const config: AppConfig = {
     environment: process.env.NODE_ENV as Environment,
     port: parseInt(process.env.PORT || `${DEFAULT_PORT}`, 10),
+    uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH!,
+    filesServePath: process.env.SERVE_ROOT!,
   };
 
   validateConfig(config);

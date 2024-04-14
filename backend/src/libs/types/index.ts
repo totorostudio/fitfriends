@@ -13,3 +13,7 @@ export * from './pagination.interface';
 export * from './refresh-token.interface';
 export * from './booking-status.enum';
 export * from './sort-order.enum';
+export * from './notice.interface';
+export * from './subscriber.interface';
+export * from './file-upload.interface';
+export * from './file-store.interface';

@@ -66,3 +66,22 @@ export enum TrainingDescriptionLength {
   Min = 10,
   Max = 140,
 }
+
+export const EmailTitle = {
+  Subscription: 'Подписка на рассылку оформлена',
+  Training: 'Повявилась новая тренировка',
+} as const;
+
+export const EmailTemplate = {
+  Subscription: 'src/modules/subscribe/templates/subscription',
+  Training: 'src/modules/subscribe/templates/training',
+} as const;
+
+export const ImageFile = {
+  MimeTypes: ['image/png', 'image/jpeg'],
+  MaxSize: 1000000,
+};
+
+export const VideoFile = {
+  MimeTypes: ['video/mov', 'video/mp4', 'video/avi'],
+};

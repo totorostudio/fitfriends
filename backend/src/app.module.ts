@@ -13,6 +13,7 @@ import { BookingModule } from './modules/booking/booking.module';
 import { OrderModule } from './modules/order/order.module';
 import { BalanceModule } from './modules/balance/balance.module';
 import { NotifyModule } from './modules/notify/notify.module';
+import { SubscribeModule } from './modules/subscribe/subscribe.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { NotifyModule } from './modules/notify/notify.module';
     BalanceModule,
     OrderModule,
     NotifyModule,
+    SubscribeModule,
     AppConfigModule,
     AuthModule,
     RefreshTokenModule,
