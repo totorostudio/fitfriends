@@ -14,17 +14,31 @@ export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
 
   @ApiOperation({
-    summary: 'Отправка тестового почтового сообщения',
-    description: 'Роут для отправки текстовых почтовых сообщений'
+    summary: 'Отправка тестового почтового сообщения через RabbitMQ',
+    description: 'Роут для отправки тестового почтового сообщения через RabbitMQ'
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Тестовое сообщение через RabbitMQ отправлено',
+  })
+  @Public()
+  @Post('test-rabbit')
+  public async sendTestRabbit() {
+    await this.subscribeService.sendTestRabbit(TEST_USER);
+  }
+
+  @ApiOperation({
+    summary: 'Отправка тестового почтового сообщения напрямую',
+    description: 'Роут для отправки тестового почтового сообщения напрямую'
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Тестовое сообщение отправлено',
   })
   @Public()
-  @Post('test')
-  public async sendTest() {
-    await this.subscribeService.sendTest(TEST_USER);
+  @Post('test-direct')
+  public async sendTestDirect() {
+    await this.subscribeService.sendTestDirect(TEST_USER);
   }
 
   @ApiResponse({

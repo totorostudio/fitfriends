@@ -95,4 +95,4 @@ export const TEST_USER = {
   type: 'Тестовый тип тренировки',
   description: 'Тестовый description',
   calories: 'Тестовые калории',
-}
+};

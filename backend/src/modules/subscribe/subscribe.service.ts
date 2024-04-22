@@ -98,7 +98,11 @@ export class SubscribeService {
     this.subscribeRepository.update(subscriber.id, subscriber);
   }
 
-  public async sendTest(emailData: TestUserDto): Promise<void> {
+  public async sendTestRabbit(emailData: TestUserDto): Promise<void> {
     await this.rabbitService.queueTestEmail(emailData);
+  }
+
+  public async sendTestDirect(emailData: TestUserDto): Promise<void> {
+    await this.mailService.sendTest(emailData);
   }
 }

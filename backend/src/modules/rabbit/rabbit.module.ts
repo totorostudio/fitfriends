@@ -4,6 +4,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { getRabbitMQOptions } from 'src/libs/config';
 import { MailService } from '../mail/mail.service';
 import { MailModule } from '../mail/mail.module';
+import { RabbitController } from './rabbit.controller';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MailModule } from '../mail/mail.module';
     MailModule,
   ],
   providers: [RabbitService, MailService],
+  controllers: [RabbitController],
   exports: [RabbitService],
 })
 export class RabbitModule {}

@@ -16,6 +16,7 @@ import { NotifyModule } from './modules/notify/notify.module';
 import { SubscribeModule } from './modules/subscribe/subscribe.module';
 import { FileStorageModule } from './modules/file-storage/file-storage.module';
 import { MailModule } from './modules/mail/mail.module';
+import { RabbitModule } from './modules/rabbit/rabbit.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MailModule } from './modules/mail/mail.module';
     BalanceModule,
     OrderModule,
     NotifyModule,
+    RabbitModule,
     SubscribeModule,
     MailModule,
     FileStorageModule,

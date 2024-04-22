@@ -24,6 +24,7 @@ const validationSchema = Joi.object({
 });
 
 function getConfig(): RabbitConfig {
+  console.log(process.env.RABBIT_EXCHANGE);
   const config: RabbitConfig = {
     host: process.env.RABBIT_HOST,
     password: process.env.RABBIT_PASSWORD,

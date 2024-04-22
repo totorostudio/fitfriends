@@ -16,7 +16,7 @@ export class MailService {
   private readonly mailConfig: ConfigType<typeof mailConfig>;
 
   public async sendTest(emailData: TestUserDto) {
-    console.log('Received a message from RabbitMQ, preparing to send an email.');
+    console.log('Preparing to send an email.');
     try {
       await this.mailerService.sendMail({
         from: this.mailConfig.from,
