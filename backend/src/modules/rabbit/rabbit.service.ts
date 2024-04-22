@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { rabbitConfig } from 'src/libs/config';
 import { RabbitRouting } from 'src/libs/types';
-import { MailUserDto } from '../subscribe/dto';
+import { MailNewSubscriptionDto, MailNewTrainingDto } from '../subscribe/dto';
 
 @Injectable()
 export class RabbitService {
@@ -13,10 +13,26 @@ export class RabbitService {
     private readonly rabbitOptions: ConfigType<typeof rabbitConfig>
   ) {}
 
-  async queueTestEmail(dto: MailUserDto) {
+  public async queueTestEmail(dto: MailNewTrainingDto) {
     await this.rabbitClient.publish(
       this.rabbitOptions.exchange,
       RabbitRouting.SendTest,
+      { ...dto }
+    );
+  }
+
+  public async queueNewSubscription(dto: MailNewSubscriptionDto) {
+    await this.rabbitClient.publish(
+      this.rabbitOptions.exchange,
+      RabbitRouting.AddSubscriber,
+      { ...dto }
+    );
+  }
+
+  public async queueNewTraining(dto: MailNewTrainingDto) {
+    await this.rabbitClient.publish(
+      this.rabbitOptions.exchange,
+      RabbitRouting.NewTraining,
       { ...dto }
     );
   }

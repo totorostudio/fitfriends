@@ -2,10 +2,8 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { MailService } from '../mail/mail.service';
 import { UserService } from '../user/user.service';
 import { TokenPayload, UserRole } from 'src/libs/types';
-import { TrainingEntity } from '../training/training.entity';
 import { RabbitService } from '../rabbit/rabbit.service';
-import { MailUserDto } from './dto';
-import { UserEntity } from '../user/user.entity';
+import { MailNewTrainingDto } from './dto';
 
 @Injectable()
 export class SubscribeService {
@@ -49,7 +47,7 @@ export class SubscribeService {
     subscribers.push(userId);
 
     await this.userService.updateSubscribers(coachId, subscribers);
-    await this.mailService.sendNewSubscription(email, name, coach.name);
+    await this.rabbitService.queueNewSubscription({email, userName: name, coachName: coach.name});
   }
 
   public async removeSubscription({ sub }: TokenPayload, coachId: string): Promise<void> {
@@ -70,11 +68,15 @@ export class SubscribeService {
     await this.userService.updateSubscribers(coachId, updatedSubscribers);
   }
 
-  public async sendTestRabbit(emailData: MailUserDto): Promise<void> {
+  public async sendNewTrainingNotice(emailData: MailNewTrainingDto) {
+    await this.rabbitService.queueNewTraining(emailData);
+  }
+
+  public async sendTestRabbit(emailData: MailNewTrainingDto): Promise<void> {
     await this.rabbitService.queueTestEmail(emailData);
   }
 
-  public async sendTestDirect(emailData: MailUserDto): Promise<void> {
+  public async sendTestDirect(emailData: MailNewTrainingDto): Promise<void> {
     await this.mailService.sendTest(emailData);
   }
 }

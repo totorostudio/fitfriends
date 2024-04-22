@@ -3,7 +3,15 @@ import { Expose } from "class-transformer";
 import { IsInt, IsString } from "class-validator";
 import { Gender, TrainingTime, TrainingType } from "src/libs/types";
 
-export class MailUserDto {
+export class MailNewTrainingDto {
+  @ApiPropertyOptional({
+    description: 'Почта пользователя',
+    example: 'local@fitfriends.local',
+  })
+  @IsString()
+  @Expose()
+  public email: string;
+
   @ApiPropertyOptional({
     description: 'Имя пользователя',
     example: 'Алексей',

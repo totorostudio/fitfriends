@@ -68,14 +68,14 @@ export enum TrainingDescriptionLength {
 }
 
 export const MailSubject = {
-  Subscription: 'Подписка на рассылку оформлена',
-  Training: 'Повявилась новая тренировка',
+  NewSubscription: 'Подписка на рассылку оформлена',
+  NewTraining: 'Повявилась новая тренировка',
   Test: 'Тестовое сообщение',
 } as const;
 
 export const MailTemplate = {
-  Subscription: './subscription',
-  Training: './training',
+  NewSubscription: './subscription',
+  NewTraining: './training',
   Test: './test',
 } as const;
 
@@ -89,6 +89,7 @@ export const VideoFile = {
 };
 
 export const TEST_USER = {
+  email: 'info@fitfriends.local',
   userName: 'Тестовый юзер 2',
   coachName: 'Тестовый тренер',
   title: 'Тестовый тайтл',

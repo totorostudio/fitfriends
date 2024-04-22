@@ -2,7 +2,7 @@ import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { Controller } from "@nestjs/common";
 import { MailService } from "../mail/mail.service";
 import { RabbitRouting } from "src/libs/types";
-import { MailUserDto } from "../subscribe/dto";
+import { MailNewSubscriptionDto, MailNewTrainingDto } from "../subscribe/dto";
 
 @Controller()
 export class RabbitController {
@@ -15,7 +15,25 @@ export class RabbitController {
     routingKey: RabbitRouting.SendTest,
     queue: 'fitfriends.income',
   })
-  public async sendTestRabbit(emailData: MailUserDto) {
+  public async sendTestRabbit(emailData: MailNewTrainingDto) {
     this.mailService.sendTest(emailData);
+  }
+
+  @RabbitSubscribe({
+    exchange: 'fitfriends.income',
+    routingKey: RabbitRouting.AddSubscriber,
+    queue: 'fitfriends.income',
+  })
+  public async sendNewSubscriptionRabbit(emailData: MailNewSubscriptionDto) {
+    this.mailService.sendNewSubscription(emailData);
+  }
+
+  @RabbitSubscribe({
+    exchange: 'fitfriends.income',
+    routingKey: RabbitRouting.NewTraining,
+    queue: 'fitfriends.income',
+  })
+  public async sendNewTrainingRabbit(emailData: MailNewTrainingDto) {
+    this.mailService.sendNewTraining(emailData);
   }
 }

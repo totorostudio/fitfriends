@@ -4,7 +4,7 @@ import { ConfigType } from '@nestjs/config';
 import { MailTemplate, MailSubject } from 'src/app.const';
 import { mailConfig } from 'src/libs/config';
 import { Notice } from 'src/libs/types';
-import { MailUserDto } from '../subscribe/dto';
+import { MailNewSubscriptionDto, MailNewTrainingDto } from '../subscribe/dto';
 
 @Injectable()
 export class MailService {
@@ -15,14 +15,14 @@ export class MailService {
   @Inject(mailConfig.KEY)
   private readonly mailConfig: ConfigType<typeof mailConfig>;
 
-  public async sendTest(emailData: MailUserDto) {
+  public async sendTest(emailData: MailNewTrainingDto) {
     console.log('Preparing to send an email.');
     try {
       await this.mailerService.sendMail({
         from: this.mailConfig.from,
-        to: 'test@fitfriends.local',
-        subject: MailSubject.Training,
-        template: MailTemplate.Training,
+        to: emailData.email,
+        subject: MailSubject.Test,
+        template: MailTemplate.Test,
         context: {
           userName: emailData.userName,
           coachName: emailData.coachName,
@@ -42,34 +42,35 @@ export class MailService {
    }
   }
 
-  public async sendNewSubscription(email: string, userName: string, coachName: string) {
+  public async sendNewSubscription(emailData: MailNewSubscriptionDto) {
     await this.mailerService.sendMail({
       from: this.mailConfig.from,
-      to: email,
-      subject: MailSubject.Subscription,
-      template: MailTemplate.Subscription,
+      to: emailData.email,
+      subject: MailSubject.NewSubscription,
+      template: MailTemplate.NewSubscription,
       context: {
-        coachName,
-        userName,
+        userName: emailData.userName,
+        coachName: emailData.coachName,
       },
     });
   }
 
-  public async sendNewTraining(email: string, userName: string, notice: Notice) {
-    const { title, type, description, calories, coachName } = notice;
-
+  public async sendNewTraining(emailData: MailNewTrainingDto) {
     await this.mailerService.sendMail({
       from: this.mailConfig.from,
-      to: email,
-      subject: MailSubject.Training,
-      template: MailTemplate.Training,
+      to: emailData.email,
+      subject: MailSubject.NewTraining,
+      template: MailTemplate.NewTraining,
       context: {
-        userName,
-        coachName,
-        title,
-        type,
-        description,
-        calories,
+        userName: emailData.userName,
+        coachName: emailData.coachName,
+        title: emailData.title,
+        description: emailData.description,
+        gender: emailData.gender,
+        trainingType: emailData.trainingType,
+        trainingTime: emailData.trainingTime,
+        calories: emailData.calories,
+        price: emailData.price,
       },
     });
   }
