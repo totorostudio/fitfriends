@@ -4,7 +4,7 @@ import { ConfigType } from '@nestjs/config';
 import { MailTemplate, MailSubject } from 'src/app.const';
 import { mailConfig } from 'src/libs/config';
 import { Notice } from 'src/libs/types';
-import { TestUserDto } from '../subscribe/dto';
+import { MailUserDto } from '../subscribe/dto';
 
 @Injectable()
 export class MailService {
@@ -15,21 +15,24 @@ export class MailService {
   @Inject(mailConfig.KEY)
   private readonly mailConfig: ConfigType<typeof mailConfig>;
 
-  public async sendTest(emailData: TestUserDto) {
+  public async sendTest(emailData: MailUserDto) {
     console.log('Preparing to send an email.');
     try {
       await this.mailerService.sendMail({
         from: this.mailConfig.from,
         to: 'test@fitfriends.local',
-        subject: MailSubject.Test,
-        template: MailTemplate.Test,
+        subject: MailSubject.Training,
+        template: MailTemplate.Training,
         context: {
           userName: emailData.userName,
           coachName: emailData.coachName,
           title: emailData.title,
-          type: emailData.type,
           description: emailData.description,
+          gender: emailData.gender,
+          trainingType: emailData.trainingType,
+          trainingTime: emailData.trainingTime,
           calories: emailData.calories,
+          price: emailData.price,
         },
       });
       console.log('Email has been sent successfully.');

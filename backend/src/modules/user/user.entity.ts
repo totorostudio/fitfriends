@@ -24,6 +24,7 @@ export class UserEntity implements FullUser, Entity<string> {
   public sertificate?: string;
   public awards?: string;
   public friends: string[];
+  public subscribers?: string[];
   public isReady: boolean;
 
   constructor(user: FullUser) {
@@ -52,6 +53,7 @@ export class UserEntity implements FullUser, Entity<string> {
       sertificate: this.sertificate,
       awards: this.awards,
       friends: this.friends,
+      subscribers: this.subscribers,
       isReady: this.isReady,
     };
   }
@@ -76,6 +78,7 @@ export class UserEntity implements FullUser, Entity<string> {
     this.sertificate = data.sertificate;
     this.awards = data.awards;
     this.friends = data.friends;
+    this.subscribers = data.subscribers;
     this.isReady = data.isReady;
   }
 

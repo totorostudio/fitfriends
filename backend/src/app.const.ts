@@ -1,4 +1,4 @@
-import { BookingStatus, SortOrder } from "src/libs/types";
+import { BookingStatus, Gender, SortOrder, TrainingTime, TrainingType } from "src/libs/types";
 
 export const CURRENT_USER_ID = '0fe7dbca-7249-4c1d-bc5e-c60b3b369783';
 
@@ -92,7 +92,10 @@ export const TEST_USER = {
   userName: 'Тестовый юзер 2',
   coachName: 'Тестовый тренер',
   title: 'Тестовый тайтл',
-  type: 'Тестовый тип тренировки',
   description: 'Тестовый description',
-  calories: 'Тестовые калории',
+  gender: Gender.Unknown,
+  trainingType: TrainingType.Yoga,
+  trainingTime: TrainingTime.Short,
+  calories: 500,
+  price: 5000,
 };

@@ -5,7 +5,6 @@ import { SubscribeService } from './subscribe.service';
 import { SubscribeController } from './subscribe.controller';
 import { PrismaClientModule } from 'src/libs/models';
 import { HttpClientParam } from 'src/app.const';
-import { SubscribeRepository } from './subscribe.repository';
 import { UserModule } from '../user/user.module';
 import { MailModule } from '../mail/mail.module';
 import { getRabbitMQOptions } from 'src/libs/config';
@@ -28,6 +27,6 @@ import { RabbitModule } from '../rabbit/rabbit.module';
     }),
   ],
   controllers: [SubscribeController],
-  providers: [SubscribeService, SubscribeRepository, RabbitService]
+  providers: [SubscribeService, RabbitService]
 })
 export class SubscribeModule {}

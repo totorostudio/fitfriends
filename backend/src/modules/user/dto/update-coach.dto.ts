@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsOptional, IsString, Length } from "class-validator";
+import { IsArray, IsOptional, IsString, Length } from "class-validator";
 import { Expose } from "class-transformer";
 import { BaseUserDto } from ".";
 import { UserAwardsLength } from "src/app.const";

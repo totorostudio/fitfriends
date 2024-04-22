@@ -34,7 +34,6 @@ model User {
   sertificate    String?
   awards         String?
   friends        String[]
-  subscribers    String[]
   isReady        Boolean   @default(false) @map("is_ready")
 
   @@map("users")
@@ -125,6 +124,38 @@ model Notify {
   @@map("notifications")
 }
 
+model Coach {
+  id             String     @id @default(uuid())
+  name           String
+  subscribes     Subscribe  @relation(fields: [subscribeId], references: [id])
+  subscribeId    String
+
+  @@map("coaches_subscribe")
+}
+
+model Notice {
+  id             String     @id @default(uuid())
+  title          String
+  description    String
+  calories       Int
+  trainingType   String
+  coachName      String
+  subscribe      Subscribe  @relation(fields: [subscribeId], references: [id])
+  subscribeId    String
+
+  @@map("notices_subscribe")
+}
+
+model Subscribe {
+  id             String     @id @default(uuid()) @map("id")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  userId         String     @map("user_id") @unique
+  coaches        Coach[]
+  notices        Notice[]
+
+  @@map("subscribers")
+}
+
 model FileStorage {
   id             String   @id @default(uuid()) @map("id")
   createdAt      DateTime @default(now()) @map("created_at")
@@ -139,7 +170,7 @@ model FileStorage {
 }
 
 // npx prisma migrate dev --name "Added model for FileStorage" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
-// npx prisma migrate dev --name "Updated model User" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+// npx prisma migrate dev --name "Updated model Subscribe" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma validate --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma migrate dev --schema ./src/libs/models/prisma/schema.prisma --skip-generate --skip-seed

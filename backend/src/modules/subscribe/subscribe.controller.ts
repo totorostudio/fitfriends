@@ -27,30 +27,6 @@ export class SubscribeController {
     await this.subscribeService.sendTestRabbit(TEST_USER);
   }
 
-  @ApiOperation({
-    summary: 'Отправка тестового почтового сообщения напрямую',
-    description: 'Роут для отправки тестового почтового сообщения напрямую'
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Тестовое сообщение отправлено',
-  })
-  @Public()
-  @Post('test-direct')
-  public async sendTestDirect() {
-    await this.subscribeService.sendTestDirect(TEST_USER);
-  }
-
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Уведомления успешно отправлены',
-  })
-  @Public()
-  @Post()
-  public async send() {
-    await this.subscribeService.sendNotices();
-  }
-
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Подписка на уведомления о новых тренировках тренера успешно добавлена',
@@ -66,7 +42,7 @@ export class SubscribeController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Уведомление успешно удалено',
+    description: 'Подписка успешно удалена',
   })
   @Role(UserRole.Customer)
   @UseGuards(RoleGuard)
@@ -75,6 +51,6 @@ export class SubscribeController {
     @Param('coachId', UUIDValidationPipe) coachId: string,
     @Req() { tokenPayload }: RequestWithTokenPayload,
   ) {
-    await this.subscribeService.removeSubscription(tokenPayload.sub, coachId);
+    await this.subscribeService.removeSubscription(tokenPayload, coachId);
   }
 }

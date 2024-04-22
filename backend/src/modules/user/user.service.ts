@@ -55,7 +55,7 @@ export class UserService {
     return existUser;
   }
 
-  public async updateUser(userId: string, dto: UpdateUserDtoType) {
+  public async updateUser(userId: string, dto: UpdateUserDtoType): Promise<UserRdo> {
     const existsUser = await this.getUserEntity(userId);
     let hasChanges = false;
 
@@ -72,5 +72,12 @@ export class UserService {
 
     const updatedUser = await this.userRepository.update(userId, existsUser);
     return fillDto(UserRdo, updatedUser.toPOJO());
+  }
+
+  public async updateSubscribers(userId: string, newSubscribers: string[]): Promise<void> {
+    const existsUser = await this.getUserEntity(userId);
+    existsUser.subscribers = newSubscribers;
+
+    await this.userRepository.update(userId, existsUser);
   }
 }

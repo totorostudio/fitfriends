@@ -1,24 +1,57 @@
-<html>
-  <h2>Привет, {{userName}}</h2>
-  <p>{{coachName}} добавил(а) новую тренировку!</p>
-  <div>
-    <h3 class='title'>{{title}}</h3>
-    <ul class='hashtags-list'>
-      <li class='hashtags-item'>
-        <div><span>#{{type}}</span></div>
-      </li>
-      <li class='hashtags-item'>
-        <div><span>#{{calories}}ккал</span></div>
-      </li>
-    </ul>
-    <p class='text'>{{description}}</p>
-  </div>
-</html>
+<h2>Привет, {{userName}}!</h2>
+<p>У тренера {{coachName}} появилась новая тренировка!</p>
+<div>
+  <h3 class='title'>{{title}}</h3>
+  <p class='text'>{{description}}</p>
+  <ul class='list'>
+    <li class='item'>
+      <div><span>{{gender}}</span></div>
+    </li>
+    <li class='item'>
+      <div><span>{{trainingType}}</span></div>
+    </li>
+    <li class='item'>
+      <div><span>{{trainingTime}}</span></div>
+    </li>
+    <li class='item'>
+      <div><span>{{calories}} ккал</span></div>
+    </li>
+    <li class='item'>
+      <div><span>{{price}} рублей</span></div>
+    </li>
+  </ul>
+
+</div>
+
 <style>
-  .title { margin: 0 0 17px; font-size: 20px; font-weight: 500; line-height:
-  1.1; letter-spacing: .01em; text-transform: uppercase; color: #181818; }
-  .hashtags-list { padding: 0; list-style-type: none; display: flex; flex-wrap:
-  wrap; margin: 0 15px 0 0; } .hashtags-item { margin-right: 7px; margin-bottom:
-  8px; } .text { margin: 0 0 5px; margin-bottom: 24px; font-size: 14px;
-  line-height: 1.3; }
+    h2, h3 {
+        color: #333;
+        font-family: Arial, sans-serif;
+    }
+    p, span {
+        color: #666;
+        font-family: Arial, sans-serif;
+    }
+    .title {
+        color: #444;
+        font-weight: bold;
+    }
+    .list {
+        list-style: none;
+        padding: 0;
+    }
+    .item div {
+        background-color: #eee;
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 5px;
+        font-size: 0.9em;
+    }
+    .text {
+        font-size: 0.9em;
+        line-height: 1.4;
+        margin-top: 10px;
+    }
 </style>

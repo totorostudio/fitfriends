@@ -23,6 +23,7 @@ export interface BaseUser {
   level: Level;
   trainingType: TrainingType[];
   friends: string[];
+  subscribers?: string[];
   isReady: boolean;
 };
 
