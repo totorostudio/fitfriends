@@ -1,15 +1,18 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { EmailService } from './email.service';
+import { MailService } from '../mail/mail.service';
 import { UserService } from '../user/user.service';
 import { SubscribeEntity } from './subscribe.entity';
 import { TokenPayload, UserRole } from 'src/libs/types';
 import { TrainingEntity } from '../training/training.entity';
 import { SubscribeRepository } from './subscribe.repository';
+import { RabbitService } from '../rabbit/rabbit.service';
+import { TestUserDto } from './dto';
 
 @Injectable()
 export class SubscribeService {
   constructor(
-    private readonly emailService: EmailService,
+    private readonly mailService: MailService,
+    private readonly rabbitService: RabbitService,
     private readonly subscribeRepository: SubscribeRepository,
     private readonly userService: UserService,
   ) {}
@@ -50,7 +53,7 @@ export class SubscribeService {
       const { userId, notices } = subscriber;
       const { name, email } = await this.userService.getUserEntity(userId);
       notices.forEach(async (notice) => {
-        await this.emailService.sendNewTraining(email, name, notice);
+        await this.mailService.sendNewTraining(email, name, notice);
       });
       await this.clearNotices(userId);
     });
@@ -74,15 +77,15 @@ export class SubscribeService {
       throw new ConflictException(`Подписка уже есть`);
     }
 
-    await this.subscribeRepository.addNewSubscription(sub, coachId);
-    await this.emailService.sendNewSubscription(email, name, coach.name);
+    await this.subscribeRepository.addNewSubscription(sub, coachId, coach.name);
+    await this.mailService.sendNewSubscription(email, name, coach.name);
   }
 
   public async removeSubscription(userId: string, coachId: string): Promise<void> {
     const existsSubscriber = await this.getSubscriber(userId);
 
     if (!existsSubscriber.coaches.includes(coachId)) {
-      throw new ConflictException(`You are not subscribed`);
+      throw new ConflictException(`У пользователя нет подписки на данного тренера`);
     }
 
     this.subscribeRepository.removeSubscription(userId, coachId);
@@ -93,5 +96,9 @@ export class SubscribeService {
 
     subscriber.notices = [];
     this.subscribeRepository.update(subscriber.id, subscriber);
+  }
+
+  public async sendTest(emailData: TestUserDto): Promise<void> {
+    await this.rabbitService.queueTestEmail(emailData);
   }
 }

@@ -9,6 +9,7 @@ import { UploadRdo } from "./rdo";
 import { FileValidationPipe } from "src/libs/pipes";
 import { FileFilterException } from "src/libs/exceptions";
 import { ImageFile, VideoFile } from "src/app.const";
+import { FileStorageService } from "./file-storage.service";
 
 @ApiTags('Загрузка файлов')
 @Controller('upload')

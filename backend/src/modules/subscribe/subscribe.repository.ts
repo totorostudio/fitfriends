@@ -34,38 +34,54 @@ export class SubscribeRepository extends BasePostgresRepository<SubscribeEntity>
 
   public async addNewTraining(coachId: string, training: TrainingEntity, coachName: string): Promise<void> {
     const { title, description, calories, trainingType } = training;
-    await this.client.subscribe.updateMany({
+    const subscribers = await this.client.subscribe.findMany({
       where: {
-        coaches: { some: { id: coachId } }
-      },
-      data: {
-        notices: {
-          create: {
-            title,
-            description,
-            calories,
-            trainingType,
-            coachName,
+        coaches: {
+          some: {
+            id: coachId
           }
         }
+      },
+      select: {
+        id: true,
       }
     });
+
+    await Promise.all(subscribers.map(sub => {
+      return this.client.notice.create({
+        data: {
+          title,
+          description,
+          calories,
+          trainingType,
+          coachName,
+          subscribeId: sub.id,
+        }
+      });
+    }));
   }
 
-  public async addNewSubscription(userId: string, coachId: string): Promise<void> {
+  public async addNewSubscription(userId: string, coachId: string, coachName: string): Promise<void> {
     const subscriber = await this.client.subscribe.findUnique({
       where: { userId },
-      select: { coaches: true }
     });
 
     if (!subscriber) return;
 
-    const updatedCoaches = Array.from(new Set([...subscriber.coaches, coachId]));
+    const existsCoach = await this.client.coach.findFirst({
+      where: {
+        id: coachId,
+        subscribeId: subscriber.id
+      }
+    });
 
-    await this.client.subscribe.update({
-      where: { userId },
+    if (existsCoach) return;
+
+    await this.client.coach.create({
       data: {
-        coaches: updatedCoaches
+        id: coachId,
+        name: coachName,
+        subscribeId: subscriber.id
       }
     });
   }
@@ -73,20 +89,18 @@ export class SubscribeRepository extends BasePostgresRepository<SubscribeEntity>
   public async removeSubscription(userId: string, coachId: string): Promise<void> {
     const subscriber = await this.client.subscribe.findUnique({
       where: { userId },
-      select: { coaches: true }
+      include: { coaches: true }
     });
 
     if (!subscriber) return;
 
-    const updatedCoaches = subscriber.coaches.filter(id => id !== coachId);
-
     await this.client.subscribe.update({
       where: { userId },
       data: {
-        coaches: updatedCoaches
+        coaches: {
+          disconnect: [{ id: coachId }]
+        }
       }
     });
   }
 }
-
-

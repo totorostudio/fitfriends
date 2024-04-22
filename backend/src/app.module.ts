@@ -14,6 +14,8 @@ import { OrderModule } from './modules/order/order.module';
 import { BalanceModule } from './modules/balance/balance.module';
 import { NotifyModule } from './modules/notify/notify.module';
 import { SubscribeModule } from './modules/subscribe/subscribe.module';
+import { FileStorageModule } from './modules/file-storage/file-storage.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { SubscribeModule } from './modules/subscribe/subscribe.module';
     OrderModule,
     NotifyModule,
     SubscribeModule,
+    MailModule,
+    FileStorageModule,
     AppConfigModule,
     AuthModule,
     RefreshTokenModule,

@@ -1,16 +1,31 @@
 import { Controller, Post, Param, Delete, HttpStatus, Req, UseGuards } from '@nestjs/common';
 import { SubscribeService } from './subscribe.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public, Role } from 'src/libs/decorators';
 import { UserRole } from 'src/libs/types';
 import { UUIDValidationPipe } from 'src/libs/pipes';
 import { RoleGuard } from 'src/libs/guards';
 import { RequestWithTokenPayload } from 'src/libs/requests';
+import { TEST_USER } from 'src/app.const';
 
 @ApiTags('Уведомления о новых тренировках')
 @Controller('subscribe')
 export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
+
+  @ApiOperation({
+    summary: 'Отправка тестового почтового сообщения',
+    description: 'Роут для отправки текстовых почтовых сообщений'
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Тестовое сообщение отправлено',
+  })
+  @Public()
+  @Post('test')
+  public async sendTest() {
+    await this.subscribeService.sendTest(TEST_USER);
+  }
 
   @ApiResponse({
     status: HttpStatus.OK,

@@ -67,14 +67,16 @@ export enum TrainingDescriptionLength {
   Max = 140,
 }
 
-export const EmailTitle = {
+export const MailSubject = {
   Subscription: 'Подписка на рассылку оформлена',
   Training: 'Повявилась новая тренировка',
+  Test: 'Тестовое сообщение',
 } as const;
 
-export const EmailTemplate = {
-  Subscription: 'src/modules/subscribe/templates/subscription',
-  Training: 'src/modules/subscribe/templates/training',
+export const MailTemplate = {
+  Subscription: './subscription',
+  Training: './training',
+  Test: './test',
 } as const;
 
 export const ImageFile = {
@@ -85,3 +87,12 @@ export const ImageFile = {
 export const VideoFile = {
   MimeTypes: ['video/mov', 'video/mp4', 'video/avi'],
 };
+
+export const TEST_USER = {
+  userName: 'Тестовый юзер 2',
+  coachName: 'Тестовый тренер',
+  title: 'Тестовый тайтл',
+  type: 'Тестовый тип тренировки',
+  description: 'Тестовый description',
+  calories: 'Тестовые калории',
+}

@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import * as Joi from 'joi';
-const DEFAULT_SMTP_PORT = 8025;
+const DEFAULT_SMTP_PORT = 587;
 
 export interface MailConfig {
   host: string;

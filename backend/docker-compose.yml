@@ -13,7 +13,7 @@ services:
       - fitfriends.postgres:/var/lib/postgresql/data
 
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d {POSTGRES_PASSWORD}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d {POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -42,7 +42,25 @@ services:
     hostname: "fitfriends.subscribe.fakesmtp"
     ports:
       - "${MAIL_SMTP_PORT}:8025"
-      - "1083:8080"
+      - 1083:8080
+
+  fitfriends.subscribe.rabbitmq:
+    image: rabbitmq:3.13.1-management
+    container_name: fitfriends.subscribe.rabbitmq
+
+    ports:
+      - "${RABBIT_PORT}:5672"
+      - 1088:15672
+
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   fitfriends.postgres:

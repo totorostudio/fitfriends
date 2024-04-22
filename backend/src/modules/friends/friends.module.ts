@@ -6,6 +6,7 @@ import { FriendsService } from './friends.service';
 import { FriendsController } from './friends.controller';
 import { FriendsRepository } from './friends.repository';
 import { UserModule } from '../user/user.module';
+import { NotifyModule } from '../notify/notify.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { UserModule } from '../user/user.module';
       maxRedirects: HttpClientParam.MaxRedirect,
     }),
     UserModule,
-    //NotifyModule,
+    NotifyModule,
   ],
   controllers: [FriendsController],
   providers: [FriendsRepository, FriendsService],
