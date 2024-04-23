@@ -41,10 +41,10 @@ import { RabbitModule } from './modules/rabbit/rabbit.module';
   ],
   controllers: [],
   providers: [
-    /*{
+    {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },*/
+    },
   ],
 })
 export class AppModule {}

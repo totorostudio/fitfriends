@@ -7,23 +7,6 @@ import { Gender, Level, Metro, TrainingType, UserRole } from "src/libs/types";
 
 export class BaseUserDto {
   @ApiProperty({
-    description: 'Аватар пользователя',
-    example: 'image.jpg',
-  })
-  @IsOptional()
-  @Expose()
-  public avatar: string;
-
-  @ApiPropertyOptional({
-    description: 'День рождения пользователя',
-    example: '1981-03-12',
-  })
-  @IsISO8601()
-  @IsOptional()
-  @Expose()
-  public birthday?: Date;
-
-  @ApiProperty({
     description: 'Email пользователя',
     example: 'user@user.ru',
   })
@@ -43,6 +26,17 @@ export class BaseUserDto {
   public name: string;
 
   @ApiProperty({
+    description: 'Описание пользователя',
+    example: 'Описание пользователя текстом',
+  })
+  @IsString()
+  @Length(UserDescriptionLength.Min, UserDescriptionLength.Max, {
+    message: DtoValidationMessage.userDescription.length,
+  })
+  @Expose()
+  public description: string;
+
+  @ApiProperty({
     description: 'Пароль пользователя',
     example: '123456',
   })
@@ -54,14 +48,6 @@ export class BaseUserDto {
   public password: string;
 
   @ApiProperty({
-    description: 'Роль пользователя',
-    example: 'пользователь',
-  })
-  @IsEnum(UserRole, { message: DtoValidationMessage.role.invalidFormat })
-  @Expose()
-  public userRole: UserRole;
-
-  @ApiProperty({
     description: 'Пол пользователя',
     example: 'мужской',
   })
@@ -69,16 +55,22 @@ export class BaseUserDto {
   @Expose()
   public gender: Gender;
 
-  @ApiProperty({
-    description: 'Описание пользователя',
-    example: 'Описание пользователя текстом',
+  @ApiPropertyOptional({
+    description: 'День рождения пользователя',
+    example: '1981-03-12',
   })
-  @IsString()
-  @Length(UserDescriptionLength.Min, UserDescriptionLength.Max, {
-    message: DtoValidationMessage.userDescription.length,
-  })
+  @IsISO8601()
+  @IsOptional()
   @Expose()
-  public description: string;
+  public birthday?: Date;
+
+  @ApiProperty({
+    description: 'Роль пользователя',
+    example: 'пользователь',
+  })
+  @IsEnum(UserRole, { message: DtoValidationMessage.role.invalidFormat })
+  @Expose()
+  public role: UserRole;
 
   @ApiProperty({
     description: 'User location - metro station',
@@ -109,7 +101,7 @@ export class BaseUserDto {
 
   @ApiProperty({
     description: 'Типы тренировок',
-    example: 'йога, бег',
+    example: ['йога', 'бег'],
   })
   @IsArray()
   @ArrayMaxSize(MAX_TRAINING_TYPES, {

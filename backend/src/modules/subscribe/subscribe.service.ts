@@ -34,7 +34,7 @@ export class SubscribeService {
       throw new ConflictException(`Тренер с id ${coachId} не найден`);
     }
 
-    if (coach.userRole !== UserRole.Coach) {
+    if (coach.role !== UserRole.Coach) {
       throw new ConflictException(`Подписка возможна только на пользователей с ролью: тренер`);
     }
 

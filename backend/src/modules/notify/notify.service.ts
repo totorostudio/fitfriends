@@ -30,7 +30,6 @@ export class NotifyService {
     );
   }
 
-
   public async remove(notifyId: string, userId: string): Promise<void> {
     const existsNotify = await this.notifyRepository.findById(notifyId);
 

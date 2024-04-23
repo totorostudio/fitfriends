@@ -1,13 +1,13 @@
 import { ConflictException, HttpException, HttpStatus, Inject, Injectable, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigType } from "@nestjs/config";
-import dayjs from "dayjs";
+import * as dayjs from 'dayjs';
 import { UserRepository } from "src/modules/user/user.repository";
 import { UserService } from "src/modules/user/user.service";
 import { RefreshTokenService } from "src/modules/refresh-token/refresh-token.service";
 import { UserEntity } from "src/modules/user/user.entity";
 import { jwtConfig } from "src/libs/config";
-import { CreateCoachDto, CreateCustomerDto, CreateUserDtoType, LoginUserDto } from "./dto";
+import { CreateCoachDto, CreateCustomerDto, LoginUserDto } from "./dto";
 import { AuthUserRdo, LoggedUserRdo } from "./rdo";
 import { createJWTPayload, fillDto } from "src/libs/helpers";
 import { RefreshTokenPayload } from "src/libs/types";
@@ -25,21 +25,23 @@ export class AuthService {
     private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
-  public async register(dto: CreateUserDtoType): Promise<AuthUserRdo> {
+  public async registerCustomer(dto: CreateCustomerDto): Promise<AuthUserRdo> {
     const {
       email,
       name,
-      avatar,
+      description,
+      password,
       gender,
       birthday,
-      userRole,
-      description,
+      role,
       metro,
       background,
       level,
       trainingType,
       isReady,
-      password,
+      calories,
+      caloriesPerDay,
+      trainingTime
     } = dto;
 
     const existedUser = (await this.userRepository.findByEmail(email));
@@ -52,42 +54,78 @@ export class AuthService {
       createdAt: new Date(),
       email,
       name,
-      avatar,
+      description,
+      avatar: '',
+      password: '',
       gender,
       birthday: birthday ? dayjs(birthday).toDate() : undefined,
-      userRole,
-      description,
+      role,
       metro,
-      background: background ?? avatar,
+      background,
       level,
       trainingType,
-      friends: [],
       isReady,
-      password: '',
+      friends: [],
+      subscribers: [],
+      calories,
+      caloriesPerDay,
+      trainingTime,
     };
 
-    const customerUserInfo =
-      dto instanceof CreateCustomerDto
-        ? {
-            calories: dto.calories,
-            caloriesPerDay: dto.caloriesPerDay,
-            trainingTime: dto.trainingTime,
-          }
-        : {};
-
-    const coachUserInfo =
-      dto instanceof CreateCoachDto
-        ? {
-            certificate: dto.certificate,
-            awards: dto.awards,
-          }
-        : {};
-
-    const userEntity = await new UserEntity(
-      Object.assign(newUser, customerUserInfo, coachUserInfo),
-    ).setPassword(password);
-
+    const userEntity = await new UserEntity(newUser).setPassword(password);
     const user = await this.userRepository.save(userEntity);
+
+    return fillDto(AuthUserRdo, user.toPOJO());
+  }
+
+  public async registerCoach(dto: CreateCoachDto): Promise<AuthUserRdo> {
+    const {
+      email,
+      name,
+      description,
+      password,
+      gender,
+      birthday,
+      role,
+      metro,
+      background,
+      level,
+      trainingType,
+      isReady,
+      certificate,
+      awards,
+    } = dto;
+
+    const existedUser = (await this.userRepository.findByEmail(email));
+
+    if (existedUser) {
+      throw new ConflictException(UserMessage.Exists);
+    }
+
+    const newUser = {
+      createdAt: new Date(),
+      email,
+      name,
+      description,
+      avatar: '',
+      password: '',
+      gender,
+      birthday: birthday ? dayjs(birthday).toDate() : undefined,
+      role,
+      metro,
+      background,
+      level,
+      trainingType,
+      isReady,
+      friends: [],
+      subscribers: [],
+      certificate,
+      awards,
+    };
+
+    const userEntity = await new UserEntity(newUser).setPassword(password);
+    const user = await this.userRepository.save(userEntity);
+
     return fillDto(AuthUserRdo, user.toPOJO());
   }
 

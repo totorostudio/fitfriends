@@ -6,6 +6,8 @@ import { DEFAULT_BOOKING_STATUS } from 'src/app.const';
 import { fillDto } from 'src/libs/helpers';
 import { BookingEntity } from './booking.entity';
 import { BookingRepository } from './booking.repository';
+import { NotifyService } from '../notify/notify.service';
+import { UserRole } from 'src/libs/types';
 
 @Injectable()
 export class BookingService {
@@ -14,6 +16,7 @@ export class BookingService {
   constructor(
     private readonly bookingRepository: BookingRepository,
     private readonly userService: UserService,
+    private readonly notifyService: NotifyService,
   ) {}
 
   public async create(senderId: string, { recipientId }: CreateBookingDto): Promise<BookingRdo> {
@@ -36,6 +39,8 @@ export class BookingService {
       );
     }
 
+    const sender = await this.userService.getUserEntity(senderId);
+
     const newBooking = {
       senderId: senderId,
       recipientId: recipientId,
@@ -44,6 +49,12 @@ export class BookingService {
 
     const bookingEntity = new BookingEntity(newBooking);
     const booking = await this.bookingRepository.save(bookingEntity);
+
+    if (recipient.role === UserRole.Coach) {
+      await this.notifyService.create(recipientId, `${sender.name} прислал вам запрос на персональную тренировку`);
+    } else {
+      await this.notifyService.create(recipientId, `${sender.name} приглашает вас на совместную тренировку`);
+    }
 
     return fillDto(BookingRdo, booking.toPOJO());
   }

@@ -16,7 +16,7 @@ export interface BaseUser {
   avatar?: string;
   gender: Gender;
   birthday?: Date;
-  userRole: UserRole;
+  role: UserRole;
   description?: string;
   metro: Metro;
   background: string;

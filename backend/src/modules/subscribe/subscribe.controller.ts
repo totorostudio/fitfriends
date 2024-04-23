@@ -14,8 +14,7 @@ export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
 
   @ApiOperation({
-    summary: 'Отправка тестового почтового сообщения через RabbitMQ',
-    description: 'Роут для отправки тестового почтового сообщения через RabbitMQ'
+    summary: 'Отправка тестового почтового сообщения через RabbitMQ'
   })
   @ApiResponse({
     status: HttpStatus.OK,

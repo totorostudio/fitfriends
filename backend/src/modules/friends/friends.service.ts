@@ -4,13 +4,17 @@ import { fillDto } from 'src/libs/helpers';
 import { UserRdo, UsersRdo } from 'src/modules/user/rdo';
 import { UsersQuery } from 'src/modules/user/user.query';
 import { UpdateFriendsDto } from './dto/update-friends.dto';
+import { NotifyService } from '../notify/notify.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class FriendsService {
   private readonly logger = new Logger(FriendsService.name);
 
   constructor(
-    private readonly friendsRepository: FriendsRepository
+    private readonly friendsRepository: FriendsRepository,
+    private readonly notifyService: NotifyService,
+    private readonly userService: UserService,
   ) {}
 
   public async getFriends(currentUserId: string, query?: UsersQuery): Promise<UsersRdo> {
@@ -24,7 +28,13 @@ export class FriendsService {
   }
 
   public async addFriend(currentUserId: string, { friendId }: UpdateFriendsDto) {
+    const currentUser = await this.userService.getUserEntity(currentUserId);
+    const friend = await this.userService.getUserEntity(friendId);
     const response = await this.friendsRepository.add(currentUserId, friendId);
+
+    await this.notifyService.create(currentUserId, `${friend.name} добавлен в друзья`);
+    await this.notifyService.create(friendId, `${currentUser.name} добавил вас в друзья`);
+
     return response;
   }
 

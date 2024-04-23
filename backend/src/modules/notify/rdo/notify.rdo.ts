@@ -10,6 +10,13 @@ export class NotifyRdo {
   public id: string;
 
   @ApiProperty({
+    description: 'Дата оповещения',
+    example: '22.04.1983',
+  })
+  @Expose()
+  public createdAt: Date;
+
+  @ApiProperty({
     description: 'Текст оповещения',
     example: 'Арина приглашает Вас на совместную тренировку',
   })

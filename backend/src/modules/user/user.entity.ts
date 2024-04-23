@@ -12,7 +12,7 @@ export class UserEntity implements FullUser, Entity<string> {
   public avatar?: string;
   public gender: Gender;
   public birthday?: Date;
-  public userRole: UserRole;
+  public role: UserRole;
   public description?: string;
   public metro: Metro;
   public background: string;
@@ -40,7 +40,7 @@ export class UserEntity implements FullUser, Entity<string> {
       avatar: this.avatar,
       gender: this.gender,
       birthday: this.birthday,
-      role: this.userRole,
+      role: this.role,
       description: this.description,
       metro: this.metro,
       background: this.background,
@@ -65,7 +65,7 @@ export class UserEntity implements FullUser, Entity<string> {
     this.avatar = data.avatar;
     this.gender = data.gender;
     this.birthday = data.birthday;
-    this.userRole = data.userRole;
+    this.role = data.role;
     this.description = data.description;
     this.metro = data.metro;
     this.background = data.background;

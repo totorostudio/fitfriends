@@ -28,7 +28,7 @@ export abstract class BasePostgresRepository<
   protected async findOne(model: string, where: object): Promise<EntityType | null> {
     const document = await this.client[model].findUnique({ where });
     return this.createEntityFromDocument(document);
-  }  // TODO переписать по новой логике
+  }
 
   public async findById(id: EntityIdType): Promise<EntityType | null> {
     const modelName = this.getModelName();

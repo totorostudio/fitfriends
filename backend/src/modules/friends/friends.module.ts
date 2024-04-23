@@ -7,6 +7,8 @@ import { FriendsController } from './friends.controller';
 import { FriendsRepository } from './friends.repository';
 import { UserModule } from '../user/user.module';
 import { NotifyModule } from '../notify/notify.module';
+import { NotifyService } from '../notify/notify.service';
+import { NotifyRepository } from '../notify/notify.repository';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import { NotifyModule } from '../notify/notify.module';
     NotifyModule,
   ],
   controllers: [FriendsController],
-  providers: [FriendsRepository, FriendsService],
+  providers: [FriendsRepository, FriendsService, NotifyService, NotifyRepository],
   exports: [FriendsService],
 })
 export class FriendsModule {}

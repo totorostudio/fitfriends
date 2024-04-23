@@ -8,6 +8,7 @@ import { UserModule } from 'src/modules/user/user.module';
 import { RefreshTokenModule } from 'src/modules/refresh-token/refresh-token.module';
 import { JwtAccessStrategy, JwtRefreshStrategy, LocalStrategy } from './strategies';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
+import { RefreshTokenRepository } from '../refresh-token/refresh-token.repository';
 
 @Module({
   imports: [
@@ -23,6 +24,8 @@ import { RefreshTokenService } from '../refresh-token/refresh-token.service';
     JwtAccessStrategy,
     JwtRefreshStrategy,
     LocalStrategy,
+    RefreshTokenService,
+    RefreshTokenRepository,
   ],
   controllers: [AuthController],
 })
