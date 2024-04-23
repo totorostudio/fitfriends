@@ -3,7 +3,6 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigType } from '@nestjs/config';
 import { MailTemplate, MailSubject } from 'src/app.const';
 import { mailConfig } from 'src/libs/config';
-import { Notice } from 'src/libs/types';
 import { MailNewSubscriptionDto, MailNewTrainingDto } from '../subscribe/dto';
 
 @Injectable()

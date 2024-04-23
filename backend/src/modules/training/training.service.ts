@@ -6,13 +6,15 @@ import { TrainingQuery } from './training.query';
 import { fillDto } from 'src/libs/helpers';
 import { TrainingRdo, TrainingsRdo } from './rdo';
 import { TrainingEntity } from './training.entity';
+import { SubscribeService } from '../subscribe/subscribe.service';
 
 @Injectable()
 export class TrainingService {
   private readonly logger = new Logger(TrainingService.name);
 
   constructor(
-    private readonly trainingRepository: TrainingRepository
+    private readonly trainingRepository: TrainingRepository,
+    private readonly subscribeService: SubscribeService,
   ) {}
 
   public async getTrainingEntity(id: string): Promise<TrainingEntity> {
@@ -35,7 +37,7 @@ export class TrainingService {
     });
   }
 
-  public async create(coachId: string, createTrainingDto: CreateTrainingDto): Promise<TrainingRdo> {
+  public async create(coachId: string, dto: CreateTrainingDto): Promise<TrainingRdo> {
     const {
       title,
       background,
@@ -48,7 +50,7 @@ export class TrainingService {
       gender,
       video,
       isFeatured
-    } = createTrainingDto;
+    } = dto;
 
     const newTraining = {
       title,
@@ -66,9 +68,21 @@ export class TrainingService {
       isFeatured
     };
 
+    const newTrainingNoticeData = {
+      title,
+      description,
+      gender,
+      trainingType,
+      trainingTime,
+      calories,
+      price,
+    }
+
     const trainingEntity = new TrainingEntity(newTraining);
 
     const training = await this.trainingRepository.save(trainingEntity);
+    await this.subscribeService.sendNewTrainingNotice(coachId, newTrainingNoticeData);
+
     return fillDto(TrainingRdo, training.toPOJO());
   }
 

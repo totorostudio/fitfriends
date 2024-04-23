@@ -3,7 +3,7 @@ import { MailService } from '../mail/mail.service';
 import { UserService } from '../user/user.service';
 import { TokenPayload, UserRole } from 'src/libs/types';
 import { RabbitService } from '../rabbit/rabbit.service';
-import { MailNewTrainingDto } from './dto';
+import { MailNewTrainingDto, NewTrainingNoticeDto } from './dto';
 
 @Injectable()
 export class SubscribeService {
@@ -68,8 +68,19 @@ export class SubscribeService {
     await this.userService.updateSubscribers(coachId, updatedSubscribers);
   }
 
-  public async sendNewTrainingNotice(emailData: MailNewTrainingDto) {
-    await this.rabbitService.queueNewTraining(emailData);
+  public async sendNewTrainingNotice(coachId: string, newTrainingNoticeData: NewTrainingNoticeDto) {
+    const coach = await this.userService.getUserEntity(coachId);
+
+    if (!coach) {
+      throw new ConflictException(`Тренер с id ${coachId} не найден`);
+    }
+
+    const subscribers = await this.getCoachSubscribers(coachId);
+
+    for (const subscriberId of subscribers) {
+      const subscriber = await this.userService.getUserEntity(subscriberId);
+      await this.rabbitService.queueNewTraining({...newTrainingNoticeData, email: subscriber.email, userName: subscriber.name, coachName: coach.name});
+    }
   }
 
   public async sendTestRabbit(emailData: MailNewTrainingDto): Promise<void> {
