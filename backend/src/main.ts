@@ -11,6 +11,8 @@ async function bootstrap() {
     .setTitle('Fit Friends')
     .setDescription('Документация API проекта')
     .setVersion('1.0')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'refresh-token')
     .build();
 
   const globalPrefix = 'api';

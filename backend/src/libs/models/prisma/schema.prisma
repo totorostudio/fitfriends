@@ -41,105 +41,105 @@ model User {
 }
 
 model RefreshToken {
-  id         String   @id @default(uuid()) @map("id")
-  createdAt  DateTime @default(now()) @map("created_at")
-  tokenId    String   @unique @map("token_id")
-  userId     String   @map("user_id")
-  expiresIn  DateTime @map("expires_in")
+  id        String   @id @default(uuid()) @map("id")
+  createdAt DateTime @default(now()) @map("created_at")
+  tokenId   String   @unique @map("token_id")
+  userId    String   @map("user_id")
+  expiresIn DateTime @map("expires_in")
 
   @@map("refresh_sessions")
 }
 
 model Training {
-  id             String   @id @default(uuid()) @map("id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  title          String
-  background     String
-  level          String
-  trainingType   String   @map("training_type")
-  trainingTime   String   @map("training_time")
-  price          Int
-  calories       Int
-  description    String
-  gender         String
-  video          String
-  rating         Int
-  coachId        String    @map("coach_id")
-  isFeatured     Boolean   @default(false) @map("is_featured")
+  id           String   @id @default(uuid()) @map("id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  title        String
+  background   String
+  level        String
+  trainingType String   @map("training_type")
+  trainingTime String   @map("training_time")
+  price        Int
+  calories     Int
+  description  String
+  gender       String
+  video        String
+  rating       Int
+  coachId      String   @map("coach_id")
+  isFeatured   Boolean  @default(false) @map("is_featured")
 
   @@map("trainings")
 }
 
 model Review {
-  id             String   @id @default(uuid()) @map("id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  userId         String   @map("user_id")
-  trainingId     String   @map("training_id")
-  grade          Int
-  text           String
+  id         String   @id @default(uuid()) @map("id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  userId     String   @map("user_id")
+  trainingId String   @map("training_id")
+  grade      Int
+  text       String
 
   @@map("reviews")
 }
 
 model Booking {
-  id             String   @id @default(uuid()) @map("id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
-  senderId       String   @map("sender_id")
-  recipientId    String   @map("recipient_id")
-  status         String
+  id          String   @id @default(uuid()) @map("id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  senderId    String   @map("sender_id")
+  recipientId String   @map("recipient_id")
+  status      String
 
   @@map("bookings")
 }
 
 model Balance {
-  id             String   @id @default(uuid()) @map("id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  userId         String   @map("user_id")
-  trainingId     String   @map("training_id")
-  count          Int
+  id         String   @id @default(uuid()) @map("id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  userId     String   @map("user_id")
+  trainingId String   @map("training_id")
+  count      Int
 
   @@map("balances")
 }
 
 model Order {
-  id             String   @id @default(uuid()) @map("id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  userId         String   @map("user_id")
-  orderType      String   @map("order_type")
-  trainingId     String   @map("training_id")
-  price          Int
-  quantity       Int
-  cost           Int
-  paymentType    String   @map("payment_type")
+  id          String   @id @default(uuid()) @map("id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  userId      String   @map("user_id")
+  orderType   String   @map("order_type")
+  trainingId  String   @map("training_id")
+  price       Int
+  quantity    Int
+  cost        Int
+  paymentType String   @map("payment_type")
 
   @@map("orders")
 }
 
 model Notify {
-  id             String   @id @default(uuid()) @map("id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  userId         String   @map("user_id")
-  text           String
+  id        String   @id @default(uuid()) @map("id")
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+  text      String
 
   @@map("notifications")
 }
 
 model FileStorage {
-  id             String   @id @default(uuid()) @map("id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  fileName       String   @map("file_name")
-  originalName   String   @map("original_name")
-  hash           String
-  path           String
-  mimetype       String
-  size           Int
+  id           String   @id @default(uuid()) @map("id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  fileName     String   @map("file_name")
+  originalName String   @map("original_name")
+  hash         String
+  path         String
+  mimetype     String
+  size         Int
 
   @@map("file_storage")
 }
 
 // npx prisma migrate dev --name "Added model for FileStorage" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
-// npx prisma migrate dev --name "Updated model User" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+// npx prisma migrate dev --name "Updated model RefereshToken --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma validate --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma migrate dev --schema ./src/libs/models/prisma/schema.prisma --skip-generate --skip-seed

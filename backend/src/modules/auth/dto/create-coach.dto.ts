@@ -1,11 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
-import { IsString, Length } from "class-validator";
+import { IsEnum, IsString, Length } from "class-validator";
 import { DtoValidationMessage } from "src/libs/messages";
 import { BaseUserDto } from "./base-user.dto";
 import { UserAwardsLength } from "src/app.const";
+import { UserRole } from "src/libs/types";
 
 export class CreateCoachDto extends BaseUserDto {
+  @ApiProperty({
+    description: 'Роль пользователя',
+    example: 'тренер',
+  })
+  @IsEnum(UserRole, { message: DtoValidationMessage.role.invalidFormat })
+  @Expose()
+  public role: UserRole;
+
   @ApiProperty({
     description: 'Сертификаты тренера',
     example: 'certificate.jpg',

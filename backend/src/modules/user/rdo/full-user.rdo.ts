@@ -12,7 +12,7 @@ export class FullUserRdo extends UserRdo {
 
   @ApiProperty({
     description: 'Email пользователя',
-    example: 'user@user.ru',
+    example: 'user@fitfriends.local',
   })
   @Expose()
   public email: string;

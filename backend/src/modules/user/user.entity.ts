@@ -59,6 +59,7 @@ export class UserEntity implements FullUser, Entity<string> {
   }
 
   public populate(data: FullUser): void {
+    this.id = data.id;
     this.createdAt = data.createdAt;
     this.email = data.email;
     this.name = data.name;

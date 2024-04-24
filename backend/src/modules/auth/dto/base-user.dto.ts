@@ -8,7 +8,7 @@ import { Gender, Level, Metro, TrainingType, UserRole } from "src/libs/types";
 export class BaseUserDto {
   @ApiProperty({
     description: 'Email пользователя',
-    example: 'user@user.ru',
+    example: 'user@user.local',
   })
   @IsEmail({}, { message: DtoValidationMessage.email.invalidFormat })
   @Expose()

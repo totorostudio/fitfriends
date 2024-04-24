@@ -8,7 +8,7 @@ import { RefreshTokenService } from "src/modules/refresh-token/refresh-token.ser
 import { UserEntity } from "src/modules/user/user.entity";
 import { jwtConfig } from "src/libs/config";
 import { CreateCoachDto, CreateCustomerDto, LoginUserDto } from "./dto";
-import { AuthUserRdo, LoggedUserRdo } from "./rdo";
+import { AuthCoachRdo, AuthUserRdo, LoggedUserRdo } from "./rdo";
 import { createJWTPayload, fillDto } from "src/libs/helpers";
 import { RefreshTokenPayload } from "src/libs/types";
 import { UserMessage } from "src/libs/messages";
@@ -78,7 +78,7 @@ export class AuthService {
     return fillDto(AuthUserRdo, user.toPOJO());
   }
 
-  public async registerCoach(dto: CreateCoachDto): Promise<AuthUserRdo> {
+  public async registerCoach(dto: CreateCoachDto): Promise<AuthCoachRdo> {
     const {
       email,
       name,
@@ -126,7 +126,7 @@ export class AuthService {
     const userEntity = await new UserEntity(newUser).setPassword(password);
     const user = await this.userRepository.save(userEntity);
 
-    return fillDto(AuthUserRdo, user.toPOJO());
+    return fillDto(AuthCoachRdo, user.toPOJO());
   }
 
   public async verifyUser(dto: LoginUserDto): Promise<UserEntity> {
@@ -153,7 +153,9 @@ export class AuthService {
   }
 
   public async createUserToken(user: UserEntity): Promise<LoggedUserRdo> {
+    console.log(user);
     const accessTokenPayload = createJWTPayload(user);
+    console.log(accessTokenPayload);
     const refreshTokenPayload = {
       ...accessTokenPayload,
       tokenId: crypto.randomUUID(),

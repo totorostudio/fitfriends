@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Delete, HttpStatus, UseGuards, Req, HttpCode } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UserService } from 'src/modules/user/user.service';
 import { RefreshTokenService } from 'src/modules/refresh-token/refresh-token.service';
 import { Public } from 'src/libs/decorators';
 import { UserDtoValidationPipe } from 'src/libs/pipes';
 import { JwtRefreshGuard, LocalAuthGuard, NotAuthGuard } from 'src/libs/guards';
-import { AuthUserRdo, LoggedUserRdo } from './rdo';
+import { AuthCoachRdo, AuthUserRdo, LoggedUserRdo } from './rdo';
 import { RequestWithRefreshTokenPayload, RequestWithTokenPayload, RequestWithUser } from 'src/libs/requests';
 import { CreateCoachDto, CreateCustomerDto, LoginUserDto } from './dto';
 
@@ -41,7 +41,7 @@ export class AuthController {
     summary: 'Регистрация нового тренера'
   })
   @ApiResponse({
-    type: AuthUserRdo,
+    type: AuthCoachRdo,
     status: HttpStatus.CREATED,
     description: 'Новый тренер успешно создан.',
   })
@@ -87,6 +87,7 @@ export class AuthController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Пользователь не авторизирован.',
   })
+  @ApiBearerAuth('access-token')
   @Get('login')
   public async checkAuth(@Req() { tokenPayload }: RequestWithTokenPayload) {
     return this.userService.getUserByEmail(tokenPayload.email);
@@ -99,7 +100,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'Пользователь успешно вышел.',
   })
-  @Public()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtRefreshGuard)
   @Delete('logout')
   public async logout(@Req() { tokenPayload }: RequestWithRefreshTokenPayload) {
@@ -107,13 +108,14 @@ export class AuthController {
   }
 
   @ApiOperation({
-    summary: 'Получить новые access/refresh токены'
+    summary: 'Получить новую пару токенов по refresh токену'
   })
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
     description: 'Новые токены получены',
   })
+  @ApiBearerAuth('refresh-token')
   @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
