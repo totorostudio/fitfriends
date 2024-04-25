@@ -1,13 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, Query, Req } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { ApiTags, ApiResponse, ApiBody, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { UserRole } from 'src/libs/types';
-import { Role } from 'src/libs/decorators/role.decorator';
 import { BaseQuery } from 'src/libs/query/base-query';
 import { UsersRdo, UsersRdoExample } from 'src/modules/user/rdo';
 import { UserDtoValidationPipe } from 'src/libs/pipes';
-import { UUIDValidationPipe } from 'src/libs/pipes/uuid-validation.pipe';
-import { UsersQuery } from 'src/modules/user/user.query';
 import { UpdateFriendsDto } from './dto/update-friends.dto';
 import { UpdateFriendsRdo } from './rdo/update-friends.rdo';
 import { RequestWithTokenPayload } from 'src/libs/requests';
@@ -28,7 +24,7 @@ export class FriendsController {
     description: 'Список всех друзей пользователя',
   })
   @ApiBearerAuth('access-token')
-  @Get('/')
+  @Get()
   public async index(
     @Req() { tokenPayload }: RequestWithTokenPayload,
     @Query() query: BaseQuery
@@ -67,7 +63,7 @@ export class FriendsController {
   @Post('/remove')
   public async remove(
     @Req() { tokenPayload }: RequestWithTokenPayload,
-    @Body() dto: UpdateFriendsDto
+    @Body(new UserDtoValidationPipe(UpdateFriendsDto)) dto: UpdateFriendsDto
   ) {
     return this.friendsService.removeFriend(tokenPayload.sub, dto);
   }

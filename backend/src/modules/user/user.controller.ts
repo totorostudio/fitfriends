@@ -29,7 +29,7 @@ export class UserController {
   @Role(UserRole.Customer)
   @UseGuards(RoleGuard)
   @ApiBearerAuth('access-token')
-  @Get('/')
+  @Get()
   public async index(@Query() query: UsersQuery): Promise<UsersRdo> {
     return this.userService.getAllUsers(query);
   }
@@ -60,7 +60,10 @@ export class UserController {
   })
   @ApiBearerAuth('access-token')
   @Patch('/:userId')
-  public async update(@Param('userId') userId: string, @Body(new UserDtoValidationPipe(UpdateUserDto)) dto: UpdateUserDtoType) {
+  public async update(
+    @Param('userId') userId: string,
+    @Body(new UserDtoValidationPipe(UpdateUserDto)) dto: UpdateUserDtoType
+  ) {
     return this.userService.updateUser(userId, dto);
   }
 }
