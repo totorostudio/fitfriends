@@ -73,7 +73,7 @@ export class BaseUserDto {
   public role: UserRole;
 
   @ApiProperty({
-    description: 'User location - metro station',
+    description: 'Станция метро пользователя',
     example: 'Пионерская',
   })
   @IsEnum(Metro, {
@@ -83,7 +83,7 @@ export class BaseUserDto {
   public metro: Metro;
 
   @ApiPropertyOptional({
-    description: 'User image for background',
+    description: 'Фоновая картинка для профиля пользователя',
     example: 'background-image.png',
   })
   @IsString()

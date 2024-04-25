@@ -17,11 +17,11 @@ export class UploadRdo {
   public originalName: string;
 
   @ApiProperty({
-    description: 'Hash',
+    description: 'Имя загруженного файла',
     example: '3822bc22-3f95-4fac-ac90-4d942dcd0f84.png',
   })
   @Expose()
-  public hash: string;
+  public fileName: string;
 
   @ApiProperty({
     description: 'Путь к файлу',

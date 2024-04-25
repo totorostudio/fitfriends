@@ -13,6 +13,6 @@ export class FileStorageRepository extends BasePostgresRepository<FileUploadEnti
   }
 
   protected getModelName(): string {
-    return ('filestorage');
+    return ('fileStorage');
   }
 }

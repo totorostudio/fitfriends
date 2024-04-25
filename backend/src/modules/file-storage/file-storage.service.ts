@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { ensureDir } from 'fs-extra';
 import { writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { extension } from 'mime-types';
 import { appConfig } from 'src/libs/config';
 import { fillDto } from 'src/libs/helpers';
@@ -68,12 +68,11 @@ export class FileStorageService {
   public async saveFile(file: Express.Multer.File): Promise<UploadRdo> {
     const storedFile = await this.writeFile(file);
     const fileEntity = FileUploadEntity.fromObject({
-      hash: storedFile.fileName,
+      fileName: storedFile.fileName,
       mimetype: file.mimetype,
       originalName: file.originalname,
       path: storedFile.path,
       size: file.size,
-      directory: storedFile.directory,
     });
 
     const savedFile = await this.fileStorageRepository.save(fileEntity);

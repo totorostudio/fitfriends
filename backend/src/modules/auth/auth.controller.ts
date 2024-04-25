@@ -116,7 +116,6 @@ export class AuthController {
     description: 'Новые токены получены',
   })
   @ApiBearerAuth('refresh-token')
-  @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)

@@ -153,9 +153,7 @@ export class AuthService {
   }
 
   public async createUserToken(user: UserEntity): Promise<LoggedUserRdo> {
-    console.log(user);
     const accessTokenPayload = createJWTPayload(user);
-    console.log(accessTokenPayload);
     const refreshTokenPayload = {
       ...accessTokenPayload,
       tokenId: crypto.randomUUID(),

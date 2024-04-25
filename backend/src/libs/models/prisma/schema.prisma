@@ -130,7 +130,6 @@ model FileStorage {
   createdAt    DateTime @default(now()) @map("created_at")
   fileName     String   @map("file_name")
   originalName String   @map("original_name")
-  hash         String
   path         String
   mimetype     String
   size         Int
@@ -139,7 +138,7 @@ model FileStorage {
 }
 
 // npx prisma migrate dev --name "Added model for FileStorage" --schema ./src/libs/models/prisma/schema.prisma --skip-generate
-// npx prisma migrate dev --name "Updated model RefereshToken --schema ./src/libs/models/prisma/schema.prisma --skip-generate
+// npx prisma migrate dev --name "Updated model FileStorage --schema ./src/libs/models/prisma/schema.prisma --skip-generate
 // npx prisma format --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma validate --schema ./src/libs/models/prisma/schema.prisma
 // npx prisma migrate dev --schema ./src/libs/models/prisma/schema.prisma --skip-generate --skip-seed

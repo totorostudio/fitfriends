@@ -1,8 +1,8 @@
 import { Controller, HttpStatus, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import 'multer';
-import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Public, Role } from "src/libs/decorators";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Role } from "src/libs/decorators";
 import { UserRole } from "src/libs/types";
 import { RoleGuard } from "src/libs/guards";
 import { UploadRdo } from "./rdo";
@@ -16,6 +16,9 @@ import { FileStorageService } from "./file-storage.service";
 export class FileStorageController {
   constructor(private readonly fileStorageService: FileStorageService) {}
 
+  @ApiOperation({
+    summary: 'Загрузка изображения'
+  })
   @ApiResponse({
     type: UploadRdo,
     status: HttpStatus.CREATED,
@@ -33,7 +36,7 @@ export class FileStorageController {
       },
     },
   })
-  @Public()
+  @ApiBearerAuth('access-token')
   @Post('image')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -44,10 +47,13 @@ export class FileStorageController {
     return this.fileStorageService.saveFile(file);
   }
 
+  @ApiOperation({
+    summary: 'Загрузка видео'
+  })
   @ApiResponse({
     type: UploadRdo,
     status: HttpStatus.CREATED,
-    description: 'The file has been successfully uploaded',
+    description: 'Видео успешно загружено',
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -61,6 +67,7 @@ export class FileStorageController {
       },
     },
   })
+  @ApiBearerAuth('access-token')
   @Role(UserRole.Coach)
   @UseGuards(RoleGuard)
   @Post('video')
