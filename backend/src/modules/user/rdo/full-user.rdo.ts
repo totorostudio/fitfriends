@@ -61,16 +61,16 @@ export class FullUserRdo extends UserRdo {
   public caloriesPerDay?: number;
 
   @ApiPropertyOptional({
-    description: 'Сертификат тренера',
-    example: 'certificate.pdf',
-  })
-  @Expose()
-  public certificate?: string;
-
-  @ApiPropertyOptional({
     description: 'Достижения тренера',
     example: 'Список больших и малых достижений',
   })
   @Expose()
   public awards?: string;
+
+  @ApiPropertyOptional({
+    description: 'Сертификат тренера',
+    example: 'certificate.pdf',
+  })
+  @Expose()
+  public certificate?: string;
 }

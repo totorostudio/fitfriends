@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseGuards, Req } from '@nestjs/common';
 import { FriendsService } from './friends.service';
-import { ApiTags, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiBody, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UserRole } from 'src/libs/types';
 import { Role } from 'src/libs/decorators/role.decorator';
 import { BaseQuery } from 'src/libs/query/base-query';
@@ -17,6 +17,9 @@ import { RequestWithTokenPayload } from 'src/libs/requests';
 export class FriendsController {
   constructor(private readonly friendsService: FriendsService) {}
 
+  @ApiOperation({
+    summary: 'Получить список всех друзей пользователя'
+  })
   @ApiResponse({
     schema: {
       example: UsersRdoExample
@@ -24,7 +27,7 @@ export class FriendsController {
     status: HttpStatus.OK,
     description: 'Список всех друзей пользователя',
   })
-  @Role(UserRole.Customer)
+  @ApiBearerAuth('access-token')
   @Get('/')
   public async index(
     @Req() { tokenPayload }: RequestWithTokenPayload,
@@ -33,12 +36,16 @@ export class FriendsController {
     return this.friendsService.getFriends(tokenPayload.sub, query);
   }
 
+  @ApiOperation({
+    summary: 'Добавить в друзья'
+  })
   @ApiBody({ type: UpdateFriendsDto })
   @ApiResponse({
     type: UpdateFriendsRdo,
     status: HttpStatus.OK,
     description: 'Пользователь добавлен в друзья',
   })
+  @ApiBearerAuth('access-token')
   @Post('/add')
   public async add(
     @Req() { tokenPayload }: RequestWithTokenPayload,
@@ -47,12 +54,16 @@ export class FriendsController {
     return this.friendsService.addFriend(tokenPayload.sub, dto);
   }
 
+  @ApiOperation({
+    summary: 'Удалить из друзей'
+  })
   @ApiBody({ type: UpdateFriendsDto })
   @ApiResponse({
     type: UpdateFriendsRdo,
     status: HttpStatus.OK,
     description: 'Пользователь удален из друзей',
   })
+  @ApiBearerAuth('access-token')
   @Post('/remove')
   public async remove(
     @Req() { tokenPayload }: RequestWithTokenPayload,

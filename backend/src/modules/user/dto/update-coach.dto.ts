@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsArray, IsOptional, IsString, Length } from "class-validator";
+import { IsOptional, IsString, Length } from "class-validator";
 import { Expose } from "class-transformer";
 import { BaseUserDto } from ".";
 import { UserAwardsLength } from "src/app.const";
@@ -13,7 +13,7 @@ export class CoachDto extends BaseUserDto {
   @IsOptional()
   @IsString()
   @Expose()
-  public sertificate?: string;
+  public certificate?: string;
 
   @ApiPropertyOptional({
     description: 'Список достижений',

@@ -9,6 +9,7 @@ import { UserDtoValidationPipe } from 'src/libs/pipes';
 import { UUIDValidationPipe } from 'src/libs/pipes/uuid-validation.pipe';
 import { UsersQuery } from './user.query';
 import { RoleGuard } from 'src/libs/guards';
+import { fillDto } from 'src/libs/helpers';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -44,7 +45,8 @@ export class UserController {
   @ApiBearerAuth('access-token')
   @Get('/:userId')
   public async show(@Param('userId', UUIDValidationPipe) id: string) {
-    return this.userService.getUserById(id);
+    const existUser = await this.userService.getUserById(id);
+    return fillDto(FullUserRdo, existUser.toPOJO());
   }
 
   @ApiOperation({

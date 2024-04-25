@@ -67,7 +67,7 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
     };
   }
 
-  public async findByEmail(email: string): Promise<FullUser | null> {
+  public async findByEmail(email: string): Promise<UserEntity | null> {
     return this.findOne('user', { email });
   }
 

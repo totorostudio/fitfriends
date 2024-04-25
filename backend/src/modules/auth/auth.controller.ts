@@ -9,6 +9,7 @@ import { JwtRefreshGuard, LocalAuthGuard, NotAuthGuard } from 'src/libs/guards';
 import { AuthCoachRdo, AuthUserRdo, LoggedUserRdo } from './rdo';
 import { RequestWithRefreshTokenPayload, RequestWithTokenPayload, RequestWithUser } from 'src/libs/requests';
 import { CreateCoachDto, CreateCustomerDto, LoginUserDto } from './dto';
+import { FullUserRdo, UserRdo } from '../user/rdo';
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -79,7 +80,7 @@ export class AuthController {
     summary: 'Проверить авторизацию пользователя'
   })
   @ApiResponse({
-    type: LoggedUserRdo,
+    type: FullUserRdo,
     status: HttpStatus.OK,
     description: 'Пользователь авторизирован.',
   })
@@ -90,6 +91,8 @@ export class AuthController {
   @ApiBearerAuth('access-token')
   @Get('login')
   public async checkAuth(@Req() { tokenPayload }: RequestWithTokenPayload) {
+    const existUser = await this.userService.getUserByEmail(tokenPayload.email);
+    console.log(existUser);
     return this.userService.getUserByEmail(tokenPayload.email);
   }
 

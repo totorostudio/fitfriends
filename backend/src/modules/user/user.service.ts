@@ -1,10 +1,9 @@
 import { Logger, Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { BaseQuery } from 'src/libs/query/base-query';
 import { fillDto } from 'src/libs/helpers';
 import { UserEntity } from './user.entity';
-import { UserRdo, UsersRdo } from './rdo';
-import { UpdateUserDto, UpdateUserDtoType } from './dto';
+import { FullUserRdo, UsersRdo } from './rdo';
+import { UpdateUserDtoType } from './dto';
 import { UsersQuery } from './user.query';
 
 @Injectable()
@@ -30,7 +29,7 @@ export class UserService {
     return fillDto(UsersRdo, {
       ...userEntities,
       users: userEntities.entities.map((entity) =>
-        fillDto(UserRdo, entity.toPOJO()),
+        fillDto(FullUserRdo, entity.toPOJO()),
       ),
     });
   }
@@ -45,17 +44,18 @@ export class UserService {
     return existUser;
   }
 
-  public async getUserByEmail(email: string) {
+  public async getUserByEmail(email: string): Promise<FullUserRdo> {
     const existUser = await this.userRepository.findByEmail(email);
+    console.log(existUser);
 
     if (! existUser) {
       throw new NotFoundException(`User with email ${email} not found`);
     }
 
-    return existUser;
+    return fillDto(FullUserRdo, existUser.toPOJO());
   }
 
-  public async updateUser(userId: string, dto: UpdateUserDtoType): Promise<UserRdo> {
+  public async updateUser(userId: string, dto: UpdateUserDtoType): Promise<FullUserRdo> {
     const existsUser = await this.getUserEntity(userId);
     let hasChanges = false;
 
@@ -67,11 +67,11 @@ export class UserService {
     }
 
     if (!hasChanges) {
-      return fillDto(UserRdo, existsUser.toPOJO());
+      return fillDto(FullUserRdo, existsUser.toPOJO());
     }
 
     const updatedUser = await this.userRepository.update(userId, existsUser);
-    return fillDto(UserRdo, updatedUser.toPOJO());
+    return fillDto(FullUserRdo, updatedUser.toPOJO());
   }
 
   public async updateSubscribers(userId: string, newSubscribers: string[]): Promise<void> {
