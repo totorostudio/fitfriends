@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ValidationPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ValidationPipe, Query, Req } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUIDValidationPipe } from 'src/libs/pipes';
-import { CURRENT_USER_ID } from 'src/app.const';
 import { ReviewRdo, ReviewsRdoExample } from './rdo';
 import { BaseQuery } from 'src/libs/query';
+import { RequestWithTokenPayload } from 'src/libs/requests';
 
 @ApiTags('Отзывы')
 @Controller('review')
@@ -34,12 +34,13 @@ export class ReviewController {
   })
   @Post('/')
   public async createReview(
+    @Req() { tokenPayload }: RequestWithTokenPayload,
     @Body(new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
     })) dto: CreateReviewDto
   ) {
-    return this.reviewService.create(CURRENT_USER_ID, dto);
+    return this.reviewService.create(tokenPayload.sub, dto);
   }
 }

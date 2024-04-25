@@ -82,12 +82,4 @@ export class SubscribeService {
       await this.rabbitService.queueNewTraining({...newTrainingNoticeData, email: subscriber.email, userName: subscriber.name, coachName: coach.name});
     }
   }
-
-  public async sendTestRabbit(emailData: MailNewTrainingDto): Promise<void> {
-    await this.rabbitService.queueTestEmail(emailData);
-  }
-
-  public async sendTestDirect(emailData: MailNewTrainingDto): Promise<void> {
-    await this.mailService.sendTest(emailData);
-  }
 }

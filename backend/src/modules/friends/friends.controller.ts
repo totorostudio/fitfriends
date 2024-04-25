@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, UseGuards, Req } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { ApiTags, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { UserRole } from 'src/libs/types';
@@ -8,9 +8,9 @@ import { UsersRdo, UsersRdoExample } from 'src/modules/user/rdo';
 import { UserDtoValidationPipe } from 'src/libs/pipes';
 import { UUIDValidationPipe } from 'src/libs/pipes/uuid-validation.pipe';
 import { UsersQuery } from 'src/modules/user/user.query';
-import { CURRENT_USER_ID } from 'src/app.const';
 import { UpdateFriendsDto } from './dto/update-friends.dto';
 import { UpdateFriendsRdo } from './rdo/update-friends.rdo';
+import { RequestWithTokenPayload } from 'src/libs/requests';
 
 @ApiTags('Друзья') //TODO нет защиты от повторных удалений/добавлений
 @Controller('friends')
@@ -26,8 +26,11 @@ export class FriendsController {
   })
   @Role(UserRole.Customer)
   @Get('/')
-  public async index(@Query() query: BaseQuery): Promise<UsersRdo> {
-    return this.friendsService.getFriends(CURRENT_USER_ID, query);
+  public async index(
+    @Req() { tokenPayload }: RequestWithTokenPayload,
+    @Query() query: BaseQuery
+  ): Promise<UsersRdo> {
+    return this.friendsService.getFriends(tokenPayload.sub, query);
   }
 
   @ApiBody({ type: UpdateFriendsDto })
@@ -37,8 +40,11 @@ export class FriendsController {
     description: 'Пользователь добавлен в друзья',
   })
   @Post('/add')
-  public async add(@Body() dto: UpdateFriendsDto) {
-    return this.friendsService.addFriend(CURRENT_USER_ID, dto);
+  public async add(
+    @Req() { tokenPayload }: RequestWithTokenPayload,
+    @Body() dto: UpdateFriendsDto
+  ) {
+    return this.friendsService.addFriend(tokenPayload.sub, dto);
   }
 
   @ApiBody({ type: UpdateFriendsDto })
@@ -48,7 +54,10 @@ export class FriendsController {
     description: 'Пользователь удален из друзей',
   })
   @Post('/remove')
-  public async remove(@Body() dto: UpdateFriendsDto) {
-    return this.friendsService.removeFriend(CURRENT_USER_ID, dto);
+  public async remove(
+    @Req() { tokenPayload }: RequestWithTokenPayload,
+    @Body() dto: UpdateFriendsDto
+  ) {
+    return this.friendsService.removeFriend(tokenPayload.sub, dto);
   }
 }

@@ -5,7 +5,7 @@ import { MAX_TRAINING_TYPES, UserDescriptionLength, UserNameLength, UserPassword
 import { DtoValidationMessage } from "src/libs/messages";
 import { Gender, Level, Metro, TrainingType, UserRole } from "src/libs/types";
 
-export class BaseUserDto {
+export class BaseAuthDto {
   @ApiProperty({
     description: 'Email пользователя',
     example: 'user@user.local',

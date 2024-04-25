@@ -12,15 +12,6 @@ export class RabbitController {
 
   @RabbitSubscribe({
     exchange: 'fitfriends.income',
-    routingKey: RabbitRouting.SendTest,
-    queue: 'fitfriends.income',
-  })
-  public async sendTestRabbit(emailData: MailNewTrainingDto) {
-    this.mailService.sendTest(emailData);
-  }
-
-  @RabbitSubscribe({
-    exchange: 'fitfriends.income',
     routingKey: RabbitRouting.AddSubscriber,
     queue: 'fitfriends.income',
   })

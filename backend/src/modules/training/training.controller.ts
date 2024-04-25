@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Query, ValidationPipe, Req } from '@nestjs/common';
 import { TrainingService } from './training.service';
 import { CreateTrainingDto } from './dto/create-training.dto';
 import { UpdateTrainingDto } from './dto/update-training.dto';
@@ -6,7 +6,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TrainingRdo, TrainingsRdoExample, TrainingsRdo } from './rdo';
 import { TrainingQuery } from './training.query';
 import { UUIDValidationPipe } from 'src/libs/pipes';
-import { CURRENT_USER_ID } from 'src/app.const';
+import { RequestWithTokenPayload } from 'src/libs/requests';
 
 @ApiTags('Тренировки')
 @Controller('training')
@@ -32,13 +32,14 @@ export class TrainingController {
   })
   @Post('add')
   public async create(
+    @Req() { tokenPayload }: RequestWithTokenPayload,
     @Body(new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
     })) dto: CreateTrainingDto
   ) {
-    return this.trainingService.create(CURRENT_USER_ID, dto);
+    return this.trainingService.create(tokenPayload.sub, dto);
   }
 
   @ApiResponse({

@@ -14,33 +14,6 @@ export class MailService {
   @Inject(mailConfig.KEY)
   private readonly mailConfig: ConfigType<typeof mailConfig>;
 
-  public async sendTest(emailData: MailNewTrainingDto) {
-    console.log('Preparing to send an email.');
-    try {
-      await this.mailerService.sendMail({
-        from: this.mailConfig.from,
-        to: emailData.email,
-        subject: MailSubject.Test,
-        template: MailTemplate.Test,
-        context: {
-          userName: emailData.userName,
-          coachName: emailData.coachName,
-          title: emailData.title,
-          description: emailData.description,
-          gender: emailData.gender,
-          trainingType: emailData.trainingType,
-          trainingTime: emailData.trainingTime,
-          calories: emailData.calories,
-          price: emailData.price,
-        },
-      });
-      console.log('Email has been sent successfully.');
-    }
-    catch (error) {
-      console.error('Failed to send email:', error);
-   }
-  }
-
   public async sendNewSubscription(emailData: MailNewSubscriptionDto) {
     await this.mailerService.sendMail({
       from: this.mailConfig.from,

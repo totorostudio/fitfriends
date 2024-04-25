@@ -68,15 +68,6 @@ export class BaseUserDto {
   public metro?: Metro;
 
   @ApiPropertyOptional({
-    description: 'Фоновая картинка пользователя',
-    example: 'background-image.png',
-  })
-  @IsOptional()
-  @IsString()
-  @Expose()
-  public background?: string;
-
-  @ApiPropertyOptional({
     description: 'Уровень пользователя',
     example: 'новичок',
   })
@@ -87,7 +78,7 @@ export class BaseUserDto {
 
   @ApiPropertyOptional({
     description: 'Типы тренировок',
-    example: 'йога, бег',
+    example: ['йога', 'бег'],
   })
   @IsOptional()
   @IsArray()
@@ -100,15 +91,6 @@ export class BaseUserDto {
   })
   @Expose()
   public trainingType?: TrainingType[];
-
-  @ApiPropertyOptional({
-    description: 'Список ID подписчиков',
-    example: 'ec998270-3efc-48ee-b3a6-2684ddd278b1, ec998270-3efc-48ee-b3a6-2684ddd278b2',
-  })
-  @IsOptional()
-  @IsArray()
-  @Expose()
-  public subscribers?: string[];
 
   @ApiPropertyOptional({
     description: 'Готовность к тренировке?',

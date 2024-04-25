@@ -6,25 +6,11 @@ import { UserRole } from 'src/libs/types';
 import { UUIDValidationPipe } from 'src/libs/pipes';
 import { RoleGuard } from 'src/libs/guards';
 import { RequestWithTokenPayload } from 'src/libs/requests';
-import { TEST_USER } from 'src/app.const';
 
 @ApiTags('Уведомления о новых тренировках')
 @Controller('subscribe')
 export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
-
-  @ApiOperation({
-    summary: 'Отправка тестового почтового сообщения через RabbitMQ'
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Тестовое сообщение через RabbitMQ отправлено',
-  })
-  @Public()
-  @Post('test-rabbit')
-  public async sendTestRabbit() {
-    await this.subscribeService.sendTestRabbit(TEST_USER);
-  }
 
   @ApiResponse({
     status: HttpStatus.CREATED,

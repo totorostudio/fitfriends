@@ -2,11 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 import { IsEnum, IsInt, Max, Min } from "class-validator";
 import { DtoValidationMessage } from "src/libs/messages";
-import { BaseUserDto } from "./base-user.dto";
+import { BaseAuthDto } from "./base-auth.dto";
 import { Calories } from "src/app.const";
 import { TrainingTime } from "src/libs/types";
 
-export class CreateCustomerDto extends BaseUserDto {
+export class CreateCustomerDto extends BaseAuthDto {
   @ApiProperty({
     description: 'Калорий к сбросу',
     example: '3200',

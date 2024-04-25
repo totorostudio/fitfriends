@@ -3,9 +3,9 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Role } from "src/libs/decorators";
 import { UserRole } from "src/libs/types";
 import { BalanceService } from "./balance.service";
-import { CURRENT_USER_ID } from "src/app.const";
 import { UUIDValidationPipe } from "src/libs/pipes";
 import { BalancesRdo } from "./rdo/balances.rdo";
+import { RequestWithTokenPayload } from "src/libs/requests";
 
 @ApiTags('Баланс пользователя')
 @Controller('balance')
@@ -19,8 +19,8 @@ export class BalanceController {
   })
   @Role(UserRole.Customer)
   @Get()
-  public async index() {
-    return this.balanceService.find(CURRENT_USER_ID);
+  public async index(@Req() { tokenPayload }: RequestWithTokenPayload) {
+    return this.balanceService.find(tokenPayload.sub);
   }
 
   @ApiResponse({
@@ -29,7 +29,9 @@ export class BalanceController {
   })
   @Role(UserRole.Customer)
   @Patch(':trainingId')
-  public async update(@Param('trainingId', UUIDValidationPipe) trainingId: string ) {
-    return this.balanceService.spendBalance(CURRENT_USER_ID, trainingId);
+  public async update(
+    @Req() { tokenPayload }: RequestWithTokenPayload,
+    @Param('trainingId', UUIDValidationPipe) trainingId: string ) {
+    return this.balanceService.spendBalance(tokenPayload.sub, trainingId);
   }
 }

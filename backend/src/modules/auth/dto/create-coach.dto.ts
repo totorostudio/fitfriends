@@ -2,11 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 import { IsEnum, IsString, Length } from "class-validator";
 import { DtoValidationMessage } from "src/libs/messages";
-import { BaseUserDto } from "./base-user.dto";
+import { BaseAuthDto } from "./base-auth.dto";
 import { UserAwardsLength } from "src/app.const";
 import { UserRole } from "src/libs/types";
 
-export class CreateCoachDto extends BaseUserDto {
+export class CreateCoachDto extends BaseAuthDto {
   @ApiProperty({
     description: 'Роль пользователя',
     example: 'тренер',
@@ -17,7 +17,7 @@ export class CreateCoachDto extends BaseUserDto {
 
   @ApiProperty({
     description: 'Сертификаты тренера',
-    example: 'certificate.jpg',
+    example: 'certificate.pdf',
   })
   @IsString()
   @Expose()

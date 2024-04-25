@@ -51,7 +51,7 @@ export const mockUsers = [
   },
   {
     name: 'Евгения',
-    email: `evgeniya@local.mail`,
+    email: `user@fitfriends.local`,
     password: DEFAULT_PASSWORD,
     gender: 'женский',
     role: 'пользователь',

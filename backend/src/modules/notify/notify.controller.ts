@@ -1,9 +1,9 @@
-import { Controller, Get, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Delete, HttpStatus, Req } from '@nestjs/common';
 import { NotifyService } from './notify.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CURRENT_USER_ID } from 'src/app.const';
 import { UUIDValidationPipe } from 'src/libs/pipes';
 import { NotifyRdo } from './rdo';
+import { RequestWithTokenPayload } from 'src/libs/requests';
 
 @ApiTags('Оповещения')
 @Controller('notify')
@@ -16,8 +16,8 @@ export class NotifyController {
     description: 'Список 5 последних оповещений пользователя',
   })
   @Get()
-  public async find() {
-    return this.notifyService.find(CURRENT_USER_ID);
+  public async find(@Req() { tokenPayload }: RequestWithTokenPayload) {
+    return this.notifyService.find(tokenPayload.sub);
   }
 
   @ApiResponse({
@@ -26,8 +26,9 @@ export class NotifyController {
   })
   @Delete(':id')
   public async delete(
+    @Req() { tokenPayload }: RequestWithTokenPayload,
     @Param('id', UUIDValidationPipe) id: string,
   ) {
-    await this.notifyService.remove(id, CURRENT_USER_ID);
+    await this.notifyService.remove(id, tokenPayload.sub);
   }
 }

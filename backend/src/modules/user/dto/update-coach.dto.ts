@@ -8,7 +8,7 @@ import { DtoValidationMessage } from "src/libs/messages";
 export class CoachDto extends BaseUserDto {
   @ApiPropertyOptional({
     description: 'Сертификаты тренера',
-    example: 'certificate.jpg',
+    example: 'certificate.pdf',
   })
   @IsOptional()
   @IsString()

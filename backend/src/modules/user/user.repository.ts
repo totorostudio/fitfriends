@@ -68,7 +68,7 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
   }
 
   public async findByEmail(email: string): Promise<FullUser | null> {
-    return this.findOne('user', { email }); //TODO проверить что users корректно, по идее должно быть user
+    return this.findOne('user', { email });
   }
 
   public async findById(id: string): Promise<UserEntity | null> {

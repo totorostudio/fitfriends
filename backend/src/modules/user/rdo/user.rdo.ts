@@ -11,18 +11,18 @@ export class UserRdo {
   public id: string;
 
   @ApiProperty({
+    description: 'Имя пользователя',
+    example: 'Иван',
+  })
+  @Expose()
+  public name: string;
+
+  @ApiProperty({
     description: 'Аватар пользователя',
     example: 'image.jpg',
   })
   @Expose()
   public avatar: string;
-
-  @ApiProperty({
-    description: 'Имя пользователя',
-    example: 'John',
-  })
-  @Expose()
-  public name: string;
 
   @ApiProperty({
     description: 'Роль пользователя',
@@ -54,7 +54,7 @@ export class UserRdo {
 
   @ApiProperty({
     description: 'Типы тренировок пользователя',
-    example: 'йога, бег',
+    example: ['йога', 'бег'],
   })
   @Expose()
   public trainingType: TrainingType[];

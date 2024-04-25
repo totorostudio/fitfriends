@@ -13,14 +13,6 @@ export class RabbitService {
     private readonly rabbitOptions: ConfigType<typeof rabbitConfig>
   ) {}
 
-  public async queueTestEmail(dto: MailNewTrainingDto) {
-    await this.rabbitClient.publish(
-      this.rabbitOptions.exchange,
-      RabbitRouting.SendTest,
-      { ...dto }
-    );
-  }
-
   public async queueNewSubscription(dto: MailNewSubscriptionDto) {
     await this.rabbitClient.publish(
       this.rabbitOptions.exchange,
