@@ -47,6 +47,9 @@ export class BookingController {
     return this.bookingService.create(tokenPayload.sub, createBookingDto);
   }
 
+  @ApiOperation({
+    summary: 'Изменить статус заявки на персональную/совместную тренировку'
+  })
   @ApiResponse({
     type: BookingRdo,
     status: HttpStatus.OK,

@@ -1,5 +1,5 @@
-import { Body, Controller, Get, HttpStatus, Post, Query, Req } from "@nestjs/common";
-import { ApiBody, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, HttpStatus, Post, Query, Req, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Role } from "src/libs/decorators";
 import { UserRole } from "src/libs/types";
 import { OrderService } from "./order.service";
@@ -7,12 +7,16 @@ import { CreateOrderDto } from "./dto";
 import { OrderRdo } from "./rdo";
 import { OrderQuery } from "./query";
 import { RequestWithTokenPayload } from "src/libs/requests";
+import { RoleGuard } from "src/libs/guards";
 
 @ApiTags('Заказы')
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @ApiOperation({
+    summary: 'Создать новый заказ'
+  })
   @ApiResponse({
     type: OrderRdo,
     status: HttpStatus.CREATED,
@@ -20,6 +24,8 @@ export class OrderController {
   })
   @ApiBody({ type: CreateOrderDto })
   @Role(UserRole.Customer)
+  @UseGuards(RoleGuard)
+  @ApiBearerAuth('access-token')
   @Post()
   public async create(
     @Req() { tokenPayload }: RequestWithTokenPayload,
@@ -28,6 +34,9 @@ export class OrderController {
     return this.orderService.create(tokenPayload.sub, dto);
   }
 
+  @ApiOperation({
+    summary: 'Получить список заказов тренера'
+  })
   @ApiResponse({
     type: OrderRdo,
     status: HttpStatus.OK,
@@ -35,6 +44,8 @@ export class OrderController {
   })
   @ApiQuery({ type: OrderQuery })
   @Role(UserRole.Coach)
+  @UseGuards(RoleGuard)
+  @ApiBearerAuth('access-token')
   @Get()
   public async indexByCoach(
     @Req() { tokenPayload }: RequestWithTokenPayload,

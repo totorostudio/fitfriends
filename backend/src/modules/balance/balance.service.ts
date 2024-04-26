@@ -56,7 +56,9 @@ export class BalanceService {
       );
     }
     balance.count = balance.count - 1;
-    await this.balanceRepository.update(balance.id, balance);
+    const newBalance = await this.balanceRepository.update(balance.id, balance);
+
+    return fillDto(BalanceRdo, newBalance.toPOJO());
   }
 
   public async topUpBalance(userId: string, trainingId: string, newCount: number) {
