@@ -43,8 +43,8 @@ export class UserController {
     description: 'Пользователь найден',
   })
   @ApiBearerAuth('access-token')
-  @Get('/:userId')
-  public async show(@Param('userId', UUIDValidationPipe) id: string) {
+  @Get('/:id')
+  public async show(@Param('id', UUIDValidationPipe) id: string) {
     const existUser = await this.userService.getUserById(id);
     return fillDto(FullUserRdo, existUser.toPOJO());
   }
@@ -59,11 +59,11 @@ export class UserController {
     description: 'Данные пользователя успешно изменены',
   })
   @ApiBearerAuth('access-token')
-  @Patch('/:userId')
+  @Patch('/:id')
   public async update(
-    @Param('userId') userId: string,
+    @Param('id') id: string,
     @Body(new UserDtoValidationPipe(UpdateUserDto)) dto: UpdateUserDtoType
   ) {
-    return this.userService.updateUser(userId, dto);
+    return this.userService.updateUser(id, dto);
   }
 }
