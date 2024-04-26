@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Delete, HttpStatus, Req } from '@nestjs/common';
 import { NotifyService } from './notify.service';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UUIDValidationPipe } from 'src/libs/pipes';
 import { NotifyRdo } from './rdo';
 import { RequestWithTokenPayload } from 'src/libs/requests';
@@ -10,6 +10,9 @@ import { RequestWithTokenPayload } from 'src/libs/requests';
 export class NotifyController {
   constructor(private readonly notifyService: NotifyService) {}
 
+  @ApiOperation({
+    summary: 'Список оповещений пользователя'
+  })
   @ApiResponse({
     type: [NotifyRdo],
     status: HttpStatus.OK,
@@ -21,6 +24,9 @@ export class NotifyController {
     return this.notifyService.find(tokenPayload.sub);
   }
 
+  @ApiOperation({
+    summary: 'Удалить оповещение'
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Оповещение успешно удалено',

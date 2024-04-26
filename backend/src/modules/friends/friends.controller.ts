@@ -4,8 +4,8 @@ import { ApiTags, ApiResponse, ApiBody, ApiOperation, ApiBearerAuth } from '@nes
 import { BaseQuery } from 'src/libs/query/base-query';
 import { UsersRdo, UsersRdoExample } from 'src/modules/user/rdo';
 import { UserDtoValidationPipe } from 'src/libs/pipes';
-import { UpdateFriendsDto } from './dto/update-friends.dto';
-import { UpdateFriendsRdo } from './rdo/update-friends.rdo';
+import { UpdateFriendsDto } from './dto';
+import { UpdateFriendsRdo } from './rdo';
 import { RequestWithTokenPayload } from 'src/libs/requests';
 
 @ApiTags('Друзья') //TODO нет защиты от повторных удалений/добавлений

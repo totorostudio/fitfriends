@@ -5,14 +5,14 @@ import { Level, Gender, TrainingType, TrainingTime } from 'src/libs/types';
 export class TrainingRdo {
   @ApiProperty({
     description: 'Уникальный ID тренировки',
-    example: '225577',
+    example: 'ec998270-3efc-48ee-b3a6-2684ddd278b1',
   })
   @Expose()
   public id: string;
 
   @ApiProperty({
     description: 'Дата создания тренировки',
-    example: '22.04.1983',
+    example: '2024-04-08T12:25:09.716Z',
   })
   @Expose()
   public createdAt: Date;
@@ -96,7 +96,7 @@ export class TrainingRdo {
 
   @ApiProperty({
     description: 'ID тренера',
-    example: '2321323',
+    example: '0fe7dbca-7249-4c1d-bc5e-c60b3b369783',
   })
   @Expose()
   public coachId: string;

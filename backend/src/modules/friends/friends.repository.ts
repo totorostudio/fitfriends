@@ -1,15 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaClientService } from 'src/libs/models/prisma/prisma-client.service';
 import { BasePostgresRepository } from 'src/libs/models/repository/base-postgres.repository';
-import { BaseUser, FullUser } from 'src/libs/types';
+import { FullUser } from 'src/libs/types';
 import { UserEntity } from 'src/modules/user/user.entity';
 import { DefaultPojoType } from 'src/libs/models/repository/entity.interface';
 import { DEFAULT_PAGE, DEFAULT_SORT_DIRECTION, LIST_LIMIT } from 'src/app.const';
 import { Pagination } from 'src/libs/types';
 import { calculatePages } from 'src/libs/helpers';
 import { UsersQuery } from 'src/modules/user/user.query';
-import { UpdateFriendsRdo } from './rdo/update-friends.rdo';
+import { UpdateFriendsRdo } from './rdo';
 
 @Injectable()
 export class FriendsRepository extends BasePostgresRepository<UserEntity> {

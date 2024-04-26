@@ -3,7 +3,7 @@ import { FriendsRepository } from './friends.repository';
 import { fillDto } from 'src/libs/helpers';
 import { UserRdo, UsersRdo } from 'src/modules/user/rdo';
 import { UsersQuery } from 'src/modules/user/user.query';
-import { UpdateFriendsDto } from './dto/update-friends.dto';
+import { UpdateFriendsDto } from './dto';
 import { NotifyService } from '../notify/notify.service';
 import { UserService } from '../user/user.service';
 
@@ -32,8 +32,8 @@ export class FriendsService {
     const friend = await this.userService.getUserEntity(friendId);
     const response = await this.friendsRepository.add(currentUserId, friendId);
 
-    await this.notifyService.create(currentUserId, `${friend.name} добавлен в друзья`);
-    await this.notifyService.create(friendId, `${currentUser.name} добавил вас в друзья`);
+    await this.notifyService.create(currentUserId, `${friend.name} добавлен(а) в друзья`);
+    await this.notifyService.create(friendId, `${currentUser.name} добавил(а) вас в друзья`);
 
     return response;
   }
