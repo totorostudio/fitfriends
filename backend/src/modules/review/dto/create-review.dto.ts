@@ -7,7 +7,7 @@ import { DtoValidationMessage } from 'src/libs/messages';
 export class CreateReviewDto {
   @ApiPropertyOptional({
     description: 'ID тренировки',
-    example: '12324455',
+    example: '02ef1619-0823-4c95-a66a-84c6cd0abbb4',
   })
   @IsString()
   @Expose()

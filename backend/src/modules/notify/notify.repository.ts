@@ -10,14 +10,10 @@ import { NotifyEntity } from './notify.entity';
 @Injectable()
 export class NotifyRepository extends BasePostgresRepository<NotifyEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('notify', prismaService, (document: DefaultPojoType) => {
       const notify = document as unknown as Notify;
       return NotifyEntity.fromObject(notify);
     });
-  }
-
-  protected getModelName(): string {
-    return ('notify');
   }
 
   public async find(userId: string): Promise<NotifyEntity[]> {

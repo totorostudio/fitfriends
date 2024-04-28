@@ -14,14 +14,10 @@ import { UpdateFriendsRdo } from './rdo';
 @Injectable()
 export class FriendsRepository extends BasePostgresRepository<UserEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('user', prismaService, (document: DefaultPojoType) => {
       const user = document as unknown as FullUser;
       return UserEntity.fromObject(user);
     });
-  }
-
-  protected getModelName(): string {
-    return ('user');
   }
 
   public async find(currentUserId: string, query?: UsersQuery): Promise<Pagination<UserEntity>> {

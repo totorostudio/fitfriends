@@ -13,14 +13,10 @@ import { BaseQuery } from 'src/libs/query';
 @Injectable()
 export class BalanceRepository extends BasePostgresRepository<BalanceEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('balance', prismaService, (document: DefaultPojoType) => {
       const balance = document as unknown as Balance;
       return BalanceEntity.fromObject(balance);
     });
-  }
-
-  protected getModelName(): string {
-    return ('balance');
   }
 
   public async findBalance(userId: string, trainingId: string): Promise<BalanceEntity | null> {

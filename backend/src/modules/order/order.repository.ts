@@ -13,14 +13,10 @@ import { OrderQuery } from './query';
 @Injectable()
 export class OrderRepository extends BasePostgresRepository<OrderEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('order', prismaService, (document: DefaultPojoType) => {
       const order = document as unknown as Order;
       return OrderEntity.fromObject(order);
     });
-  }
-
-  protected getModelName(): string {
-    return ('order');
   }
 
   public async find(coachId: string, query?: OrderQuery): Promise<Pagination<OrderEntity>> {

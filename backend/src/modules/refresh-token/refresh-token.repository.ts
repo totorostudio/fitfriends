@@ -9,11 +9,7 @@ export class RefreshTokenRepository extends BasePostgresRepository<RefreshTokenE
   constructor(
     private readonly prismaService: PrismaClientService
   ) {
-    super(prismaService, RefreshTokenEntity.fromObject);
-  }
-
-  protected getModelName(): string {
-    return ('refreshToken');
+    super('refreshToken', prismaService, RefreshTokenEntity.fromObject);
   }
 
   async createRefreshToken(data: Prisma.RefreshTokenCreateInput): Promise<RefreshToken> {

@@ -12,14 +12,10 @@ import { calculatePages } from 'src/libs/helpers';
 @Injectable()
 export class ReviewRepository extends BasePostgresRepository<ReviewEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('review', prismaService, (document: DefaultPojoType) => {
       const review = document as unknown as Review;
       return ReviewEntity.fromObject(review);
     });
-  }
-
-  protected getModelName(): string {
-    return ('review');
   }
 
   public async save(reviewInput: ReviewEntity): Promise<ReviewEntity> {

@@ -9,20 +9,14 @@ import { Pagination } from 'src/libs/types';
 import { calculatePages } from 'src/libs/helpers';
 import { TrainingEntity } from './training.entity';
 import { TrainingQuery } from './training.query';
-import { UpdateFriendsRdo } from '../friends/rdo/update-friends.rdo';
-import { TrainingRdo } from './rdo';
 
 @Injectable()
 export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('training', prismaService, (document: DefaultPojoType) => {
       const training = document as unknown as Training;
       return TrainingEntity.fromObject(training);
     });
-  }
-
-  protected getModelName(): string {
-    return ('training');
   }
 
   public async find(query?: TrainingQuery): Promise<Pagination<TrainingEntity>> {

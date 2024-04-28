@@ -4,5 +4,5 @@ import { ReviewRdo } from './review.rdo';
 
 export class ReviewsRdo extends BasePaginationRdo {
   @Expose()
-  public users: ReviewRdo[];
+  public reviews: ReviewRdo[];
 }

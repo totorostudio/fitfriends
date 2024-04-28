@@ -13,14 +13,10 @@ import { UsersQuery } from './user.query';
 @Injectable()
 export class UserRepository extends BasePostgresRepository<UserEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('user', prismaService, (document: DefaultPojoType) => {
       const user = document as unknown as FullUser;
       return UserEntity.fromObject(user);
     });
-  }
-
-  protected getModelName(): string {
-    return ('user');
   }
 
   public async find(query?: UsersQuery): Promise<Pagination<UserEntity>> {

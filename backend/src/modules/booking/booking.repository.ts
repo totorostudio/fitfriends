@@ -9,14 +9,10 @@ import { Prisma } from "@prisma/client";
 @Injectable()
 export class BookingRepository extends BasePostgresRepository<BookingEntity> {
   constructor(prismaService: PrismaClientService) {
-    super(prismaService, (document: DefaultPojoType) => {
+    super('booking', prismaService, (document: DefaultPojoType) => {
       const booking = document as unknown as Booking;
       return BookingEntity.fromObject(booking);
     });
-  }
-
-  protected getModelName(): string {
-    return ('booking');
   }
 
   public async isPending(senderId: string, recipientId: string ): Promise<boolean> {

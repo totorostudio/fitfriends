@@ -46,7 +46,7 @@ export class ReviewService {
     const reviewEntities = await this.reviewRepository.find(trainingId, query);
     return fillDto(ReviewsRdo, {
       ...reviewEntities,
-      users: reviewEntities.entities.map((entity) =>
+      reviews: reviewEntities.entities.map((entity) =>
         fillDto(ReviewRdo, entity.toPOJO()),
       ),
     });

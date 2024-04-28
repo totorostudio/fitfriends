@@ -11,11 +11,14 @@ export abstract class BasePostgresRepository<
   > implements Repository<EntityType, DocumentType> {
 
   constructor(
+    private readonly modelName: string,
     protected readonly client: PrismaClientService,
     private readonly createEntity: (document: DocumentType) => EntityType,
   ) {}
 
-  protected abstract getModelName(): string;
+  protected getModelName(): string {
+    return this.modelName;
+  }
 
   protected createEntityFromDocument(document: DocumentType): EntityType | null {
     if (! document) {

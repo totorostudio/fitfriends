@@ -3,7 +3,7 @@ export const ReviewsRdoExample = {
   totalItems: 2,
   currentPage: 1,
   itemsPerPage: 10,
-  users: [
+  reviews: [
     {
       id: '6c19d1e5-bab0-4f4e-938e-b37e86c15c8a',
       createdAt: '2024-04-09T10:10:38.995Z',
