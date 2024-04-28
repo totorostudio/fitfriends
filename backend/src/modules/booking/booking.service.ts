@@ -21,12 +21,14 @@ export class BookingService {
 
   public async create(senderId: string, { recipientId }: CreateBookingDto): Promise<BookingRdo> {
     if (senderId === recipientId) {
+      this.logger.error(`Failed to create booking: sender and recipient are the same (ID: ${senderId})`);
       throw new BadRequestException(
         `Вы не можете отправить заявку на тренировку самому себе`,
       );
     }
 
     if (await this.bookingRepository.isPending(senderId, recipientId)) {
+      this.logger.warn(`Pending booking already exists between senderId ${senderId} and recipientId ${recipientId}`);
       throw new ConflictException(
         `Заявка на тренировку уже отправлена и ожидает`,
       );
@@ -34,6 +36,7 @@ export class BookingService {
 
     const recipient = await this.userService.getUserEntity(recipientId);
     if (!recipient.isReady) {
+      this.logger.error(`Recipient with ID ${recipientId} is not ready to train`);
       throw new BadRequestException(
         `Пользователь с ID ${recipientId} не готов тренироваться`,
       );
@@ -63,16 +66,19 @@ export class BookingService {
     const booking = await this.bookingRepository.findById(bookingId);
 
     if (!booking) {
+      this.logger.error(`Booking with id ${bookingId} not found`);
       throw new NotFoundException(
         `Заявка на тренировку с id ${bookingId} не найдена.`,
       );
     }
 
     if (currentUserId !== booking.recipientId) {
+      this.logger.error(`Unauthorized update attempt: User ${currentUserId} tried to update booking ${bookingId} without proper rights`);
       throw new ForbiddenException();
     }
 
     if (booking.status === status) {
+      this.logger.error(`Booking status the same as current: ${status}`);
       throw new ConflictException(
         `Текущий статус заявки на тренировку уже ${status}`,
       );

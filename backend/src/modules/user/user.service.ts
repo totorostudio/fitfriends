@@ -18,6 +18,7 @@ export class UserService {
     const existsUser = await this.userRepository.findById(userId);
 
     if (!existsUser) {
+      this.logger.warn(`User with id ${userId} not found`);
       throw new NotFoundException(`User with id ${userId} not found`);
     }
 
@@ -26,6 +27,7 @@ export class UserService {
 
   public async getAllUsers(query?: UsersQuery): Promise<UsersRdo> {
     const userEntities = await this.userRepository.find(query);
+
     return fillDto(UsersRdo, {
       ...userEntities,
       users: userEntities.entities.map((entity) =>
@@ -37,8 +39,9 @@ export class UserService {
   public async getUserById(id: string) {
     const existUser = await this.userRepository.findById(id);
 
-    if (! existUser) {
-      throw new NotFoundException(`User with id ${id} not found`);
+    if (!existUser) {
+      this.logger.warn(`User with id ${id} not found`);
+      throw new NotFoundException(`Пользователь с id ${id} не найден`);
     }
 
     return existUser;
@@ -46,13 +49,15 @@ export class UserService {
 
   public async getUserByEmail(email: string): Promise<FullUserRdo> {
     const existUser = await this.userRepository.findByEmail(email);
-    console.log(existUser);
 
     if (! existUser) {
-      throw new NotFoundException(`User with email ${email} not found`);
+      this.logger.warn(`User not found by email: ${email}`);
+      throw new NotFoundException(`Пользователь с email ${email} не найден`);
     }
 
-    return fillDto(FullUserRdo, existUser.toPOJO());
+    const user = fillDto(FullUserRdo, existUser.toPOJO());
+
+    return user;
   }
 
   public async updateUser(userId: string, dto: UpdateUserDtoType): Promise<FullUserRdo> {
@@ -71,11 +76,18 @@ export class UserService {
     }
 
     const updatedUser = await this.userRepository.update(userId, existsUser);
+
     return fillDto(FullUserRdo, updatedUser.toPOJO());
   }
 
   public async updateSubscribers(userId: string, newSubscribers: string[]): Promise<void> {
     const existsUser = await this.getUserEntity(userId);
+
+    if (!existsUser) {
+      this.logger.error(`User not found with ID: ${userId} during updateSubscribers`);
+      throw new NotFoundException(`Пользователь с id ${userId} не найден`);
+    }
+
     existsUser.subscribers = newSubscribers;
 
     await this.userRepository.update(userId, existsUser);

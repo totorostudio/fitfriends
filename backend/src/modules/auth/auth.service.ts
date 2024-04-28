@@ -47,6 +47,7 @@ export class AuthService {
     const existedUser = (await this.userRepository.findByEmail(email));
 
     if (existedUser) {
+      this.logger.warn(`Customer registration failed: ${email} already exists.`);
       throw new ConflictException(UserMessage.Exists);
     }
 
@@ -99,6 +100,7 @@ export class AuthService {
     const existedUser = (await this.userRepository.findByEmail(email));
 
     if (existedUser) {
+      this.logger.warn(`Coach registration failed: ${email} already exists.`);
       throw new ConflictException(UserMessage.Exists);
     }
 
@@ -134,22 +136,26 @@ export class AuthService {
     const existUser = await this.userRepository.findByEmail(email) as UserEntity;
 
     if (!existUser) {
+      this.logger.warn(`User not found for email: ${email}`);
       throw new NotFoundException(UserMessage.NotFound);
     }
 
-    if (!(await existUser.comparePassword(password))) {
+    const isPasswordMatch = await existUser.comparePassword(password);
+
+    if (!isPasswordMatch) {
+      this.logger.warn(`Incorrect password attempt for email: ${email}`);
       throw new UnauthorizedException(UserMessage.PasswordWrong);
     }
 
     return existUser;
   }
 
-  public async refreshUserToken(
-    payload: RefreshTokenPayload,
-  ): Promise<LoggedUserRdo> {
+  public async refreshUserToken(payload: RefreshTokenPayload): Promise<LoggedUserRdo> {
     await this.refreshTokenService.deleteRefreshSession(payload.tokenId);
     const user = await this.userService.getUserEntity(payload.sub);
-    return this.createUserToken(user);
+    const newUserToken = this.createUserToken(user);
+
+    return newUserToken;
   }
 
   public async createUserToken(user: UserEntity): Promise<LoggedUserRdo> {
@@ -158,6 +164,7 @@ export class AuthService {
       ...accessTokenPayload,
       tokenId: crypto.randomUUID(),
     };
+
     await this.refreshTokenService.createRefreshSession(refreshTokenPayload);
 
     try {

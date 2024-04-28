@@ -9,7 +9,7 @@ import { JwtRefreshGuard, LocalAuthGuard, NotAuthGuard } from 'src/libs/guards';
 import { AuthCoachRdo, AuthUserRdo, LoggedUserRdo } from './rdo';
 import { RequestWithRefreshTokenPayload, RequestWithTokenPayload, RequestWithUser } from 'src/libs/requests';
 import { CreateCoachDto, CreateCustomerDto, LoginUserDto } from './dto';
-import { FullUserRdo, UserRdo } from '../user/rdo';
+import { FullUserRdo } from '../user/rdo';
 
 @ApiTags('Авторизация')
 @Controller('auth')

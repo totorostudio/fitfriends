@@ -23,7 +23,9 @@ export class BalanceService {
       count: 0,
     });
 
-    return this.balanceRepository.save(balanceEntity);
+    const savedBalance = await this.balanceRepository.save(balanceEntity);
+
+    return savedBalance;
   }
 
   private async findBalance(userId: string, trainingId: string ): Promise<BalanceEntity> {
@@ -41,6 +43,7 @@ export class BalanceService {
 
     const balancesData = await Promise.all(balanceEntities.entities.map(async (entity) => {
       const training = await this.trainingService.getTrainingEntity(entity.trainingId);
+
       return fillDto(BalanceRdo, {
         ...entity.toPOJO(),
         training: training
@@ -59,12 +62,15 @@ export class BalanceService {
     const balance = await this.findBalance(userId, trainingId);
 
     if (balance.count < 1) {
+      this.logger.error(`Insufficient balance for training ID: ${trainingId} to debit`);
       throw new ConflictException(
         `Недостаточный баланс тренировки ${trainingId} для списания`,
       );
     }
+
     balance.count = balance.count - 1;
     const newBalance = await this.balanceRepository.update(balance.id, balance);
+
     const training = await this.trainingService.getTrainingEntity(trainingId);
 
     return fillDto(BalanceRdo, {
@@ -77,6 +83,7 @@ export class BalanceService {
     const balance = await this.findBalance(userId, trainingId);
 
     balance.count = balance.count + newCount;
+
     await this.balanceRepository.update(balance.id, balance);
   }
 }
