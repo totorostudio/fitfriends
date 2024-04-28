@@ -15,6 +15,14 @@ export class BaseUserDto {
   public avatar?: string;
 
   @ApiPropertyOptional({
+    description: 'Фоновое изображение профиля пользователя',
+    example: 'background.jpg',
+  })
+  @IsOptional()
+  @Expose()
+  public background?: string;
+
+  @ApiPropertyOptional({
     description: 'День рождения пользователя',
     example: '1981-03-12',
   })

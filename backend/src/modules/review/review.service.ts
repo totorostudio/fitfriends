@@ -5,14 +5,21 @@ import { ReviewEntity } from './review.entity';
 import { ReviewRdo, ReviewsRdo } from './rdo';
 import { fillDto } from 'src/libs/helpers';
 import { BaseQuery } from 'src/libs/query';
+import { TrainingService } from '../training/training.service';
 
 @Injectable()
 export class ReviewService {
   private readonly logger = new Logger(ReviewService.name);
 
   constructor(
-    private readonly reviewRepository: ReviewRepository
+    private readonly reviewRepository: ReviewRepository,
+    private readonly trainingService: TrainingService,
   ) {}
+
+  private async saveRating(trainingId: string): Promise<void> {
+    const rating = await this.reviewRepository.calculateRating(trainingId);
+    await this.trainingService.updateRating(trainingId, rating);
+  }
 
   public async create(userId: string, createReviewDto: CreateReviewDto): Promise<ReviewRdo> {
     const {
@@ -31,6 +38,7 @@ export class ReviewService {
     const reviewEntity = new ReviewEntity(newReview);
 
     const review = await this.reviewRepository.save(reviewEntity);
+    await this.saveRating(trainingId);
     return fillDto(ReviewRdo, review.toPOJO());
   }
 

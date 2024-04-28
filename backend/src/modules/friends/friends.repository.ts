@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaClientService } from 'src/libs/models/prisma/prisma-client.service';
 import { BasePostgresRepository } from 'src/libs/models/repository/base-postgres.repository';
@@ -63,6 +63,10 @@ export class FriendsRepository extends BasePostgresRepository<UserEntity> {
 
   public async add(currentUserId: string, friendId: string): Promise<UpdateFriendsRdo> {
 
+    if (currentUserId === friendId) {
+      throw new ConflictException('Вы не можете добавить себя в друзья');
+    }
+
     const currentUser = await this.client.user.findUnique({
       where: { id: currentUserId },
       select: { friends: true },
@@ -74,7 +78,11 @@ export class FriendsRepository extends BasePostgresRepository<UserEntity> {
     });
 
     if (!currentUser || !friendUser) {
-      throw new Error('Один из пользователей не найден');
+      throw new NotFoundException('Один из пользователей не найден');
+    }
+
+    if (currentUser.friends.includes(friendId)) {
+      throw new ConflictException(`Пользователь с id ${friendId} уже ваш друг`);
     }
 
     const updatedCurrentUserFriendsList = currentUser.friends.includes(friendId) ? currentUser.friends : [...currentUser.friends, friendId];

@@ -39,12 +39,20 @@ export class BalanceService {
   public async find(currentUserId: string): Promise<BalancesRdo> {
     const balanceEntities = await this.balanceRepository.find(currentUserId);
 
-    return fillDto(BalancesRdo, {
+    const balancesData = await Promise.all(balanceEntities.entities.map(async (entity) => {
+      const training = await this.trainingService.getTrainingEntity(entity.trainingId);
+      return fillDto(BalanceRdo, {
+        ...entity.toPOJO(),
+        training: training
+      });
+    }));
+
+    const data = {
       ...balanceEntities,
-      users: balanceEntities.entities.map((entity) =>
-        fillDto(BalanceRdo, entity.toPOJO()),
-      ),
-    });
+      balances: balancesData,
+    };
+
+    return fillDto(BalancesRdo, data);
   }
 
   public async spendBalance(userId: string, trainingId: string) {
@@ -57,8 +65,13 @@ export class BalanceService {
     }
     balance.count = balance.count - 1;
     const newBalance = await this.balanceRepository.update(balance.id, balance);
+    const training = await this.trainingService.getTrainingEntity(trainingId);
+    console.log(newBalance);
 
-    return fillDto(BalanceRdo, newBalance.toPOJO());
+    return fillDto(BalanceRdo, {
+      ...newBalance.toPOJO(),
+      training: training
+    });
   }
 
   public async topUpBalance(userId: string, trainingId: string, newCount: number) {

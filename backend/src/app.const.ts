@@ -1,4 +1,4 @@
-import { BookingStatus, Gender, SortOrder, TrainingTime, TrainingType } from "src/libs/types";
+import { BookingStatus, SortOrder } from "src/libs/types";
 
 export const SALT_ROUNDS = 10;
 
@@ -77,11 +77,11 @@ export const MailTemplate = {
   Test: './test',
 } as const;
 
-export const ImageFile = {
-  MimeTypes: ['image/png', 'image/jpeg'],
-  MaxSize: 1000000,
+export const FileParams = {
+  MimeTypes: ['image/png', 'image/jpeg', 'application/pdf'],
+  MaxSize: 2000000,
 };
 
-export const VideoFile = {
+export const VideoParams = {
   MimeTypes: ['video/mov', 'video/mp4', 'video/avi'],
 };

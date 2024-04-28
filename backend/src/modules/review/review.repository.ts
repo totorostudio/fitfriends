@@ -53,6 +53,27 @@ export class ReviewRepository extends BasePostgresRepository<ReviewEntity> {
       totalItems: recordsCount,
     };
   }
+
+  public async calculateRating(trainingId: string): Promise<number> {
+    const reviews = await this.client.review.findMany({
+      where: {
+        trainingId: trainingId,
+      },
+      select: {
+        grade: true,
+      },
+    });
+
+
+    if (reviews.length === 0) {
+      return 0;
+    }
+
+    const total = reviews.reduce((acc, current) => acc + current.grade, 0);
+    const average = total / reviews.length;
+
+    return Math.round(average);
+  }
 }
 
 

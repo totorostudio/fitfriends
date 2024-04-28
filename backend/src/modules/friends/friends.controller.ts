@@ -8,7 +8,7 @@ import { UpdateFriendsDto } from './dto';
 import { UpdateFriendsRdo } from './rdo';
 import { RequestWithTokenPayload } from 'src/libs/requests';
 
-@ApiTags('Друзья') //TODO нет защиты от повторных удалений/добавлений
+@ApiTags('Друзья')
 @Controller('friends')
 export class FriendsController {
   constructor(private readonly friendsService: FriendsService) {}

@@ -10,8 +10,8 @@ import { appConfig } from 'src/libs/config';
 import { fillDto } from 'src/libs/helpers';
 import { UploadRdo } from './rdo';
 import { FileUploadEntity } from './file-upload.entity';
-import { FileStore, FileUpload } from 'src/libs/types';
-import { ImageFile, VideoFile } from 'src/app.const';
+import { FileStore } from 'src/libs/types';
+import { FileParams, VideoParams } from 'src/app.const';
 import { FileStorageRepository } from './file-storage.repository';
 
 @Injectable()
@@ -91,11 +91,11 @@ export class FileStorageService {
 
   public async isFileImage(fileId: string): Promise<boolean> {
     const file = await this.getFile(fileId);
-    return ImageFile.MimeTypes.includes(file.mimetype);
+    return FileParams.MimeTypes.includes(file.mimetype);
   }
 
   public async isFileVideo(fileId: string): Promise<boolean> {
     const file = await this.getFile(fileId);
-    return VideoFile.MimeTypes.includes(file.mimetype);
+    return VideoParams.MimeTypes.includes(file.mimetype);
   }
 }

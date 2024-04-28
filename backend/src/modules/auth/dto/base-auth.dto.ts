@@ -83,6 +83,15 @@ export class BaseAuthDto {
   public metro: Metro;
 
   @ApiPropertyOptional({
+    description: 'Аватар пользователя',
+    example: 'avatar.png',
+  })
+  @IsString()
+  @IsOptional()
+  @Expose()
+  public avatar?: string;
+
+  @ApiPropertyOptional({
     description: 'Фоновая картинка для профиля пользователя',
     example: 'background-image.png',
   })

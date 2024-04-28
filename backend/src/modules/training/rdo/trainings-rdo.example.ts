@@ -3,7 +3,7 @@ export const TrainingsRdoExample = {
   totalItems: 2,
   currentPage: 1,
   itemsPerPage: 10,
-  users: [
+  trainings: [
     {
       id: 'ec998270-3efc-48ee-b3a6-2684ddd278b1',
       createdAt: '2024-04-08T12:25:09.716Z',

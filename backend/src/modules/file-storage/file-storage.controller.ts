@@ -8,7 +8,7 @@ import { RoleGuard } from "src/libs/guards";
 import { UploadRdo } from "./rdo";
 import { FileValidationPipe } from "src/libs/pipes";
 import { FileFilterException } from "src/libs/exceptions";
-import { ImageFile, VideoFile } from "src/app.const";
+import { FileParams, VideoParams } from "src/app.const";
 import { FileStorageService } from "./file-storage.service";
 
 @ApiTags('Загрузка файлов')
@@ -17,12 +17,12 @@ export class FileStorageController {
   constructor(private readonly fileStorageService: FileStorageService) {}
 
   @ApiOperation({
-    summary: 'Загрузка изображения'
+    summary: 'Загрузка изображения или pdf'
   })
   @ApiResponse({
     type: UploadRdo,
     status: HttpStatus.CREATED,
-    description: 'The file has been successfully uploaded',
+    description: 'Файл успешно загружен',
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -37,13 +37,13 @@ export class FileStorageController {
     },
   })
   @ApiBearerAuth('access-token')
-  @Post('image')
+  @Post('file')
   @UseInterceptors(
     FileInterceptor('file', {
-      fileFilter: FileFilterException(ImageFile.MimeTypes, ImageFile.MaxSize),
+      fileFilter: FileFilterException(FileParams.MimeTypes, FileParams.MaxSize),
     }),
   )
-  public async uploadImage(@UploadedFile(FileValidationPipe) file: Express.Multer.File) {
+  public async uploadFile(@UploadedFile(FileValidationPipe) file: Express.Multer.File) {
     return this.fileStorageService.saveFile(file);
   }
 
@@ -73,7 +73,7 @@ export class FileStorageController {
   @Post('video')
   @UseInterceptors(
     FileInterceptor('file', {
-      fileFilter: FileFilterException(VideoFile.MimeTypes),
+      fileFilter: FileFilterException(VideoParams.MimeTypes),
     }),
   )
   public async uploadVideo(@UploadedFile(FileValidationPipe) file: Express.Multer.File) {

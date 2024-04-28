@@ -7,7 +7,7 @@ import { UUIDValidationPipe } from "src/libs/pipes";
 import { BalancesRdo } from "./rdo/balances.rdo";
 import { RequestWithTokenPayload } from "src/libs/requests";
 import { RoleGuard } from "src/libs/guards";
-import { BalanceRdo } from "./rdo";
+import { BalanceRdo, BalancesRdoExample } from "./rdo";
 
 @ApiTags('Баланс пользователя')
 @Controller('balance')
@@ -18,7 +18,9 @@ export class BalanceController {
     summary: 'Получить баланс пользователя по всем тренировкам'
   })
   @ApiResponse({
-    type: BalancesRdo,
+    schema: {
+      example: BalancesRdoExample
+    },
     status: HttpStatus.OK,
     description: 'Баланс пользователя',
   })

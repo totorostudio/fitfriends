@@ -44,15 +44,16 @@ export class BalanceRepository extends BasePostgresRepository<BalanceEntity> {
     const page = query?.page ? (query.page - 1) * limit : 0;
 
     const prismaQuery: Prisma.BalanceFindManyArgs = {
-      where: { userId: currentUserId },
+      where: { userId: currentUserId, count: { gte: 1 } },
       orderBy: { id: sortDirection },
       take: limit,
       skip: page,
     };
 
-    const recordsCount = await this.client.balance.count({ where: { userId: currentUserId } });
+    const recordsCount = await this.client.balance.count({ where: { userId: currentUserId, count: { gte: 1 } } });
     const documents = await this.client.balance.findMany(prismaQuery);
     const entities: BalanceEntity[] = documents.map(document => this.createEntityFromDocument(document));
+
     return {
       entities,
       currentPage: query?.page ?? DEFAULT_PAGE,

@@ -21,7 +21,7 @@ export class TrainingService {
     const existsTraining = await this.trainingRepository.findById(id);
 
     if (!existsTraining) {
-      throw new NotFoundException(`Trainng with id ${id} not found`);
+      throw new NotFoundException(`Тренировка с id ${id} не найдена`);
     }
 
     return existsTraining;
@@ -90,7 +90,7 @@ export class TrainingService {
     const existTraining = await this.trainingRepository.findById(id);
 
     if (! existTraining) {
-      throw new NotFoundException(`Training with id ${id} not found`);
+      throw new NotFoundException(`Тренировка с id ${id} не найдена`);
     }
 
     return existTraining;
@@ -113,5 +113,16 @@ export class TrainingService {
 
     const updatedTraining = await this.trainingRepository.update(id, existsTraining);
     return fillDto(TrainingRdo, updatedTraining.toPOJO());
+  }
+
+  public async updateRating(id: string, rating: number) {
+    const existsTraining = await this.getTrainingEntity(id);
+
+    if (existsTraining.rating === rating) {
+      return;
+    }
+
+    existsTraining.rating = rating;
+    await this.trainingRepository.update(id, existsTraining);
   }
 }
