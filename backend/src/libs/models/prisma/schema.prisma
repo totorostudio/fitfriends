@@ -106,6 +106,7 @@ model Order {
   id          String   @id @default(uuid()) @map("id")
   createdAt   DateTime @default(now()) @map("created_at")
   userId      String   @map("user_id")
+  coachId     String   @map("coach_id")
   orderType   String   @map("order_type")
   trainingId  String   @map("training_id")
   price       Int

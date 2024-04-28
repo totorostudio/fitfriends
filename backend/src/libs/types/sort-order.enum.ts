@@ -1,4 +1,4 @@
 export enum SortOrder {
-  Count = 'count',
+  Quantity = 'quantity',
   Cost = 'cost',
 }

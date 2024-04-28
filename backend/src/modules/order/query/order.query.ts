@@ -8,7 +8,7 @@ import { SortOrder } from "src/libs/types";
 export class OrderQuery extends BaseQuery {
   @ApiPropertyOptional({
     description: 'Сортировка',
-    example: 'cost',
+    enum: SortOrder,
   })
   @Transform(({ value }) => lodash.lowerCase(value))
   @IsEnum(SortOrder)

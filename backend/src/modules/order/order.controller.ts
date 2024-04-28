@@ -42,7 +42,6 @@ export class OrderController {
     status: HttpStatus.OK,
     description: 'Список заказов тренера',
   })
-  @ApiQuery({ type: OrderQuery })
   @Role(UserRole.Coach)
   @UseGuards(RoleGuard)
   @ApiBearerAuth('access-token')

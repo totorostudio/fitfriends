@@ -23,22 +23,23 @@ export class OrderRepository extends BasePostgresRepository<OrderEntity> {
     return ('order');
   }
 
-  public async find(currentUserId: string, query?: OrderQuery): Promise<Pagination<OrderEntity>> {
+  public async find(coachId: string, query?: OrderQuery): Promise<Pagination<OrderEntity>> {
     const sortOrder = query?.sortOrder ?? DEFAULT_ORDER_SORT;
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const limit = Number(query?.limit) || LIST_LIMIT;
     const page = query?.page ? (query.page - 1) * limit : 0;
 
     const prismaQuery: Prisma.OrderFindManyArgs = {
-      where: { userId: currentUserId },
+      where: { coachId: coachId },
       orderBy: { [sortOrder]: sortDirection },
       take: limit,
       skip: page,
     };
 
-    const recordsCount = await this.client.order.count({ where: { userId: currentUserId } });
+    const recordsCount = await this.client.order.count({ where: { coachId: coachId } });
     const documents = await this.client.order.findMany(prismaQuery);
     const entities: OrderEntity[] = documents.map(document => this.createEntityFromDocument(document));
+
     return {
       entities,
       currentPage: query?.page ?? DEFAULT_PAGE,

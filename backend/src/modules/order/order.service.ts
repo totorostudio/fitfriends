@@ -24,6 +24,7 @@ export class OrderService {
     const newOrder = OrderEntity.fromObject(
       Object.assign(dto, {
         userId,
+        coachId: training.coachId,
         price: training.price,
         cost: dto.quantity * training.price,
       }),
@@ -33,17 +34,29 @@ export class OrderService {
     const order = await this.orderRepository.save(orderEntity);
     await this.balanceService.topUpBalance(userId, dto.trainingId, dto.quantity);
 
-    return fillDto(OrderRdo, order.toPOJO());
+    return fillDto(OrderRdo, {
+      ...order.toPOJO(),
+      quantity: dto.quantity,
+      training: training
+    });
   }
 
   public async find(coachId: string, query?: OrderQuery): Promise<OrdersRdo> {
     const orderEntities = await this.orderRepository.find(coachId, query);
 
-    return fillDto(OrdersRdo, {
+    const ordersData = await Promise.all(orderEntities.entities.map(async (entity) => {
+      const training = await this.trainingService.getTrainingEntity(entity.trainingId);
+      return fillDto(OrderRdo, {
+        ...entity.toPOJO(),
+        training: training
+      });
+    }));
+
+    const data = {
       ...orderEntities,
-      orders: orderEntities.entities.map((entity) =>
-        fillDto(OrdersRdo, entity.toPOJO()),
-      ),
-    });
+      orders: ordersData,
+    };
+
+    return fillDto(OrdersRdo, data);
   }
 }

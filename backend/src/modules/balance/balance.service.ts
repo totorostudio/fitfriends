@@ -66,7 +66,6 @@ export class BalanceService {
     balance.count = balance.count - 1;
     const newBalance = await this.balanceRepository.update(balance.id, balance);
     const training = await this.trainingService.getTrainingEntity(trainingId);
-    console.log(newBalance);
 
     return fillDto(BalanceRdo, {
       ...newBalance.toPOJO(),
