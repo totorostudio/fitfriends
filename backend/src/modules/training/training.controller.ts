@@ -43,7 +43,7 @@ export class TrainingController {
   @Role(UserRole.Coach)
   @UseGuards(RoleGuard)
   @ApiBearerAuth('access-token')
-  @Post('add')
+  @Post()
   public async create(
     @Req() { tokenPayload }: RequestWithTokenPayload,
     @Body(new ValidationPipe({

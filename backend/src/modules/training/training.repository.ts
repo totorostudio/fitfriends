@@ -58,6 +58,10 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
       whereClause.trainingTime = { in: query.trainingTime };
     }
 
+    if (query?.coachId !== undefined) {
+      whereClause.coachId = query.coachId;
+    }
+
     const prismaQuery: Prisma.TrainingFindManyArgs = {
       where: whereClause,
       orderBy: { price: sortDirection },

@@ -17,6 +17,8 @@ import { SubscribeModule } from './modules/subscribe/subscribe.module';
 import { FileStorageModule } from './modules/file-storage/file-storage.module';
 import { MailModule } from './modules/mail/mail.module';
 import { RabbitModule } from './modules/rabbit/rabbit.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -37,6 +39,9 @@ import { RabbitModule } from './modules/rabbit/rabbit.module';
     RefreshTokenModule,
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
   ],
   controllers: [],

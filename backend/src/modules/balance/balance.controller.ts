@@ -1,10 +1,9 @@
-import { Controller, Get, HttpStatus, Param, Patch, Query, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Param, Patch, Req, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Role } from "src/libs/decorators";
 import { UserRole } from "src/libs/types";
 import { BalanceService } from "./balance.service";
 import { UUIDValidationPipe } from "src/libs/pipes";
-import { BalancesRdo } from "./rdo/balances.rdo";
 import { RequestWithTokenPayload } from "src/libs/requests";
 import { RoleGuard } from "src/libs/guards";
 import { BalanceRdo, BalancesRdoExample } from "./rdo";

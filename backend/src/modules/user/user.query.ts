@@ -1,4 +1,4 @@
-import { ArrayMaxSize, IsEnum, IsIn, IsOptional } from 'class-validator';
+import { IsEnum, IsIn, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import * as lodash from 'lodash';
 import { Metro, Level, UserRole, TrainingType } from 'src/libs//types';

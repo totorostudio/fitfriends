@@ -21,6 +21,7 @@ export class TrainingService {
     const existsTraining = await this.trainingRepository.findById(id);
 
     if (!existsTraining) {
+      this.logger.warn(`Training with id ${id} not found`);
       throw new NotFoundException(`Тренировка с id ${id} не найдена`);
     }
 
@@ -90,6 +91,7 @@ export class TrainingService {
     const existTraining = await this.trainingRepository.findById(id);
 
     if (! existTraining) {
+      this.logger.warn(`Training with id ${id} not found`);
       throw new NotFoundException(`Тренировка с id ${id} не найдена`);
     }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ValidationPipe, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpStatus, ValidationPipe, Query, Req, UseGuards } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';

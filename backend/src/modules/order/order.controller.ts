@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpStatus, Post, Query, Req, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Role } from "src/libs/decorators";
 import { UserRole } from "src/libs/types";
 import { OrderService } from "./order.service";

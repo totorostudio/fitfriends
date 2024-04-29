@@ -1,4 +1,4 @@
-import { IsIn, IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { IsIn, IsNumber, IsOptional, IsUUID, Max, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
 import lodash from 'lodash';
 import { TrainingTime } from 'src/libs//types';
@@ -50,4 +50,9 @@ export class TrainingQuery extends BaseQuery {
   @IsIn(Object.values(TrainingTime), { each: true })
   @IsOptional()
   public trainingTime?: TrainingTime[];
+
+  @ApiPropertyOptional({ description: 'Id тренера', type: String  })
+  @IsUUID()
+  @IsOptional()
+  public coachId?: string;
 }

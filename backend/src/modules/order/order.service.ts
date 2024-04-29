@@ -10,8 +10,6 @@ import { OrderRepository } from './order.repository';
 
 @Injectable()
 export class OrderService {
-  private readonly logger = new Logger(OrderService.name);
-
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly trainingService: TrainingService,
@@ -46,6 +44,7 @@ export class OrderService {
 
     const ordersData = await Promise.all(orderEntities.entities.map(async (entity) => {
       const training = await this.trainingService.getTrainingEntity(entity.trainingId);
+
       return fillDto(OrderRdo, {
         ...entity.toPOJO(),
         training: training
