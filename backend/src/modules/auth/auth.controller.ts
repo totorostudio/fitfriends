@@ -91,8 +91,6 @@ export class AuthController {
   @ApiBearerAuth('access-token')
   @Get('login')
   public async checkAuth(@Req() { tokenPayload }: RequestWithTokenPayload) {
-    const existUser = await this.userService.getUserByEmail(tokenPayload.email);
-    console.log(existUser);
     return this.userService.getUserByEmail(tokenPayload.email);
   }
 
@@ -103,7 +101,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'Пользователь успешно вышел.',
   })
-  @ApiBearerAuth('access-token')
+  @ApiBearerAuth('refresh-token')
   @UseGuards(JwtRefreshGuard)
   @Delete('logout')
   public async logout(@Req() { tokenPayload }: RequestWithRefreshTokenPayload) {
