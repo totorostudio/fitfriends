@@ -43,7 +43,7 @@ export class UserEntity implements FullUser, Entity<string> {
       role: this.role,
       description: this.description,
       metro: this.metro,
-      background: this.background,
+      background:  this.background ? this.background : this.avatar,
       passwordHash: this.passwordHash,
       level: this.level,
       trainingType: this.trainingType,
@@ -69,7 +69,7 @@ export class UserEntity implements FullUser, Entity<string> {
     this.role = data.role;
     this.description = data.description;
     this.metro = data.metro;
-    this.background = data.background;
+    this.background = data.background ? data.background : data.avatar;
     this.passwordHash = data.passwordHash;
     this.level = data.level;
     this.trainingType = data.trainingType;

@@ -6,7 +6,7 @@ import { UserPasswordLength } from "src/app.const";
 export class LoginUserDto {
   @ApiProperty({
     description: 'Уникальный email пользователя',
-    example: 'user@fitfriends.local',
+    example: 'customer@fitfriends.local',
   })
   @IsEmail({}, { message: DtoValidationMessage.email.invalidFormat })
   public email: string;

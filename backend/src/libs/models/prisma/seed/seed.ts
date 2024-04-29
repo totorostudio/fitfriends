@@ -1,4 +1,3 @@
-//import { PrismaClient } from '@prisma/client';
 import { PrismaClient } from '../../../../../node_modules/@prisma/client';
 import { genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from '../../../../app.const';
@@ -54,22 +53,29 @@ async function seedDb(prismaClient: PrismaClient, usersCount: number, trainingsC
 
     for (const user of mockUsers) {
       const passwordHash = await setPassword(user.password);
-      await prismaClient.user.create({
-        data: {
-          name: user.name,
-          email: user.email,
-          passwordHash: passwordHash,
-          gender: user.gender,
-          role: user.role,
-          description: user.description,
-          metro: user.metro,
-          background: user.background,
-          level: user.level,
-          trainingType: user.trainingType,
-          trainingTime: user.trainingTime,
-          isReady: user.isReady,
-        }
-      })
+      const data = {
+        name: user.name,
+        email: user.email,
+        passwordHash: passwordHash,
+        gender: user.gender,
+        role: user.role,
+        birthday: new Date(user.birthday),
+        description: user.description,
+        metro: user.metro,
+        avatar: user.avatar,
+        background: user.background,
+        level: user.level,
+        trainingType: user.trainingType,
+        friends: user.friends,
+        trainingTime: user.trainingTime,
+        calories: user.calories,
+        caloriesPerDay: user.caloriesPerDay,
+        certificate: user.certificate,
+        awards: user.awards,
+        isReady: user.isReady,
+      }
+
+      await prismaClient.user.create({data})
     }
   }
 

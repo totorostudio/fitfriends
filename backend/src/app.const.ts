@@ -1,4 +1,4 @@
-import { BookingStatus, SortOrder } from "src/libs/types";
+import { BookingStatus, SortOrder } from "./libs/types";
 
 export const SALT_ROUNDS = 10;
 
