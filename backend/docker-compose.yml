@@ -23,7 +23,7 @@ services:
       - fitfriends
 
   fitfriends.pgadmin:
-    image: dpage/pgadmin4:8.5
+    image: dpage/pgadmin4:8.6
     container_name: fitfriends.pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
@@ -70,3 +70,4 @@ networks:
       driver: bridge
 
 # Запуск: docker-compose up -d
+# Удалить все тома и начать заново: docker volume rm $(docker volume ls -q) -

@@ -1,4 +1,4 @@
-import { PrismaClient } from '../../../../../node_modules/@prisma/client';
+import { Prisma, PrismaClient } from '../../../../../node_modules/@prisma/client';
 import { genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from '../../../../app.const';
 import { mockUsers } from './users';
@@ -47,6 +47,7 @@ function getTrainings(trainingsCount: number) {
 
 async function seedDb(prismaClient: PrismaClient, usersCount: number, trainingsCount: number) {
   let coachId: string | undefined;
+  let createdUsersCount = 0;
 
   if (usersCount > 0) {
     const mockUsers = getUsers(usersCount);
@@ -75,7 +76,20 @@ async function seedDb(prismaClient: PrismaClient, usersCount: number, trainingsC
         isReady: user.isReady,
       }
 
-      await prismaClient.user.create({data})
+      try {
+        await prismaClient.user.create({ data });
+        createdUsersCount++;
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          if (error.code === 'P2002') {
+            console.log(`Пользователь с почтой email ${user.email} уже есть, пропустили.`);
+          } else {
+            throw error;
+          }
+        } else {
+          throw error;
+        }
+      }
     }
   }
 
@@ -117,7 +131,7 @@ async function seedDb(prismaClient: PrismaClient, usersCount: number, trainingsC
   }
 
   console.info('🤘️ Database was filled');
-  console.info(`✍  Создано ${usersCount} пользователей и ${trainingsCount} тренировок`);
+  console.info(`✍  Создано ${createdUsersCount} пользователей и ${trainingsCount} тренировок`);
 }
 
 async function bootstrap() {

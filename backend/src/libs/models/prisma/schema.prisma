@@ -149,3 +149,4 @@ model FileStorage {
 // npx ts-node -r tsconfig-paths/register -P ./src/libs/models/prisma/seed/tsconfig.seed.json ./src/libs/models/prisma/seed/seed.ts 5 5
 // npx ts-node ./src/libs/models/prisma/seed/seed.ts
 // import { PrismaClient } from '@prisma/client'
+// docker volume rm $(docker volume ls -q) - удалить все тома
