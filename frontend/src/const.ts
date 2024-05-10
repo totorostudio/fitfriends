@@ -22,7 +22,7 @@ export enum APIRoute {
 }
 
 export enum AppRoute {
-  Main = '/',
+  Account = '/account',
   Login = '/login',
   Logout = '/logout',
   Register = '/register',

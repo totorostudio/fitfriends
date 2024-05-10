@@ -2,20 +2,20 @@ import { Helmet } from "react-helmet-async";
 import { useAppSelector } from "../../hooks";
 import { getUsers } from "../../store/selectors";
 
-export default function MainScreen(): JSX.Element {
+export default function AccountScreen(): JSX.Element {
   const users = useAppSelector(getUsers);
   console.log(users);
 
   return (
     <div className="page page--gray page--main">
       <Helmet>
-        <title>6 Cities</title>
+        <title>Профиль</title>
       </Helmet>
 
       <main className="page__main page__main--index">
-        <h1 className="visually-hidden">Hello! UsersCount</h1>
-        <div className="cities">
-          {users.length}
+        <h1>Привет. Это страница профиля пользователя</h1>
+        <div>
+
         </div>
       </main>
     </div>
