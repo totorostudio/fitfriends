@@ -1,5 +1,4 @@
 import {Helmet} from 'react-helmet-async';
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
 
@@ -7,7 +6,7 @@ export default function NotFoundScreen(): JSX.Element {
 
   return (
     <>
-      <Helmet><title>Страница не найдена | Guitar Shop 2024</title></Helmet>
+      <Helmet><title>Страница не найдена | Fitfriends 2024</title></Helmet>
       <main className="page-content">
         <div className="container">
           <section className="error">
