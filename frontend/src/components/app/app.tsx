@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
-import { AccountCoachPage, AccountCustomerPage, IntroPage, LoginPage, MainPage, NotFoundPage, QuestionnaireCoachPage, QuestionnaireCustomerPage, RegisterPage } from '../../pages';
+import { AccountCoachPage, AccountCustomerPage, CreateTrainingPage, FriendsPage, IntroPage, LoginPage, MainPage, MyOrdersPage, MyTrainingsPage, NotFoundPage, QuestionnaireCoachPage, QuestionnaireCustomerPage, RegisterPage } from '../../pages';
 import { ScrollToTop } from '..';
-import { fetchUsersAction } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { getAuthorizationStatus, getRole } from '../../store/selectors';
 import { UserRole } from '../../types';
@@ -38,6 +36,10 @@ export function App(): JSX.Element {
               <Route path={AppRoute.Main} element={<Navigate to={AppRoute.AccountCoach} />} />
               <Route path={AppRoute.AccountCoach} element={<AccountCoachPage />} />
               <Route path={AppRoute.AccountCustomer} element={<Navigate to={AppRoute.AccountCoach} />} />
+              <Route path={AppRoute.MyTrainings} element={<MyTrainingsPage />} />
+              <Route path={AppRoute.Friends} element={<FriendsPage />} />
+              <Route path={AppRoute.CreateTraining} element={<CreateTrainingPage />} />
+              <Route path={AppRoute.MyOrders} element={<MyOrdersPage />} />
               <Route path={AppRoute.Logout} element={<Logout />} />
               <Route path="*" element={<NotFoundPage />} />
             </>
@@ -51,6 +53,9 @@ export function App(): JSX.Element {
               <Route path={AppRoute.Main} element={<MainPage />} />
               <Route path={AppRoute.AccountCoach} element={<Navigate to={AppRoute.Main} />} />
               <Route path={AppRoute.AccountCustomer} element={<AccountCustomerPage />} />
+              <Route path={AppRoute.MyTrainings} element={<Navigate to={AppRoute.Main} />} />
+              <Route path={AppRoute.CreateTraining} element={<Navigate to={AppRoute.Main} />} />
+              <Route path={AppRoute.MyOrders} element={<Navigate to={AppRoute.Main} />} />
               <Route path={AppRoute.Logout} element={<Logout />} />
               <Route path="*" element={<NotFoundPage />} />
             </>
@@ -65,6 +70,10 @@ export function App(): JSX.Element {
               <Route path={AppRoute.Main} element={<Navigate to={AppRoute.Intro} />} />
               <Route path={AppRoute.AccountCoach} element={<Navigate to={AppRoute.Intro} />} />
               <Route path={AppRoute.AccountCustomer} element={<Navigate to={AppRoute.Intro} />} />
+              <Route path={AppRoute.MyTrainings} element={<Navigate to={AppRoute.Intro} />} />
+              <Route path={AppRoute.Friends} element={<Navigate to={AppRoute.Intro} />} />
+              <Route path={AppRoute.CreateTraining} element={<Navigate to={AppRoute.Intro} />} />
+              <Route path={AppRoute.MyOrders} element={<Navigate to={AppRoute.Intro} />} />
               <Route path={AppRoute.Logout} element={<Logout />} />
               <Route path="*" element={<NotFoundPage />} />
             </>

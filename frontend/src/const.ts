@@ -30,4 +30,8 @@ export enum AppRoute {
   Main = '/main',
   AccountCoach = '/account-coach',
   AccountCustomer = '/account-customer',
+  MyTrainings = '/my-trainings',
+  Friends = '/friends',
+  CreateTraining = '/create-training',
+  MyOrders = '/my-orders',
 }

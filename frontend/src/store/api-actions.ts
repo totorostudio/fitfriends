@@ -82,6 +82,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   'user/logout',
   async (_arg, {dispatch, extra: api}) => {
     const refreshToken = getRefreshToken();
+    dropAccessToken();
 
     if (refreshToken) {
       await api.delete(APIRoute.Logout, {
@@ -91,7 +92,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
       });
     }
 
-    dropAccessToken();
     dropRefreshToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   },
