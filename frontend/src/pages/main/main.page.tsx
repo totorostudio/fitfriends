@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-export default function IntroScreen(): JSX.Element {
+export function MainPage(): JSX.Element {
   return (
     <div className="wrapper">
       <Helmet>

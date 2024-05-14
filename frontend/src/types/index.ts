@@ -19,3 +19,5 @@ export * from './file-upload.interface';
 export * from './file-store.interface';
 export * from './rabbit-routing.enum';
 export * from './state';
+export * from './auth-data';
+export * from './user-data';

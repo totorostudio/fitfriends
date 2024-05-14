@@ -7,6 +7,7 @@ export enum Gender {
 export enum UserRole {
   Coach = 'тренер',
   Customer = 'пользователь',
+  Unknown = 'неизвестно'
 }
 
 export enum Metro {

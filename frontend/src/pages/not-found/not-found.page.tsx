@@ -2,7 +2,7 @@ import {Helmet} from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import './styles.css';
 
-export default function NotFoundScreen(): JSX.Element {
+export function NotFoundPage(): JSX.Element {
 
   return (
     <>

@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
 
-export default function IntroScreen(): JSX.Element {
+export function IntroPage(): JSX.Element {
   return (
     <div className="wrapper">
       <Helmet>

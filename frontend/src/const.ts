@@ -2,7 +2,6 @@ export const BACKEND_URL = 'http://localhost:3000';
 
 export const REQUEST_TIMEOUT = 5000;
 export const TIMEOUT_SHOW_ERROR = 2000;
-
 export const MESSAGE_SHORT_TIMEOUT = 750;
 export const MESSAGE_LONG_TIMEOUT = 750;
 
@@ -22,9 +21,13 @@ export enum APIRoute {
 }
 
 export enum AppRoute {
-  Intro = '/intro',
+  Intro = '/',
   Login = '/login',
   Logout = '/logout',
   Register = '/register',
+  QuestionnaireCoach = '/questionnaire-coach',
+  QuestionnaireCustomer = '/questionnaire-customer',
   Main = '/main',
+  AccountCoach = '/account-coach',
+  AccountCustomer = '/account-customer',
 }

@@ -1,6 +1,10 @@
-export { default as AccountScreen } from './account/account.screen';
-export { default as NotFoundScreen } from './not-found/not-found.screen';
-export { default as LoginScreen } from './login/login.screen';
-export { default as RegisterScreen } from './register/register.screen';
-export { default as MainScreen } from './main/main.screen';
-export { default as IntroScreen } from './intro/intro.screen';
+export * from './account/account-customer.page';
+export * from './account/account-coach.page';
+export * from './not-found/not-found.page';
+export * from './login/login.page';
+export * from './register/register.page';
+export * from './main/main.page';
+export * from './intro/intro.page';
+export * from './questionnaire-coach/questionnaire-coach.page';
+export * from './questionnaire-customer/questionnaire-customer.page';
+export * from './loading/loading.page';

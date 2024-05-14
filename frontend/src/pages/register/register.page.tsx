@@ -4,7 +4,7 @@ import { getUsers } from "../../store/selectors";
 import { AppRoute } from "../../const";
 import { Link } from "react-router-dom";
 
-export default function LoginScreen(): JSX.Element {
+export function RegisterPage(): JSX.Element {
   const users = useAppSelector(getUsers);
   console.log(users);
 
@@ -136,7 +136,7 @@ export default function LoginScreen(): JSX.Element {
                         <span className="sign-up__checkbox-label">Я соглашаюсь с <span>политикой конфиденциальности</span> компании</span>
                       </label>
                     </div>
-                    <Link to={AppRoute.Main}><button className="btn sign-up__button" type="submit">Продолжить</button></Link>
+                    <Link to={AppRoute.QuestionnaireCustomer}><button className="btn sign-up__button" type="submit">Продолжить</button></Link>
                   </div>
                 </form>
               </div>
@@ -147,5 +147,3 @@ export default function LoginScreen(): JSX.Element {
     </div>
   );
 }
-
-

@@ -1,7 +1,7 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
-import {getToken} from './token-service';
-import {BACKEND_URL, REQUEST_TIMEOUT} from '../const';
-import {processErrorHandle} from './process-error-handle';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { getAccessToken } from './token-service';
+import { BACKEND_URL, REQUEST_TIMEOUT } from '../const';
+import { processErrorHandle } from './process-error-handle';
 
 enum HttpStatus {
   BAD_REQUEST = 400,
@@ -25,7 +25,7 @@ export const createAPI = (): AxiosInstance => {
   });
   api.interceptors.request.use(
     (config: AxiosRequestConfig) => {
-      const token = getToken();
+      const token = getAccessToken();
 
       if (token && config.headers) {
         config.headers['Authorization'] = `Bearer ${token}`;
