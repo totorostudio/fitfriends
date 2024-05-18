@@ -1,5 +1,13 @@
 import { Gender, Level, TrainingType, TrainingTime } from ".";
 
+export interface Trainings{
+  totalPages: number,
+  totalItems: number,
+  currentPage: number,
+  itemsPerPage: number,
+  trainings: Training[];
+}
+
 export interface Training {
   id?: string;
   createdAt?: Date;

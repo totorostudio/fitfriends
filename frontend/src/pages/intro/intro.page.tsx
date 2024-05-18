@@ -1,8 +1,17 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
+import { useAppDispatch } from "../../hooks";
+import { useEffect } from "react";
+import { checkAuthAction } from "../../store/api-actions";
 
 export function IntroPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuthAction());
+  }, [dispatch]);
+
   return (
     <div className="wrapper">
       <Helmet>

@@ -4,5 +4,5 @@ import { BasePaginationRdo } from 'src/libs/rdo';
 
 export class TrainingsRdo extends BasePaginationRdo {
   @Expose()
-  public users: TrainingRdo[];
+  public trainings: TrainingRdo[];
 }

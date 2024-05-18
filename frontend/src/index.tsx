@@ -5,6 +5,8 @@ import { App } from './components';
 import { store } from './store';
 import { checkAuthAction } from './store/api-actions';
 import { ErrorMessage } from './components';
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
 store.dispatch(checkAuthAction());
 
@@ -16,7 +18,11 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ErrorMessage />
-      <App />
+        <HelmetProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </HelmetProvider>
     </Provider>
   </React.StrictMode>
 );

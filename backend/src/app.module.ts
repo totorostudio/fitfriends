@@ -46,10 +46,10 @@ import { join } from 'path';
   ],
   controllers: [],
   providers: [
-    /*{
+    {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },*/
+    },
   ],
 })
 export class AppModule {}

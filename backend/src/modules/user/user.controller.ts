@@ -26,9 +26,9 @@ export class UserController {
     status: HttpStatus.OK,
     description: 'Список пользователей',
   })
-  //@Role(UserRole.Customer)
-  //@UseGuards(RoleGuard)
-  //@ApiBearerAuth('access-token')
+  @Role(UserRole.Customer)
+  @UseGuards(RoleGuard)
+  @ApiBearerAuth('access-token')
   @Get()
   public async index(@Query() query: UsersQuery): Promise<UsersRdo> {
     return this.userService.getAllUsers(query);

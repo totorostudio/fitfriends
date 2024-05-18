@@ -27,3 +27,8 @@ export const dropAccessToken = (): void => {
 export const dropRefreshToken = (): void => {
   localStorage.removeItem(AUTH_TOKEN_KEY_NAME + 'Refresh');
 };
+
+export const clearTokens = (): void => {
+  dropAccessToken();
+  dropRefreshToken();
+};

@@ -1,7 +1,9 @@
+import { UserRole } from "./helper.enum";
+
 export type UserData = {
-  id: number;
+  id: string;
   email: string;
-  role: string;
-  accessToken: string;
-  refreshToken: string;
+  role: UserRole;
+  accessToken?: string;
+  refreshToken?: string;
 };

@@ -1,0 +1,7 @@
+.custom-select__list {
+  display: block; /* по умолчанию скрыто */
+}
+
+.custom-select--open .custom-select__list {
+  display: block; /* должен отображаться при открытом */
+}

@@ -1,4 +1,4 @@
-import { UserRole } from 'src/libs/types';
+import { UserRole } from '.';
 
 export interface Token {
   accessToken: string;

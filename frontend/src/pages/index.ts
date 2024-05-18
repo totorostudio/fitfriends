@@ -11,4 +11,4 @@ export * from './loading/loading.page';
 export * from './my-trainings/my-trainings.page';
 export * from './friends/friends.page';
 export * from './create-training/create-training.page';
-export * from './my-orders/my-orders';
+export * from './my-orders/my-orders.page';

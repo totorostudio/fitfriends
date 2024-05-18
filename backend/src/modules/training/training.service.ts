@@ -29,10 +29,10 @@ export class TrainingService {
   }
 
   public async findAll(query?: TrainingQuery): Promise<TrainingsRdo> {
-    const userEntities = await this.trainingRepository.find(query);
+    const trainingEntities = await this.trainingRepository.find(query);
     return fillDto(TrainingsRdo, {
-      ...userEntities,
-      users: userEntities.entities.map((entity) =>
+      ...trainingEntities,
+      trainings: trainingEntities.entities.map((entity) =>
         fillDto(TrainingRdo, entity.toPOJO()),
       ),
     });
