@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
 import { Header, TrainingCard } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { getTrainings, getUserInfo } from "../../store/selectors";
+import { getCoachTrainings, getUser } from "../../store/selectors";
 import { fetchTrainingsAction } from "../../store/api-actions";
 import { useEffect, useState } from "react";
 import { Training } from "../../types";
 
 export function MyTrainingsPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector(getUserInfo);
-  const data = useAppSelector((getTrainings));
+  const user = useAppSelector(getUser);
+  const data = useAppSelector((getCoachTrainings));
   const trainings: Training[] = data?.trainings || [];
   const [filter, setFilter] = useState({
     priceFrom: 0,
@@ -20,15 +20,15 @@ export function MyTrainingsPage(): JSX.Element {
     caloriesTo: 5000,
   }); //TODO бэкенд должен прислать максимумы + переделать rating, тоже должно быть 2 значения
 
-  if (!userInfo.data || !userInfo.data.id) {
+  if (!user || !user.id) {
     return <div>Loading user data...</div>;
   }
 
   useEffect(() => {
-    if (userInfo.data && userInfo.data.id) {
-      dispatch(fetchTrainingsAction({ coachId: userInfo.data.id, ...filter }));
+    if (user && user.id) {
+      dispatch(fetchTrainingsAction({ storeName: 'coach', coachId: user.id, ...filter }));
     }
-  }, [dispatch, filter, userInfo.data, userInfo.data.id]);
+  }, [dispatch, filter, user, user.id]);
 
   useEffect(() => {
     console.log(filter);

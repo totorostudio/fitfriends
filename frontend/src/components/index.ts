@@ -4,3 +4,7 @@ export * from './error-message/error-message';
 export * from './header/header';
 export * from './training-card/training-card';
 export * from './user-edit-form/user-edit-form';
+export * from './main/related-card';
+export * from './main/featured-cards';
+export * from './main/user-card';
+export * from './review/review-card';

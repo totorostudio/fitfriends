@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
-import { AppDispatch, State, BaseUser, AuthData, UserData, FullUser, Trainings } from '../types';
-import { clearUserData, loadTrainings, loadUserInfo, loadUsers, requireAuthorization, setError, setUserData } from './action';
+import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews } from '../types';
+import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setUserData } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token-service';
@@ -17,17 +17,17 @@ export const clearErrorAction = createAsyncThunk(
   },
 );
 
-export const fetchUsersAction = createAsyncThunk<void, undefined, {
+export const fetchTrainingAction = createAsyncThunk<void, String, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchUsers',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(loadUsers({isLoading: true, data: []}));
+  'data/fetchUserInfo',
+  async (id, {dispatch, extra: api}) => {
+    dispatch(loadTraining({isLoading: true, data: null}));
     try {
-      const {data} = await api.get<BaseUser[]>(APIRoute.Users);
-      dispatch(loadUsers({isLoading: false, data}));
+      const {data} = await api.get<Training>(`${APIRoute.Training}/${id}`);
+      dispatch(loadTraining({isLoading: false, data}));
     } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
@@ -35,7 +35,8 @@ export const fetchUsersAction = createAsyncThunk<void, undefined, {
   },
 );
 
-interface FetchTrainingParams {
+interface FetchTrainingsParams {
+  storeName: 'related' | 'featured' | 'popular' | 'coach';
   coachId?: string;
   limit?: number;
   priceFrom?: number;
@@ -44,25 +45,51 @@ interface FetchTrainingParams {
   caloriesTo?: number;
 }
 
-export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingParams, {
+export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingsParams, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchTrainings',
   async (params, {dispatch, extra: api}) => {
-    dispatch(loadTrainings({isLoading: true, data: null}));
+    const { storeName, ...apiParams } = params;
+
+    console.log('params:', params);
+    console.log('storeName:', storeName);
+    console.log('apiParams:', apiParams);
+
+    if (storeName === 'related') {
+      dispatch(loadRelatedTrainings({isLoading: true, data: null}));
+    } else if (storeName === 'featured') {
+      dispatch(loadFeaturedTrainings({isLoading: true, data: null}));
+    } else if (storeName === 'popular') {
+      dispatch(loadPopularTrainings({isLoading: true, data: null}));
+    } else if (storeName === 'coach') {
+      dispatch(loadCoachTrainings({isLoading: true, data: null}));
+    } else {
+      throw new Error('Unknown storeName');
+    }
+
     const searchParams = new URLSearchParams();
-    Object.keys(params).forEach(key => {
-      const value = params[key as keyof FetchTrainingParams];
+    Object.keys(apiParams).forEach(key => {
+      const value = apiParams[key as keyof typeof apiParams];
       if (value !== undefined) {
         searchParams.append(key, String(value));
       }
     });
+
     try {
       const {data} = await api.get<Trainings>(`${APIRoute.Training}?${searchParams.toString()}`);
-      console.log('data:', data)
-      dispatch(loadTrainings({isLoading: false, data}));
+
+      if (storeName === 'related') {
+        dispatch(loadRelatedTrainings({isLoading: false, data}));
+      } else if (storeName === 'featured') {
+        dispatch(loadFeaturedTrainings({isLoading: false, data}));
+      } else if (storeName === 'popular') {
+        dispatch(loadPopularTrainings({isLoading: false, data}));
+      } else if (storeName === 'coach') {
+        dispatch(loadCoachTrainings({isLoading: false, data}));
+      }
     } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
@@ -70,17 +97,87 @@ export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingParams, 
   },
 );
 
-export const fetchUserInfoAction = createAsyncThunk<void, String, {
+interface FetchReviewsParams {
+  trainingId: string;
+  limit?: number;
+  sort?: SortDirection;
+  page?: number;
+}
+
+export const fetchReviewsAction = createAsyncThunk<void, FetchReviewsParams, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchTrainings',
+  async (params, {dispatch, extra: api}) => {
+    dispatch(loadReview({isLoading: true, data: null}));
+
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+      const value = params[key as keyof typeof params];
+      if (value !== undefined) {
+        searchParams.append(key, String(value));
+      }
+    });
+
+    try {
+      const {data} = await api.get<Reviews>(`${APIRoute.Review}?${searchParams.toString()}`);
+      dispatch(loadReview({isLoading: false, data}));
+
+    } catch (error) {
+      dispatch(setError('Error connection to the server'));
+      throw error;
+    }
+  },
+);
+
+interface FetchUsersParams {
+  limit?: number;
+  sort?: SortDirection;
+  page?: number;
+  metro?: Metro;
+  level?: Level;
+  role?: UserRole;
+}
+
+export const fetchUsersAction = createAsyncThunk<void, FetchUsersParams, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchUsers',
+  async (params, {dispatch, extra: api}) => {
+    dispatch(loadUsers({isLoading: true, data: null}));
+
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+      const value = params[key as keyof typeof params];
+      if (value !== undefined) {
+        searchParams.append(key, String(value));
+      }
+    });
+    try {
+      const {data} = await api.get<Users>(`${APIRoute.Users}?${searchParams.toString()}`);
+      dispatch(loadUsers({isLoading: false, data}));
+    } catch (error) {
+      dispatch(setError('Error connection to the server'));
+      throw error;
+    }
+  },
+);
+
+export const fetchUserAction = createAsyncThunk<void, String, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchUserInfo',
   async (id, {dispatch, extra: api}) => {
-    dispatch(loadUserInfo({isLoading: true, data: null}));
+    dispatch(loadUser({isLoading: true, data: null}));
     try {
       const {data} = await api.get<FullUser>(`${APIRoute.Users}/${id}`);
-      dispatch(loadUserInfo({isLoading: false, data}));
+      dispatch(loadUser({isLoading: false, data}));
     } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
@@ -95,10 +192,10 @@ export const updateUserAction = createAsyncThunk<void, { id: string, updateData:
 }>(
   'data/updateUser',
   async ({ id, updateData }, { dispatch, extra: api }) => {
-    dispatch(loadUserInfo({ isLoading: true, data: null }));
+    dispatch(loadUser({ isLoading: true, data: null }));
     try {
       const { data } = await api.patch<FullUser>(`${APIRoute.Users}/${id}`, updateData);
-      dispatch(loadUserInfo({ isLoading: false, data }));
+      dispatch(loadUser({ isLoading: false, data }));
     } catch (error) {
       dispatch(setError('Error updating the user on the server'));
       throw error;
@@ -145,9 +242,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
 }>(
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
-    console.log('Запускаю checkauth');
     let accessToken = getAccessToken();
-    console.log('accessToken', accessToken);
     let isTokenExpired = checkTokenExpired(accessToken);
 
     if (accessToken && isTokenExpired) {
@@ -157,6 +252,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
       if (refreshToken && !isRefreshExpired) {
         try {
           accessToken = await refreshAccessToken(api, refreshToken);
+          console.log('Перевыпустил токен:', accessToken);
         } catch {
           clearTokens();
           dispatch(clearUserData());
@@ -176,7 +272,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
       api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       try {
         const {data} = await api.get<FullUser>(APIRoute.Login);
-        dispatch(loadUserInfo({isLoading: false, data}));
+        dispatch(loadUser({isLoading: false, data}));
         const { id, email, role } = data;
         if (id) {
           dispatch(requireAuthorization(AuthorizationStatus.Auth));

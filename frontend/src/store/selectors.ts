@@ -4,10 +4,20 @@ export const getAuthorizationStatus = (state: State) => state.authorizationStatu
 
 export const getUserData = (state: State) => state.userData;
 
-export const getUserInfo = (state: State) => state.userInfo;
+export const getUser = (state: State) => state.user.data;
 
 export const getUsers = (state: State) => state.allUsers.data;
 
-export const getTrainings = (state: State) => state.allTrainings.data;
+export const getTraining = (state: State) => state.training.data;
+
+export const getReview = (state: State) => state.review.data;
+
+export const getCoachTrainings = (state: State) => state.coachTrainings.data;
+
+export const getRelatedTrainings = (state: State) => state.relatedTrainings.data;
+
+export const getFeaturedTrainings = (state: State) => state.featuredTrainings.data;
+
+export const getPopularTrainings = (state: State) => state.popularTrainings.data;
 
 export const getError = (state: State) => state.error;

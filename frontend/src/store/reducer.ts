@@ -1,18 +1,38 @@
-import {createReducer} from '@reduxjs/toolkit';
-import {loadUsers, loadTrainings, requireAuthorization, setError, setUserData, loadUserInfo, clearUserData} from './action';
-import {BaseUser, FullUser, Trainings, UserData, UserRole} from '../types';
+import { createReducer } from '@reduxjs/toolkit';
+import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setUserData, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview } from './action';
+import { FullUser, Reviews, Training, Trainings, UserData, UserRole, Users } from '../types';
 import { AuthorizationStatus } from '../const';
 
 type InitialState = {
   allUsers: {
     isLoading: boolean;
-    data: BaseUser[];
+    data: Users | null;
   };
-  userInfo: {
+  user: {
     isLoading: boolean;
     data: FullUser | null;
   };
-  allTrainings: {
+  training: {
+    isLoading: boolean;
+    data: Training | null;
+  };
+  review: {
+    isLoading: boolean;
+    data: Reviews | null;
+  };
+  coachTrainings: {
+    isLoading: boolean;
+    data: Trainings | null;
+  };
+  relatedTrainings: {
+    isLoading: boolean;
+    data: Trainings | null;
+  };
+  featuredTrainings: {
+    isLoading: boolean;
+    data: Trainings | null;
+  };
+  popularTrainings: {
     isLoading: boolean;
     data: Trainings | null;
   };
@@ -24,13 +44,33 @@ type InitialState = {
 const initialState: InitialState = {
   allUsers: {
     isLoading: false,
-    data: [],
+    data: null,
   },
-  userInfo: {
+  user: {
     isLoading: false,
     data: null
   },
-  allTrainings: {
+  training: {
+    isLoading: false,
+    data: null
+  },
+  review: {
+    isLoading: false,
+    data: null
+  },
+  coachTrainings: {
+    isLoading: false,
+    data: null
+  },
+  relatedTrainings: {
+    isLoading: false,
+    data: null
+  },
+  featuredTrainings: {
+    isLoading: false,
+    data: null
+  },
+  popularTrainings: {
     isLoading: false,
     data: null
   },
@@ -48,11 +88,26 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadUsers, (state, action) => {
       state.allUsers = action.payload;
     })
-    .addCase(loadUserInfo, (state, action) => {
-      state.userInfo = action.payload;
+    .addCase(loadUser, (state, action) => {
+      state.user = action.payload;
     })
-    .addCase(loadTrainings, (state, action) => {
-      state.allTrainings = action.payload;
+    .addCase(loadTraining, (state, action) => {
+      state.training = action.payload;
+    })
+    .addCase(loadReview, (state, action) => {
+      state.review = action.payload;
+    })
+    .addCase(loadCoachTrainings, (state, action) => {
+      state.coachTrainings = action.payload;
+    })
+    .addCase(loadRelatedTrainings, (state, action) => {
+      state.relatedTrainings = action.payload;
+    })
+    .addCase(loadFeaturedTrainings, (state, action) => {
+      state.featuredTrainings = action.payload;
+    })
+    .addCase(loadPopularTrainings, (state, action) => {
+      state.popularTrainings = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
@@ -64,7 +119,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.userData = action.payload;
     })
     .addCase(clearUserData, (state) => {
-      state.userInfo = { isLoading: false, data: null };
+      state.user = { isLoading: false, data: null };
       state.authorizationStatus = AuthorizationStatus.NoAuth;
       state.userData = {
         id: '',

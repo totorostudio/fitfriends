@@ -1,5 +1,13 @@
 import { Gender, UserRole, Metro, Level, TrainingType, TrainingTime } from ".";
 
+export interface Users{
+  totalPages: number,
+  totalItems: number,
+  currentPage: number,
+  itemsPerPage: number,
+  users: FullUser[];
+}
+
 export interface FullUser extends CoachUser, CustomerUser {
   passwordHash?: string;
 }

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { AppRoute } from "../../const";
 import { Training } from "../../types";
 
 interface TrainingCardProps {
@@ -15,7 +17,7 @@ export function TrainingCard({ training }: TrainingCardProps): JSX.Element {
               <img src="img/content/thumbnails/training-02.jpg" srcSet="img/content/thumbnails/training-02@2x.jpg 2x" width="330" height="190" alt="" />
             </picture>
           </div>
-          <p className="thumbnail-training__price">{training.price === 0 ? ' Бесплатно' : `${training.price} рублей`}</p>
+          <p className="thumbnail-training__price">{training.price === 0 ? ' Бесплатно' : `${training.price} ₽`}</p>
           <h3 className="thumbnail-training__title">{training.title}</h3>
           <div className="thumbnail-training__info">
             <ul className="thumbnail-training__hashtags-list">
@@ -36,7 +38,7 @@ export function TrainingCard({ training }: TrainingCardProps): JSX.Element {
             <p className="thumbnail-training__text">{training.description}</p>
           </div>
           <div className="thumbnail-training__button-wrapper">
-            <a className="btn btn--small thumbnail-training__button-catalog" href="#">Подробнее</a>
+            <Link to={`${AppRoute.TrainingUrl}/${training.id}`} className="btn btn--small thumbnail-training__button-catalog">Подробнее</Link>
             <a className="btn btn--small btn--outlined thumbnail-training__button-catalog" href="#">Отзывы</a>
           </div>
         </div>

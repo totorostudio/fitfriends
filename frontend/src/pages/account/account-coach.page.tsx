@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
 import { Header, UserEditForm } from "../../components";
 import { useAppSelector } from "../../hooks";
-import { getUserInfo } from "../../store/selectors";
+import { getUser } from "../../store/selectors";
 
 export function AccountCoachPage(): JSX.Element {
-  const userInfo = useAppSelector(getUserInfo);
+  const user = useAppSelector(getUser);
 
-  if (!userInfo.data) {
+  if (!user) {
     return <div>Loading user data...</div>;
   }
 
@@ -29,7 +29,7 @@ export function AccountCoachPage(): JSX.Element {
                     <label>
                       <input className="visually-hidden" type="file" name="user-photo-1" accept="image/png, image/jpeg" />
                       <span className="input-load-avatar__avatar">
-                        <img src={userInfo.data.avatar} srcSet={`${userInfo.data.avatar} 2x`} width="98" height="98" alt={`Фото тренера ${userInfo.data.name}`} />
+                        <img src={user.avatar} srcSet={`${user.avatar} 2x`} width="98" height="98" alt={`Фото тренера ${user.name}`} />
                       </span>
                     </label>
                   </div>
@@ -46,7 +46,7 @@ export function AccountCoachPage(): JSX.Element {
                     </button>
                   </div>
                 </div>
-                <UserEditForm userInfo={userInfo.data} />
+                <UserEditForm userInfo={user} />
               </section>
               <div className="inner-page__content">
                 <div className="personal-account-coach">

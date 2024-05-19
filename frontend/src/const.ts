@@ -18,6 +18,7 @@ export enum APIRoute {
   RegisterCoach = '/api/auth/register-coach',
   Users = '/api/users',
   Training = '/api/training',
+  Review = '/api/review',
 }
 
 export enum AppRoute {
@@ -31,6 +32,8 @@ export enum AppRoute {
   AccountCoach = '/account-coach',
   AccountCustomer = '/account-customer',
   MyTrainings = '/my-trainings',
+  Training = '/training/:id',
+  TrainingUrl = '/training',
   Friends = '/friends',
   CreateTraining = '/create-training',
   MyOrders = '/my-orders',

@@ -12,3 +12,4 @@ export * from './my-trainings/my-trainings.page';
 export * from './friends/friends.page';
 export * from './create-training/create-training.page';
 export * from './my-orders/my-orders.page';
+export * from './training/training.page';
