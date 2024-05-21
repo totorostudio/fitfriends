@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { Header, ReviewCard } from "../../components";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useEffect } from "react";
 import { getReview, getTraining, getUser } from "../../store/selectors";
-import { fetchReviewsAction, fetchTrainingAction, fetchUserAction } from "../../store/api-actions";
+import { fetchTrainingAction, fetchUserAction } from "../../store/api-actions";
 import { Review } from "../../types";
+import { AppRoute } from "../../const";
 
 export function TrainingPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -15,24 +16,20 @@ export function TrainingPage(): JSX.Element {
   const training = useAppSelector((getTraining));
   const coach = useAppSelector((getUser));
   const reviewsData = useAppSelector((getReview));
-  const reviews: Review[] = reviewsData?.reviews || [];
+  const reviews: Review[] = reviewsData.data?.reviews || [];
 
   useEffect(() => {
     if (id) {
       dispatch(fetchTrainingAction(id));
-      dispatch(fetchReviewsAction({trainingId: id}));
+      //dispatch(fetchReviewsAction({ trainingId: id }));
     }
-  }, [dispatch, id]);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (training?.coachId) {
+    if (training?.coachId && (!coach || training.coachId !== coach.id)) {
       dispatch(fetchUserAction(training?.coachId));
     }
-  }, [dispatch, training?.coachId]);
-
-  console.log('Текущее состояние тренировки:', training);
-  console.log('Текущее состояние тренера:', coach);
-  console.log('Текущее состояние отзывов:', reviews);
+  }, [dispatch]);
 
   if (!training || !training.id || !coach || !coach.id) {
     return <div>Loading user data...</div>;
@@ -41,7 +38,7 @@ export function TrainingPage(): JSX.Element {
   return (
     <div className="wrapper">
       <Helmet>
-        <title>Карточка тренировки ${id} — FitFriends</title>
+        <title>Карточка тренировки {training.title} — FitFriends</title>
       </Helmet>
       <Header />
       <main>
@@ -50,109 +47,21 @@ export function TrainingPage(): JSX.Element {
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Карточка тренировки</h1>
               <aside className="reviews-side-bar">
-                <button className="btn-flat btn-flat--underlined reviews-side-bar__back" type="button">
-                  <svg width="14" height="10" aria-hidden="true">
-                    <use xlinkHref="#arrow-left"></use>
-                  </svg><span>Назад</span>
-                </button>
+                <Link to={AppRoute.Main}>
+                  <button className="btn-flat btn-flat--underlined reviews-side-bar__back" type="button">
+                    <svg width="14" height="10" aria-hidden="true">
+                      <use xlinkHref="#arrow-left"></use>
+                    </svg><span>Назад</span>
+                  </button>
+                </Link>
                 <h2 className="reviews-side-bar__title">Отзывы</h2>
                 <ul className="reviews-side-bar__list">
+                  {reviews.length === 0 && <li className="reviews-side-bar__item">Отзывов пока нет</li>}
                   {reviews.map((review) => (
                     <li key={review.id} className="reviews-side-bar__item">
                       <ReviewCard review={review} />
                     </li>
                   ))}
-                  <li className="reviews-side-bar__item">
-                    <div className="review">
-                      <div className="review__user-info">
-                        <div className="review__user-photo">
-                          <picture>
-                            <source type="image/webp" srcSet="img/content/avatars/users//photo-2.webp, img/content/avatars/users//photo-2@2x.webp 2x" />
-                            <img src="img/content/avatars/users//photo-2.png" srcSet="img/content/avatars/users//photo-2@2x.png 2x" width="64" height="64" alt="Изображение пользователя" />
-                          </picture>
-                        </div>
-                        <span className="review__user-name">Дарья</span>
-                        <div className="review__rating">
-                          <svg width="16" height="16" aria-hidden="true">
-                            <use xlinkHref="#icon-star"></use>
-                          </svg><span>5</span>
-                        </div>
-                      </div>
-                      <p className="review__comment">Спасибо, классная тренировка! Понятная и&nbsp;интересная, с&nbsp;акцентом на&nbsp;правильную технику, как я&nbsp;люблю.</p>
-                    </div>
-                  </li>
-                  <li className="reviews-side-bar__item">
-                    <div className="review">
-                      <div className="review__user-info">
-                        <div className="review__user-photo">
-                          <picture>
-                            <source type="image/webp" srcSet="img/content/avatars/users//photo-3.webp, img/content/avatars/users//photo-3@2x.webp 2x" />
-                            <img src="img/content/avatars/users//photo-3.png" srcSet="img/content/avatars/users//photo-3@2x.png 2x" width="64" height="64" alt="Изображение пользователя" />
-                          </picture>
-                        </div><span className="review__user-name">Катерина</span>
-                        <div className="review__rating">
-                          <svg width="16" height="16" aria-hidden="true">
-                            <use xlinkHref="#icon-star"></use>
-                          </svg><span>4</span>
-                        </div>
-                      </div>
-                      <p className="review__comment">Хорошая тренировка, но&nbsp;все&nbsp;же не&nbsp;хватило немного динамики. Для меня оказалась слишком легкой.</p>
-                    </div>
-                  </li>
-                  <li className="reviews-side-bar__item">
-                    <div className="review">
-                      <div className="review__user-info">
-                        <div className="review__user-photo">
-                          <picture>
-                            <source type="image/webp" srcSet="img/content/avatars/users//photo-4.webp, img/content/avatars/users//photo-4@2x.webp 2x" />
-                            <img src="img/content/avatars/users//photo-4.png" srcSet="img/content/avatars/users//photo-4@2x.png 2x" width="64" height="64" alt="Изображение пользователя" />
-                          </picture>
-                        </div><span className="review__user-name">Татьяна</span>
-                        <div className="review__rating">
-                          <svg width="16" height="16" aria-hidden="true">
-                            <use xlinkHref="#icon-star"></use>
-                          </svg><span>5</span>
-                        </div>
-                      </div>
-                      <p className="review__comment">Регулярно выполняю эту тренировку дома и&nbsp;вижу результат! Спина стала прямее, появилось больше сил и&nbsp;гибкость тоже стала лучше, хотя упражнения довольно простые.</p>
-                    </div>
-                  </li>
-                  <li className="reviews-side-bar__item">
-                    <div className="review">
-                      <div className="review__user-info">
-                        <div className="review__user-photo">
-                          <picture>
-                            <source type="image/webp" srcSet="img/content/avatars/users//photo-5.webp, img/content/avatars/users//photo-5@2x.webp 2x" />
-                            <img src="img/content/avatars/users//photo-5.png" srcSet="img/content/avatars/users//photo-5@2x.png 2x" width="64" height="64" alt="Изображение пользователя" />
-                          </picture>
-                        </div><span className="review__user-name">Наталья</span>
-                        <div className="review__rating">
-                          <svg width="16" height="16" aria-hidden="true">
-                            <use xlinkHref="#icon-star"></use>
-                          </svg><span>5</span>
-                        </div>
-                      </div>
-                      <p className="review__comment">Ну&nbsp;какой&nbsp;же кайф! Спасибо, крутая программа. С&nbsp;музыкой вообще супер! Действительно, Energy!</p>
-                    </div>
-                  </li>
-                  <li className="reviews-side-bar__item">
-                    <div className="review">
-                      <div className="review__user-info">
-                        <div className="review__user-photo">
-                          <picture>
-                            <source type="image/webp" srcSet="img/content/avatars/users//photo-1.webp, img/content/avatars/users//photo-1@2x.webp 2x" />
-                            <img src="img/content/avatars/users//photo-1.png" srcSet="img/content/avatars/users//photo-1@2x.png 2x" width="64" height="64" alt="Изображение пользователя" />
-                          </picture>
-                        </div><span className="review__user-name">Никита</span>
-                        <div className="review__rating">
-                          <svg width="16" height="16" aria-hidden="true">
-                            <use xlinkHref="#icon-star"></use>
-                          </svg><span>5</span>
-                        </div>
-                      </div>
-                      <p className="review__comment">Эта тренировка для меня зарядка по&nbsp;утрам, помогает проснуться.</p>
-                    </div>
-                  </li>
                 </ul>
                 <button className="btn btn--medium reviews-side-bar__button" type="button">Оставить отзыв</button>
               </aside>

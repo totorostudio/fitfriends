@@ -34,6 +34,8 @@ export enum AppRoute {
   MyTrainings = '/my-trainings',
   Training = '/training/:id',
   TrainingUrl = '/training',
+  Users = '/users',
+  User = '/users/:id',
   Friends = '/friends',
   CreateTraining = '/create-training',
   MyOrders = '/my-orders',

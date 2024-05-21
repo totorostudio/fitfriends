@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { fetchTrainingsAction, fetchUsersAction } from "../../store/api-actions";
 import { FeaturedCards, Header, RelatedCard, TrainingCard, UserCard } from "../../components";
 import './styles.css';
+import { AppRoute } from "../../const";
+import { Link } from "react-router-dom";
 
 export function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -184,7 +186,9 @@ export function MainPage(): JSX.Element {
                 style={{ transform: `translateX(-${(currentPopularIndex / POPULAR_VISIBLE_ITEMS) * 100}%)` }}
               >
                 {popularTrainings.map((training) => (
-                  <TrainingCard key={training.id} training={training} />
+                  <li key={training.id} className="my-trainings__item">
+                    <TrainingCard training={training} />
+                  </li>
                 ))}
               </ul>
             </div>
@@ -195,11 +199,13 @@ export function MainPage(): JSX.Element {
             <div className="look-for-company__wrapper">
               <div className="look-for-company__title-wrapper">
                 <h2 className="look-for-company__title">Ищут компанию для тренировки</h2>
-                <button className="btn-flat btn-flat--light look-for-company__button" type="button"><span>Смотреть все</span>
-                  <svg width="14" height="10" aria-hidden="true">
-                    <use xlinkHref="#arrow-right"></use>
-                  </svg>
-                </button>
+                <Link to={AppRoute.Users}>
+                  <button className="btn-flat btn-flat--light look-for-company__button" type="button"><span>Смотреть все</span>
+                    <svg width="14" height="10" aria-hidden="true">
+                      <use xlinkHref="#arrow-right"></use>
+                    </svg>
+                  </button>
+                </Link>
                 <div className="look-for-company__controls">
                   <button
                     className="btn-icon btn-icon--outlined look-for-company__control"

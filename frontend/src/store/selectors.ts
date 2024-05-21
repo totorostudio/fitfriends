@@ -10,7 +10,7 @@ export const getUsers = (state: State) => state.allUsers.data;
 
 export const getTraining = (state: State) => state.training.data;
 
-export const getReview = (state: State) => state.review.data;
+export const getReview = (state: State) => state.review;
 
 export const getCoachTrainings = (state: State) => state.coachTrainings.data;
 

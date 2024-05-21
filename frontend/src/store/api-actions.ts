@@ -1,11 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
-import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews } from '../types';
+import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType } from '../types';
 import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setUserData } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token-service';
+import { buildQueryString } from '../utils';
 
 export const clearErrorAction = createAsyncThunk(
   'data/clearError',
@@ -124,24 +125,25 @@ export const fetchReviewsAction = createAsyncThunk<void, FetchReviewsParams, {
     try {
       const {data} = await api.get<Reviews>(`${APIRoute.Review}?${searchParams.toString()}`);
       dispatch(loadReview({isLoading: false, data}));
-
     } catch (error) {
+      dispatch(loadReview({isLoading: false, data: null}));
       dispatch(setError('Error connection to the server'));
       throw error;
     }
   },
 );
 
-interface FetchUsersParams {
+export interface UsersFilterParams {
   limit?: number;
   sort?: SortDirection;
   page?: number;
+  trainingType?: TrainingType[];
   metro?: Metro;
   level?: Level;
   role?: UserRole;
 }
 
-export const fetchUsersAction = createAsyncThunk<void, FetchUsersParams, {
+export const fetchUsersAction = createAsyncThunk<void, UsersFilterParams, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -149,16 +151,13 @@ export const fetchUsersAction = createAsyncThunk<void, FetchUsersParams, {
   'data/fetchUsers',
   async (params, {dispatch, extra: api}) => {
     dispatch(loadUsers({isLoading: true, data: null}));
+    console.log('params:', params);
 
-    const searchParams = new URLSearchParams();
-    Object.keys(params).forEach(key => {
-      const value = params[key as keyof typeof params];
-      if (value !== undefined) {
-        searchParams.append(key, String(value));
-      }
-    });
+    const queryString = buildQueryString(params);
+
     try {
-      const {data} = await api.get<Users>(`${APIRoute.Users}?${searchParams.toString()}`);
+      console.log('queryString:', queryString);
+      const { data } = await api.get<Users>(`${APIRoute.Users}?${queryString}`);
       dispatch(loadUsers({isLoading: false, data}));
     } catch (error) {
       dispatch(setError('Error connection to the server'));

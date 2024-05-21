@@ -187,7 +187,9 @@ export function MyTrainingsPage(): JSX.Element {
                 <div className="my-trainings">
                   <ul className="my-trainings__list">
                     {trainings.map((training) => (
-                      <TrainingCard key={training.id} training={training} />
+                      <li key={training.id} className="my-trainings__item">
+                        <TrainingCard training={training} />
+                      </li>
                     ))}
                   </ul>
                   <div className="show-more my-trainings__show-more">

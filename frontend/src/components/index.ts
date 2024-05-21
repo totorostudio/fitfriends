@@ -8,3 +8,7 @@ export * from './main/related-card';
 export * from './main/featured-cards';
 export * from './main/user-card';
 export * from './review/review-card';
+export * from './user-catalog/user-catalog-card';
+export * from './user-catalog/customer-info';
+export * from './user-catalog/coach-info';
+export * from './friend-card/friend-card';
