@@ -6,7 +6,7 @@ import { AppRoute } from "../../const";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getUsers } from "../../store/selectors";
 import { UsersFilterParams, fetchUsersAction } from "../../store/api-actions";
-import { Level, TrainingType } from "../../types";
+import { Level, TrainingType, UserRole } from "../../types";
 import { capitalizeFirst, removeNullFields } from "../../utils";
 
 export function UsersPage(): JSX.Element {
@@ -69,7 +69,15 @@ export function UsersPage(): JSX.Element {
   const handleLevelChange = (level: Level) => {
     setFilter((prevFilter) => ({
       ...prevFilter,
-      level: level,
+      level,
+      limit: VISIBLE_USERS,
+    }));
+  };
+
+  const handleRoleChange = (role: UserRole) => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      role,
       limit: VISIBLE_USERS,
     }));
   };
@@ -233,14 +241,25 @@ export function UsersPage(): JSX.Element {
                       </div>
                     </div>
                     <div className="user-catalog-form__block">
-                      <h3 className="user-catalog-form__title user-catalog-form__title--sort">Сортировка</h3>
                       <div className="btn-radio-sort">
                         <label>
-                          <input type="radio" name="sort" checked />
+                          <input
+                            type="radio"
+                            name="sort"
+                            value={UserRole.Coach}
+                            checked={filter.role === UserRole.Coach}
+                            onChange={() => handleRoleChange(UserRole.Coach)}
+                          />
                           <span className="btn-radio-sort__label">Тренеры</span>
                         </label>
                         <label>
-                          <input type="radio" name="sort" />
+                          <input
+                            type="radio"
+                            name="sort"
+                            value={UserRole.Customer}
+                            checked={filter.role === UserRole.Customer}
+                            onChange={() => handleRoleChange(UserRole.Customer)}
+                          />
                           <span className="btn-radio-sort__label">Пользователи</span>
                         </label>
                       </div>
