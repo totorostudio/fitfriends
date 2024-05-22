@@ -2,11 +2,13 @@ import {State} from '../types';
 
 export const getAuthorizationStatus = (state: State) => state.authorizationStatus;
 
-export const getUserData = (state: State) => state.userData;
+export const getAuthUser = (state: State) => state.authUser;
 
 export const getUser = (state: State) => state.user.data;
 
 export const getUsers = (state: State) => state.allUsers.data;
+
+export const getFriends = (state: State) => state.friends.data;
 
 export const getTraining = (state: State) => state.training.data;
 

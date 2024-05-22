@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
 import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType } from '../types';
-import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setUserData } from './action';
+import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token-service';
@@ -127,6 +127,51 @@ export const fetchReviewsAction = createAsyncThunk<void, FetchReviewsParams, {
       dispatch(loadReview({isLoading: false, data}));
     } catch (error) {
       dispatch(loadReview({isLoading: false, data: null}));
+      dispatch(setError('Error connection to the server'));
+      throw error;
+    }
+  },
+);
+
+export const addToFriendAction = createAsyncThunk<void, { friendId: String }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/addToFriend',
+  async ({ friendId }, { dispatch, extra: api }) => {
+    try {
+      const {data} = await api.post(APIRoute.AddFriend, {friendId});
+      console.log(data);
+    } catch (error) {
+      dispatch(setError('Error updating the user on the server'));
+      throw error;
+    }
+  },
+);
+
+export interface FriendsParams {
+  limit?: number;
+  sort?: SortDirection;
+  page?: number;
+}
+
+export const fetchFriendsAction = createAsyncThunk<void, FriendsParams, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFriends',
+  async (params, {dispatch, extra: api}) => {
+    dispatch(loadFriends({isLoading: true, data: null}));
+
+    const queryString = buildQueryString(params);
+
+    try {
+      console.log('queryString:', queryString);
+      const { data } = await api.get<Users>(`${APIRoute.Friends}?${queryString}`);
+      dispatch(loadFriends({isLoading: false, data}));
+    } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
     }
@@ -275,7 +320,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
         const { id, email, role } = data;
         if (id) {
           dispatch(requireAuthorization(AuthorizationStatus.Auth));
-          dispatch(setUserData({id, email, role}));
+          dispatch(setAuthUser({id, email, role}));
           console.log('Авторизирован с ролью:', role);
         } else {
           throw new Error('id or role is missing');
@@ -312,7 +357,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     }
 
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(setUserData({id, email, role}));
+    dispatch(setAuthUser({id, email, role}));
     console.log('Авторизирован с ролью:', role);
   },
 );

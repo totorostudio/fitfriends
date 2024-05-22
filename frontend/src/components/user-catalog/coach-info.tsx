@@ -1,10 +1,13 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
-import { FullUser, Gender, Training } from "../../types";
+import { FullUser, Training } from "../../types";
 import { Header, TrainingCard } from "../";
 import { useState } from "react";
 import './styles.css';
+import { addToFriendAction } from "../../store/api-actions";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { getAuthUser } from "../../store/selectors";
 
 interface UserProps {
   user: FullUser;
@@ -12,6 +15,8 @@ interface UserProps {
 }
 
 export function CoachInfo({ user, trainings }: UserProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const authUser = useAppSelector(getAuthUser);
   const [currentTrainingIndex, setCurrentTrainingIndex] = useState<number>(0);
   const TRAINING_VISIBLE_ITEMS = 4;
   const totalTrainingItems = trainings.length;
@@ -29,6 +34,13 @@ export function CoachInfo({ user, trainings }: UserProps): JSX.Element {
       prevIndex - TRAINING_VISIBLE_ITEMS >= 0 ? prevIndex - TRAINING_VISIBLE_ITEMS : prevIndex
     );
   };
+
+  const handleAddToFriend = () => {
+    if (user.id) {
+      dispatch(addToFriendAction({friendId: user.id}));
+      console.log('Добавлен в друзья:', user.id);
+    }
+  }
 
   return (
     <div className="wrapper">
@@ -85,7 +97,9 @@ export function CoachInfo({ user, trainings }: UserProps): JSX.Element {
                             </li>
                           ))}
                         </ul>
-                        <button className="btn user-card-coach__btn" type="button">Добавить в друзья</button>
+                        {authUser.id !== user.id && (
+                          <button onClick={handleAddToFriend} className="btn user-card-coach__btn" type="button">Добавить в друзья</button>
+                        )}
                       </div>
                       <div className="user-card-coach__gallary">
                         <ul className="user-card-coach__gallary-list">

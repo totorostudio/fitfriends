@@ -13,7 +13,7 @@ export function UsersPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const usersData = useAppSelector(getUsers);
   const users = usersData?.users || [];
-  const VISIBLE_USERS = 2;
+  const VISIBLE_USERS = 3;
   const [trainingTypes, setTrainingTypes] = useState(Object.values(TrainingType).slice(0, 5));
   const [filter, setFilter] = useState<UsersFilterParams>({
     page: 1,

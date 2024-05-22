@@ -29,6 +29,8 @@ type LoadUserPayload = {
 
 export const loadUsers = createAction<LoadUsersPayload>('mainScreen/loadUsers');
 
+export const loadFriends = createAction<LoadUsersPayload>('user/loadFriends');
+
 export const loadUser = createAction<LoadUserPayload>('user/fullInfo');
 
 export const loadTraining = createAction<LoadTrainingPayload>('training/loadTraining');
@@ -45,7 +47,7 @@ export const loadPopularTrainings = createAction<LoadTrainingsPayload>('mainPage
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
-export const setUserData = createAction<UserData>('user/data');
+export const setAuthUser = createAction<UserData>('user/authUser');
 
 export const clearUserData = createAction('user/clearData');
 

@@ -19,6 +19,8 @@ export enum APIRoute {
   Users = '/api/users',
   Training = '/api/training',
   Review = '/api/review',
+  Friends = '/api/friends',
+  AddFriend = '/api/friends/add',
 }
 
 export enum AppRoute {

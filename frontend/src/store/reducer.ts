@@ -1,10 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setUserData, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview } from './action';
+import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends } from './action';
 import { FullUser, Reviews, Training, Trainings, UserData, UserRole, Users } from '../types';
 import { AuthorizationStatus } from '../const';
 
 type InitialState = {
   allUsers: {
+    isLoading: boolean;
+    data: Users | null;
+  };
+  friends: {
     isLoading: boolean;
     data: Users | null;
   };
@@ -37,12 +41,16 @@ type InitialState = {
     data: Trainings | null;
   };
   authorizationStatus: AuthorizationStatus;
-  userData: UserData;
+  authUser: UserData;
   error: string | null;
 };
 
 const initialState: InitialState = {
   allUsers: {
+    isLoading: false,
+    data: null,
+  },
+  friends: {
     isLoading: false,
     data: null,
   },
@@ -75,7 +83,7 @@ const initialState: InitialState = {
     data: null
   },
   authorizationStatus: AuthorizationStatus.Unknown,
-  userData: {
+  authUser: {
     id: '',
     email: '',
     role: UserRole.Unknown,
@@ -87,6 +95,9 @@ const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadUsers, (state, action) => {
       state.allUsers = action.payload;
+    })
+    .addCase(loadFriends, (state, action) => {
+      state.friends = action.payload;
     })
     .addCase(loadUser, (state, action) => {
       state.user = action.payload;
@@ -115,13 +126,13 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
-    .addCase(setUserData, (state, action) => {
-      state.userData = action.payload;
+    .addCase(setAuthUser, (state, action) => {
+      state.authUser = action.payload;
     })
     .addCase(clearUserData, (state) => {
       state.user = { isLoading: false, data: null };
       state.authorizationStatus = AuthorizationStatus.NoAuth;
-      state.userData = {
+      state.authUser = {
         id: '',
         email: '',
         role: UserRole.Unknown,

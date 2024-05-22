@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AccountCoachPage, AccountCustomerPage, CreateTrainingPage, FriendsPage, IntroPage, LoginPage, MainPage, MyOrdersPage, MyTrainingsPage, NotFoundPage, QuestionnaireCoachPage, QuestionnaireCustomerPage, RegisterPage, TrainingPage, UserPage, UsersPage } from '../../pages';
 import { ScrollToTop } from '..';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { getAuthorizationStatus, getError, getUserData } from '../../store/selectors';
+import { getAuthUser, getAuthorizationStatus, getError } from '../../store/selectors';
 import { UserRole } from '../../types';
 import { Logout } from '../logout/logout';
 import { checkAuthAction } from '../../store/api-actions';
@@ -13,7 +13,7 @@ export function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const userData = useAppSelector(getUserData);
+  const authUser = useAppSelector(getAuthUser);
   const error = useAppSelector(getError);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export function App(): JSX.Element {
       <ScrollToTop />
       <Routes>
         {authorizationStatus === AuthorizationStatus.Auth ? (
-          userData.role === UserRole.Coach ? (
+          authUser.role === UserRole.Coach ? (
           <>
             <Route path="" element={<Navigate to={AppRoute.AccountCoach} />} />
             <Route path={AppRoute.Login} element={<Navigate to={AppRoute.AccountCoach} />} />

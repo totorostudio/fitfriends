@@ -3,12 +3,25 @@ import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
 import { FullUser, Gender } from "../../types";
 import { Header } from "../";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { getAuthUser } from "../../store/selectors";
+import { addToFriendAction } from "../../store/api-actions";
 
 interface UserProps {
   user: FullUser;
 }
 
 export function CustomerInfo({ user }: UserProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const authUser = useAppSelector(getAuthUser);
+
+  const handleAddToFriend = () => {
+    if (user.id) {
+      dispatch(addToFriendAction({friendId: user.id}));
+      console.log('Добавлен в друзья:', user.id);
+    }
+  }
+
   return (
     <div className="wrapper">
       <Helmet>
@@ -61,7 +74,9 @@ export function CustomerInfo({ user }: UserProps): JSX.Element {
                             </div>
                           </li>
                       </ul>
-                      <button className="btn user-card__btn" type="button">Добавить в друзья</button>
+                      {authUser.id !== user.id && (
+                        <button onClick={handleAddToFriend} className="btn user-card__btn" type="button">Добавить в друзья</button>
+                      )}
                     </div>
                     <div className="user-card__gallary">
                       <ul className="user-card__gallary-list">
