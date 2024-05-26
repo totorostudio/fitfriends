@@ -1,12 +1,18 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
-import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType } from '../types';
-import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends } from './action';
+import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType, Balances } from '../types';
+import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends, loadBalance } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token-service';
 import { buildQueryString } from '../utils';
+
+interface BaseFetchParams {
+  limit?: number;
+  currentPage?: number;
+}
+
 
 export const clearErrorAction = createAsyncThunk(
   'data/clearError',
@@ -36,10 +42,9 @@ export const fetchTrainingAction = createAsyncThunk<void, String, {
   },
 );
 
-interface FetchTrainingsParams {
+interface FetchTrainingsParams extends BaseFetchParams {
   storeName: 'related' | 'featured' | 'popular' | 'coach';
   coachId?: string;
-  limit?: number;
   priceFrom?: number;
   priceTo?: number;
   caloriesFrom?: number;
@@ -102,7 +107,7 @@ interface FetchReviewsParams {
   trainingId: string;
   limit?: number;
   sort?: SortDirection;
-  page?: number;
+  currentPage?: number;
 }
 
 export const fetchReviewsAction = createAsyncThunk<void, FetchReviewsParams, {
@@ -127,6 +132,38 @@ export const fetchReviewsAction = createAsyncThunk<void, FetchReviewsParams, {
       dispatch(loadReview({isLoading: false, data}));
     } catch (error) {
       dispatch(loadReview({isLoading: false, data: null}));
+      dispatch(setError('Error connection to the server'));
+      throw error;
+    }
+  },
+);
+
+interface FetchBalanceParams extends BaseFetchParams {
+  isActive: boolean;
+}
+
+export const fetchBalanceAction = createAsyncThunk<void, FetchBalanceParams, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchBalance',
+  async (params, {dispatch, extra: api}) => {
+    dispatch(loadBalance({isLoading: true, data: null}));
+
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+      const value = params[key as keyof typeof params];
+      if (value !== undefined) {
+        searchParams.append(key, String(value));
+      }
+    });
+
+    try {
+      console.log((`${APIRoute.Balance}?${searchParams.toString()}`));
+      const {data} = await api.get<Balances>(`${APIRoute.Balance}?${searchParams.toString()}`);
+      dispatch(loadBalance({isLoading: false, data}));
+    } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
     }
@@ -181,7 +218,7 @@ export const fetchFriendsAction = createAsyncThunk<void, FriendsParams, {
 export interface UsersFilterParams {
   limit?: number;
   sort?: SortDirection;
-  page?: number;
+  currentPage?: number;
   trainingType?: TrainingType[];
   metro?: Metro;
   level?: Level;

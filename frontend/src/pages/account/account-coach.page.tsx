@@ -23,31 +23,7 @@ export function AccountCoachPage(): JSX.Element {
           <div className="container">
             <div className="inner-page__wrapper">
               <h1 className="visually-hidden">Личный кабинет</h1>
-              <section className="user-info-edit">
-                <div className="user-info-edit__header">
-                  <div className="input-load-avatar">
-                    <label>
-                      <input className="visually-hidden" type="file" name="user-photo-1" accept="image/png, image/jpeg" />
-                      <span className="input-load-avatar__avatar">
-                        <img src={user.avatar} srcSet={`${user.avatar} 2x`} width="98" height="98" alt={`Фото тренера ${user.name}`} />
-                      </span>
-                    </label>
-                  </div>
-                  <div className="user-info-edit__controls">
-                    <button className="user-info-edit__control-btn" aria-label="обновить">
-                      <svg width="16" height="16" aria-hidden="true">
-                        <use xlinkHref="#icon-change"></use>
-                      </svg>
-                    </button>
-                    <button className="user-info-edit__control-btn" aria-label="удалить">
-                      <svg width="14" height="16" aria-hidden="true">
-                        <use xlinkHref="#icon-trash"></use>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <UserEditForm userInfo={user} />
-              </section>
+              <UserEditForm userInfo={user} />
               <div className="inner-page__content">
                 <div className="personal-account-coach">
                   <div className="personal-account-coach__navigation">
@@ -73,7 +49,7 @@ export function AccountCoachPage(): JSX.Element {
                         </svg>
                       </div><span className="thumbnail-link__text">Мои друзья</span>
                     </Link>
-                    <Link to={AppRoute.MyOrders} className="thumbnail-link thumbnail-link--theme-light">
+                    <Link to={AppRoute.Orders} className="thumbnail-link thumbnail-link--theme-light">
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">
                           <use xlinkHref="#icon-bag"></use>

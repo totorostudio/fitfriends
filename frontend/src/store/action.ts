@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { FullUser, Reviews, Training, Trainings, UserData, Users } from '../types';
+import { Balances, FullUser, Reviews, Training, Trainings, UserData, Users } from '../types';
 import {AuthorizationStatus} from '../const';
 
 type LoadUsersPayload = {
@@ -22,6 +22,11 @@ type LoadTrainingsPayload = {
   data: Trainings | null;
 };
 
+type LoadBalancePayload = {
+  isLoading: boolean;
+  data: Balances | null;
+};
+
 type LoadUserPayload = {
   isLoading: boolean;
   data: FullUser | null;
@@ -36,6 +41,8 @@ export const loadUser = createAction<LoadUserPayload>('user/fullInfo');
 export const loadTraining = createAction<LoadTrainingPayload>('training/loadTraining');
 
 export const loadReview = createAction<LoadReviewPayload>('training/loadReview');
+
+export const loadBalance = createAction<LoadBalancePayload>('user/loadBalance');
 
 export const loadCoachTrainings = createAction<LoadTrainingsPayload>('myTrainingsPage/loadTrainings');
 

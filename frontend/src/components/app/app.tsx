@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { AccountCoachPage, AccountCustomerPage, CreateTrainingPage, FriendsPage, IntroPage, LoginPage, MainPage, MyOrdersPage, MyTrainingsPage, NotFoundPage, QuestionnaireCoachPage, QuestionnaireCustomerPage, RegisterPage, TrainingPage, UserPage, UsersPage } from '../../pages';
+import { AccountCoachPage, AccountCustomerPage, CreateTrainingPage, FriendsPage, IntroPage, LoginPage, MainPage, MyOrdersPage, MyPurchasesPage, MyTrainingsPage, NotFoundPage, QuestionnaireCoachPage, QuestionnaireCustomerPage, RegisterPage, TrainingPage, UserPage, UsersPage } from '../../pages';
 import { ScrollToTop } from '..';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { getAuthUser, getAuthorizationStatus, getError } from '../../store/selectors';
@@ -45,7 +45,8 @@ export function App(): JSX.Element {
             <Route path={AppRoute.User} element={<UserPage />} />
             <Route path={AppRoute.Friends} element={<FriendsPage />} />
             <Route path={AppRoute.CreateTraining} element={<CreateTrainingPage />} />
-            <Route path={AppRoute.MyOrders} element={<MyOrdersPage />} />
+            <Route path={AppRoute.Orders} element={<MyOrdersPage />} />
+            <Route path={AppRoute.Purchases} element={<Navigate to={AppRoute.AccountCoach} />} />
             <Route path={AppRoute.Logout} element={<Logout />} />
             <Route path="*" element={<NotFoundPage />} />
           </>
@@ -65,7 +66,8 @@ export function App(): JSX.Element {
             <Route path={AppRoute.User} element={<UserPage />} />
             <Route path={AppRoute.Friends} element={<FriendsPage />} />
             <Route path={AppRoute.CreateTraining} element={<Navigate to={AppRoute.Main} />} />
-            <Route path={AppRoute.MyOrders} element={<Navigate to={AppRoute.Main} />} />
+            <Route path={AppRoute.Orders} element={<Navigate to={AppRoute.Main} />} />
+            <Route path={AppRoute.Purchases} element={<MyPurchasesPage />} />
             <Route path={AppRoute.Logout} element={<Logout />} />
             <Route path="*" element={<NotFoundPage />} />
           </>
@@ -86,7 +88,8 @@ export function App(): JSX.Element {
             <Route path={AppRoute.User} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.Friends} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.CreateTraining} element={<Navigate to={AppRoute.Intro} />} />
-            <Route path={AppRoute.MyOrders} element={<Navigate to={AppRoute.Intro} />} />
+            <Route path={AppRoute.Orders} element={<Navigate to={AppRoute.Intro} />} />
+            <Route path={AppRoute.Purchases} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.Logout} element={<Logout />} />
             <Route path="*" element={<NotFoundPage />} />
           </>

@@ -5,6 +5,8 @@ export const TIMEOUT_SHOW_ERROR = 2000;
 export const MESSAGE_SHORT_TIMEOUT = 750;
 export const MESSAGE_LONG_TIMEOUT = 750;
 
+export const DEFAULT_ITEMS_LIMIT = 4;
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
@@ -20,6 +22,7 @@ export enum APIRoute {
   Training = '/api/training',
   Review = '/api/review',
   Friends = '/api/friends',
+  Balance = '/api/balance',
   AddFriend = '/api/friends/add',
 }
 
@@ -40,5 +43,6 @@ export enum AppRoute {
   User = '/users/:id',
   Friends = '/friends',
   CreateTraining = '/create-training',
-  MyOrders = '/my-orders',
+  Orders = '/my-orders',
+  Purchases = '/my-purchases',
 }

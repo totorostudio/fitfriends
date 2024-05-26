@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
+import { useAppSelector } from "../../hooks";
+import { getAuthUser } from "../../store/selectors";
+import { UserRole } from "../../types";
 
 export function Header(): JSX.Element {
+  const authUser = useAppSelector(getAuthUser);
+
   return (
     <header className="header">
     <div className="container">
@@ -20,7 +25,7 @@ export function Header(): JSX.Element {
             </Link>
           </li>
           <li className="main-nav__item">
-            <Link to={AppRoute.AccountCoach} className="main-nav__link" aria-label="Личный кабинет">
+            <Link to={authUser.role === UserRole.Coach ? AppRoute.AccountCoach : AppRoute.AccountCustomer} className="main-nav__link" aria-label="Личный кабинет">
               <svg width="16" height="18" aria-hidden="true">
                 <use xlinkHref="#icon-user"></use>
               </svg>

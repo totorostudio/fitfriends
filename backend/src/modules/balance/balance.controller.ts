@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param, Patch, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Param, Patch, Query, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Role } from "src/libs/decorators";
 import { UserRole } from "src/libs/types";
@@ -7,6 +7,8 @@ import { UUIDValidationPipe } from "src/libs/pipes";
 import { RequestWithTokenPayload } from "src/libs/requests";
 import { RoleGuard } from "src/libs/guards";
 import { BalanceRdo, BalancesRdoExample } from "./rdo";
+import { BaseQuery } from "src/libs/query";
+import { BalanceQuery } from "./balance.query";
 
 @ApiTags('Баланс пользователя')
 @Controller('balance')
@@ -26,9 +28,10 @@ export class BalanceController {
   @Role(UserRole.Customer)
   @UseGuards(RoleGuard)
   @ApiBearerAuth('access-token')
+  @UsePipes(new ValidationPipe({ transform: true }))
   @Get()
-  public async index(@Req() { tokenPayload }: RequestWithTokenPayload) {
-    return this.balanceService.find(tokenPayload.sub);
+  public async index(@Req() { tokenPayload }: RequestWithTokenPayload, @Query() query: BalanceQuery) {
+    return this.balanceService.find(tokenPayload.sub, query);
   }
 
   @ApiOperation({

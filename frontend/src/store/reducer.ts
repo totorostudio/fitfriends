@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends } from './action';
-import { FullUser, Reviews, Training, Trainings, UserData, UserRole, Users } from '../types';
+import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance } from './action';
+import { Balances, FullUser, Reviews, Training, Trainings, UserData, UserRole, Users } from '../types';
 import { AuthorizationStatus } from '../const';
 
 type InitialState = {
@@ -23,6 +23,10 @@ type InitialState = {
   review: {
     isLoading: boolean;
     data: Reviews | null;
+  };
+  balance: {
+    isLoading: boolean;
+    data: Balances | null;
   };
   coachTrainings: {
     isLoading: boolean;
@@ -63,6 +67,10 @@ const initialState: InitialState = {
     data: null
   },
   review: {
+    isLoading: false,
+    data: null
+  },
+  balance: {
     isLoading: false,
     data: null
   },
@@ -107,6 +115,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadReview, (state, action) => {
       state.review = action.payload;
+    })
+    .addCase(loadBalance, (state, action) => {
+      state.balance = action.payload;
     })
     .addCase(loadCoachTrainings, (state, action) => {
       state.coachTrainings = action.payload;

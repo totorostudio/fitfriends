@@ -4,6 +4,8 @@ import { fillDto } from 'src/libs/helpers';
 import { BalanceRepository } from './balance.repository';
 import { BalanceEntity } from './balance.entity';
 import { TrainingService } from '../training/training.service';
+import { BaseQuery } from 'src/libs/query';
+import { BalanceQuery } from './balance.query';
 
 @Injectable()
 export class BalanceService {
@@ -38,8 +40,8 @@ export class BalanceService {
     return this.createBalance(userId, trainingId);
   }
 
-  public async find(currentUserId: string): Promise<BalancesRdo> {
-    const balanceEntities = await this.balanceRepository.find(currentUserId);
+  public async find(currentUserId: string, query?: BalanceQuery): Promise<BalancesRdo> {
+    const balanceEntities = await this.balanceRepository.find(currentUserId, query);
 
     const balancesData = await Promise.all(balanceEntities.entities.map(async (entity) => {
       const training = await this.trainingService.getTrainingEntity(entity.trainingId);
