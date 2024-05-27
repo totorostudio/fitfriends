@@ -14,6 +14,8 @@ export const getTraining = (state: State) => state.training.data;
 
 export const getReview = (state: State) => state.review;
 
+export const getNotify = (state: State) => state.notify.data;
+
 export const getBalance = (state: State) => state.balance.data;
 
 export const getCoachTrainings = (state: State) => state.coachTrainings.data;

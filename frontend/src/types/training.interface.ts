@@ -21,7 +21,7 @@ export interface Training {
   description: string;
   gender: Gender;
   video: string;
-  rating: number;
-  coachId: string;
-  isFeatured: boolean;
+  rating?: number;
+  coachId?: string;
+  isFeatured?: boolean;
 }

@@ -24,13 +24,13 @@ export enum Level {
 }
 
 export enum TrainingType {
-  Yoga = 'йога',
+  Aerobics = 'аэробика',
   Running = 'бег',
   Boxing = 'бокс',
-  Stretching = 'стрейчинг',
   Crossfit = 'кроссфит',
-  Aerobics = 'аэробика',
   Pilates = 'пилатес',
+  Stretching = 'стрейчинг',
+  Yoga = 'йога'
 }
 
 export enum TrainingTime {
@@ -47,7 +47,7 @@ export enum OrderType {
 export enum PaymentType {
   Visa = 'visa',
   Mir = 'mir',
-  Umoney = 'umoney',
+  Umoney = 'iomoney',
 }
 
 export enum TrainingGender {

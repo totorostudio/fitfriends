@@ -12,3 +12,10 @@ export interface Order {
   cost: number;
   paymentType: PaymentType;
 };
+
+export interface NewOrderBody {
+  orderType: OrderType;
+  trainingId: string;
+  quantity: number;
+  paymentType: PaymentType;
+};

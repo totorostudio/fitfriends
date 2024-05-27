@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance } from './action';
-import { Balances, FullUser, Reviews, Training, Trainings, UserData, UserRole, Users } from '../types';
+import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance, loadNotify } from './action';
+import { Balances, FullUser, Notify, Reviews, Training, Trainings, UserData, UserRole, Users } from '../types';
 import { AuthorizationStatus } from '../const';
 
 type InitialState = {
@@ -23,6 +23,10 @@ type InitialState = {
   review: {
     isLoading: boolean;
     data: Reviews | null;
+  };
+  notify: {
+    isLoading: boolean;
+    data: Notify[] | null;
   };
   balance: {
     isLoading: boolean;
@@ -67,6 +71,10 @@ const initialState: InitialState = {
     data: null
   },
   review: {
+    isLoading: false,
+    data: null
+  },
+  notify: {
     isLoading: false,
     data: null
   },
@@ -115,6 +123,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadReview, (state, action) => {
       state.review = action.payload;
+    })
+    .addCase(loadNotify, (state, action) => {
+      state.notify = action.payload;
     })
     .addCase(loadBalance, (state, action) => {
       state.balance = action.payload;

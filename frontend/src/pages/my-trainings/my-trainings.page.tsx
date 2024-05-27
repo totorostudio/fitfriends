@@ -30,10 +30,6 @@ export function MyTrainingsPage(): JSX.Element {
     }
   }, [dispatch, filter, user, user.id]);
 
-  useEffect(() => {
-    console.log(filter);
-  }, [filter]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFilter(prevUserData => {

@@ -136,7 +136,14 @@ export function UserEditForm({ userInfo }: UserEditFormProps): JSX.Element {
           <div className={`custom-textarea ${!isEditMode && 'custom-textarea--readonly user-info__textarea'}`}>
             <label>
               <span className="custom-textarea__label">Описание</span>
-              <textarea name="description" placeholder="" onChange={handleTextareaChange} disabled={!isEditMode}>{user.description}</textarea>
+              <textarea
+                name="description"
+                placeholder=""
+                onChange={handleTextareaChange}
+                disabled={!isEditMode}
+              >
+                {user.description}
+              </textarea>
             </label>
           </div>
         </div>

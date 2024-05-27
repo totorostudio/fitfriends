@@ -1,22 +1,22 @@
 import { Helmet } from "react-helmet-async";
-import { Header, ReviewCard } from "../../components";
+import { Header, PopupBuy, PopupReview, ReviewCard } from "../../components";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getReview, getTraining, getUser } from "../../store/selectors";
-import { fetchTrainingAction, fetchUserAction } from "../../store/api-actions";
+import { fetchReviewsAction, fetchTrainingAction, fetchUserAction } from "../../store/api-actions";
 import { Review } from "../../types";
 import { AppRoute } from "../../const";
 
 export function TrainingPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
-  console.log('Страница тренировки с id:', id)
-
   const dispatch = useAppDispatch();
   const training = useAppSelector((getTraining));
   const coach = useAppSelector((getUser));
   const reviewsData = useAppSelector((getReview));
   const reviews: Review[] = reviewsData.data?.reviews || [];
+  const [isPopupBuyVisible, setPopupBuyVisible] = useState(false);
+  const [isPopupFeedbackVisible, setPopupFeedbackVisible] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -30,6 +30,20 @@ export function TrainingPage(): JSX.Element {
       dispatch(fetchUserAction(training?.coachId));
     }
   }, [dispatch]);
+
+  const handlePopupBuyClick = () => {
+    setPopupBuyVisible(true);
+  };
+
+  const handlePopupFeedbackClick = () => {
+    setPopupFeedbackVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopupBuyVisible(false);
+    setPopupFeedbackVisible(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (!training || !training.id || !coach || !coach.id) {
     return <div>Loading user data...</div>;
@@ -63,7 +77,14 @@ export function TrainingPage(): JSX.Element {
                     </li>
                   ))}
                 </ul>
-                <button className="btn btn--medium reviews-side-bar__button" type="button">Оставить отзыв</button>
+                <button
+                  className="btn btn--medium reviews-side-bar__button"
+                  type="button"
+                  onClick={handlePopupFeedbackClick}
+                >
+                  Оставить отзыв
+                </button>
+                {isPopupFeedbackVisible && <PopupReview training={training} onClose={handleClosePopup} />}
               </aside>
               <div className="training-card">
                 <div className="training-info">
@@ -131,7 +152,14 @@ export function TrainingPage(): JSX.Element {
                             </label>
                             <div className="training-info__error">Введите число</div>
                           </div>
-                          <button className="btn training-info__buy" type="button">Купить</button>
+                          <button
+                            className="btn training-info__buy"
+                            type="button"
+                            onClick={handlePopupBuyClick}
+                          >
+                            Купить
+                          </button>
+                          {isPopupBuyVisible && <PopupBuy training={training} onClose={handleClosePopup} />}
                         </div>
                       </div>
                     </form>

@@ -21,8 +21,10 @@ export enum APIRoute {
   Users = '/api/users',
   Training = '/api/training',
   Review = '/api/review',
+  Notify = '/api/notify',
   Friends = '/api/friends',
   Balance = '/api/balance',
+  Orders = '/api/orders',
   AddFriend = '/api/friends/add',
 }
 

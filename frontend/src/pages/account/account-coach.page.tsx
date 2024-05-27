@@ -64,7 +64,6 @@ export function AccountCoachPage(): JSX.Element {
                           <img src="img/content/thumbnails/nearest-gym-01.jpg" srcSet="img/content/thumbnails/nearest-gym-01@2x.jpg 2x" width="330" height="190" alt="" />
                         </picture>
                       </div>
-                      <p className="thumbnail-spec-gym__type">Ближайший зал</p>
                       <div className="thumbnail-spec-gym__header" style={{ textAlign: 'center' }}>
                         <h3 className="thumbnail-spec-gym__title">Скоро тут будет интересно</h3>
                       </div>

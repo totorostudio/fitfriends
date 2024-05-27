@@ -1,9 +1,11 @@
+import { Grade } from "./helper.enum";
+
 export interface Review {
   id?: string;
   createdAt?: Date;
-  userId: string;
+  userId?: string;
   trainingId: string;
-  grade: number;
+  grade: Grade;
   text: string;
 };
 

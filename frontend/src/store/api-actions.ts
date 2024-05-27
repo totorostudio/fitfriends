@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
-import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType, Balances } from '../types';
-import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends, loadBalance } from './action';
+import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType, Balances, Order, NewOrderBody, Review, Notify } from '../types';
+import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends, loadBalance, loadNotify } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token-service';
@@ -13,7 +13,6 @@ interface BaseFetchParams {
   currentPage?: number;
 }
 
-
 export const clearErrorAction = createAsyncThunk(
   'data/clearError',
   () => {
@@ -21,6 +20,23 @@ export const clearErrorAction = createAsyncThunk(
       () => store.dispatch(setError(null)),
       TIMEOUT_SHOW_ERROR
     );
+  },
+);
+
+export const createTrainingAction = createAsyncThunk<void, Training, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/createTraining',
+  async (body, { dispatch, extra: api }) => {
+    try {
+      const {data} = await api.post(`${APIRoute.Training}`, body);
+      console.log(data);
+    } catch (error) {
+      dispatch(setError('Error updating the user on the server'));
+      throw error;
+    }
   },
 );
 
@@ -115,7 +131,7 @@ export const fetchReviewsAction = createAsyncThunk<void, FetchReviewsParams, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchTrainings',
+  'data/fetchReviews',
   async (params, {dispatch, extra: api}) => {
     dispatch(loadReview({isLoading: true, data: null}));
 
@@ -170,6 +186,40 @@ export const fetchBalanceAction = createAsyncThunk<void, FetchBalanceParams, {
   },
 );
 
+export const createOrderAction = createAsyncThunk<void, NewOrderBody, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/createOrder',
+  async (body, { dispatch, extra: api }) => {
+    try {
+      const {data} = await api.post<Order>(`${APIRoute.Orders}`, body);
+      console.log(data);
+    } catch (error) {
+      dispatch(setError('Error updating the user on the server'));
+      throw error;
+    }
+  },
+);
+
+export const createReviewAction = createAsyncThunk<void, Review, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/createReview',
+  async (body, { dispatch, extra: api }) => {
+    try {
+      const {data} = await api.post<Review>(`${APIRoute.Review}`, body);
+      console.log(data);
+    } catch (error) {
+      dispatch(setError('Error updating the user on the server'));
+      throw error;
+    }
+  },
+);
+
 export const addToFriendAction = createAsyncThunk<void, { friendId: String }, {
   dispatch: AppDispatch;
   state: State;
@@ -178,8 +228,7 @@ export const addToFriendAction = createAsyncThunk<void, { friendId: String }, {
   'data/addToFriend',
   async ({ friendId }, { dispatch, extra: api }) => {
     try {
-      const {data} = await api.post(APIRoute.AddFriend, {friendId});
-      console.log(data);
+      await api.post(APIRoute.AddFriend, {friendId});
     } catch (error) {
       dispatch(setError('Error updating the user on the server'));
       throw error;
@@ -279,6 +328,43 @@ export const updateUserAction = createAsyncThunk<void, { id: string, updateData:
       dispatch(loadUser({ isLoading: false, data }));
     } catch (error) {
       dispatch(setError('Error updating the user on the server'));
+      throw error;
+    }
+  },
+);
+
+export const fetchNotifyAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchNotify',
+  async (_arg, {dispatch, extra: api}) => {
+    dispatch(loadNotify({isLoading: true, data: null}));
+
+    try {
+      const {data} = await api.get<Notify[]>(APIRoute.Notify);
+      dispatch(loadNotify({isLoading: false, data}));
+    } catch (error) {
+      dispatch(loadNotify({isLoading: false, data: null}));
+      dispatch(setError('Error connection to the server'));
+      throw error;
+    }
+  },
+);
+
+export const deleteNotifyAction = createAsyncThunk<void, { id: string }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/deleteNotify',
+  async ({ id }, {dispatch, extra: api}) => {
+
+    try {
+      await api.delete(`${APIRoute.Notify}/${id}`);
+    } catch (error) {
+      dispatch(setError('Error connection to the server'));
       throw error;
     }
   },
