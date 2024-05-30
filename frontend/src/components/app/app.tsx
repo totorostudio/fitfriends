@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AccountCoachPage, AccountCustomerPage, CreateTrainingPage, FriendsPage, IntroPage, LoginPage, MainPage, MyOrdersPage, MyPurchasesPage, MyTrainingsPage, NotFoundPage, QuestionnaireCoachPage, QuestionnaireCustomerPage, RegisterPage, TrainingPage, UserPage, UsersPage } from '../../pages';
-import { ScrollToTop } from '..';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { getAuthUser, getAuthorizationStatus, getError } from '../../store/selectors';
 import { UserRole } from '../../types';
@@ -26,7 +25,6 @@ export function App(): JSX.Element {
 
   return (
     <>
-      <ScrollToTop />
       <Routes>
         {authorizationStatus === AuthorizationStatus.Auth ? (
           authUser.role === UserRole.Coach ? (

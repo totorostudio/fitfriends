@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance, loadNotify } from './action';
-import { Balances, FullUser, Notify, Reviews, Training, Trainings, UserData, UserRole, Users } from '../types';
+import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance, loadNotify, setActiveTraining, loadOrders } from './action';
+import { Balances, CoachOrders, FullReview, FullTraining, FullUser, Notify, Trainings, UserData, UserRole, Users } from '../types';
 import { AuthorizationStatus } from '../const';
 
 type InitialState = {
@@ -18,11 +18,11 @@ type InitialState = {
   };
   training: {
     isLoading: boolean;
-    data: Training | null;
+    data: FullTraining | null;
   };
   review: {
     isLoading: boolean;
-    data: Reviews | null;
+    data: FullReview[] | null;
   };
   notify: {
     isLoading: boolean;
@@ -31,6 +31,10 @@ type InitialState = {
   balance: {
     isLoading: boolean;
     data: Balances | null;
+  };
+  orders: {
+    isLoading: boolean;
+    data: CoachOrders | null;
   };
   coachTrainings: {
     isLoading: boolean;
@@ -49,6 +53,7 @@ type InitialState = {
     data: Trainings | null;
   };
   authorizationStatus: AuthorizationStatus;
+  activeTraining: string | null;
   authUser: UserData;
   error: string | null;
 };
@@ -82,6 +87,10 @@ const initialState: InitialState = {
     isLoading: false,
     data: null
   },
+  orders: {
+    isLoading: false,
+    data: null
+  },
   coachTrainings: {
     isLoading: false,
     data: null
@@ -104,6 +113,7 @@ const initialState: InitialState = {
     email: '',
     role: UserRole.Unknown,
   },
+  activeTraining: null,
   error: null,
 };
 
@@ -130,6 +140,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadBalance, (state, action) => {
       state.balance = action.payload;
     })
+    .addCase(loadOrders, (state, action) => {
+      state.orders = action.payload;
+    })
     .addCase(loadCoachTrainings, (state, action) => {
       state.coachTrainings = action.payload;
     })
@@ -150,6 +163,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setAuthUser, (state, action) => {
       state.authUser = action.payload;
+    })
+    .addCase(setActiveTraining, (state, action) => {
+      state.activeTraining = action.payload;
     })
     .addCase(clearUserData, (state) => {
       state.user = { isLoading: false, data: null };

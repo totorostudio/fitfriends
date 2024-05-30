@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { FriendCard, Header } from "../../components";
+import { FriendCard, GoBack, Header } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getFriends } from "../../store/selectors";
 import { useEffect, useState } from "react";
@@ -38,13 +38,7 @@ export function FriendsPage(): JSX.Element {
         <section className="friends-list">
           <div className="container">
             <div className="friends-list__wrapper">
-              <Link to={AppRoute.Main}>
-                <button className="btn-flat friends-list__back" type="button">
-                  <svg width="14" height="10" aria-hidden="true">
-                    <use xlinkHref="#arrow-left"></use>
-                  </svg><span>Назад</span>
-                </button>
-              </Link>
+              <GoBack />
               <div className="friends-list__title-wrapper">
                 <h1 className="friends-list__title">Мои друзья</h1>
               </div>

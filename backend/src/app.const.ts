@@ -1,4 +1,4 @@
-import { BookingStatus, SortOrder } from "./libs/types";
+import { BookingStatus, SortDirection, SortOrder } from "./libs/types";
 
 export const SALT_ROUNDS = 10;
 
@@ -13,7 +13,7 @@ export const NOTIFY_LIMIT = 5;
 
 export const DEFAULT_PAGE = 1;
 
-export const DEFAULT_SORT_DIRECTION = 'asc';
+export const DEFAULT_SORT_DIRECTION = SortDirection.Down;
 
 export const MAX_TRAINING_TYPES = 3;
 

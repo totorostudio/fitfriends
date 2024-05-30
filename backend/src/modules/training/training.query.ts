@@ -40,7 +40,15 @@ export class TrainingQuery extends BaseQuery {
   @IsOptional()
   @Min(0, { message: 'Целое число от 0 до 5' })
   @Max(5, { message: 'Целое число от 0 до 5' })
-  public rating?: number;
+  public ratingFrom?: number;
+
+  @ApiPropertyOptional({ description: 'Рейтинг (целое число от 0 до 5)', type: Number  })
+  @Transform(({ value }) => +value)
+  @IsNumber()
+  @IsOptional()
+  @Min(0, { message: 'Целое число от 0 до 5' })
+  @Max(5, { message: 'Целое число от 0 до 5' })
+  public ratingTo?: number;
 
   @ApiPropertyOptional({ description: 'Длительность тренировок', enum: TrainingTime, isArray: true })
   @Transform(({ value }) => {

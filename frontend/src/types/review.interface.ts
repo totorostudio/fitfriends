@@ -16,3 +16,8 @@ export interface Reviews{
   itemsPerPage: number,
   reviews: Review[];
 }
+
+export interface FullReview extends Review {
+  userName?: string;
+  userAvatar?: string;
+}

@@ -3,7 +3,11 @@ export const handleInputChange = <S,>(setState: React.Dispatch<React.SetStateAct
   let parsedValue: string | number = value;
 
   if (type === 'number') {
-    parsedValue = +value;
+    parsedValue = value === '' ? '' : +value.replace(/^0+/, '');
+  }
+
+  if (type === 'range') {
+    parsedValue = value === '' ? 0 : Number(value);
   }
 
   setState(prevData => {
@@ -31,4 +35,25 @@ export const handleSelectChange = <S,>(setState: React.Dispatch<React.SetStateAc
     ...prevData,
     [name]: value
   }));
+};
+
+function isObject(value: any): value is Record<string, any> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+export const handleButtonChange = <T extends Record<string, any>>(
+  setState: React.Dispatch<React.SetStateAction<T>>,
+  e: React.MouseEvent<HTMLButtonElement>
+) => {
+  const { name } = e.currentTarget;
+  if (!name) return;
+
+  setState(prevData => {
+    if (!prevData || !isObject(prevData) || !(name in prevData)) {
+      return prevData;
+    }
+
+    const newValue = !prevData[name as keyof T] as boolean;
+    return { ...prevData, [name]: newValue };
+  });
 };

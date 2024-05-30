@@ -1,19 +1,28 @@
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { AppRoute } from "../../const";
-import { Header, TrainingCard } from "../../components";
+import { AppRoute, DEFAULT_ITEMS_LIMIT } from "../../const";
+import { GoBack, Header, TrainingCard, TrainingFilter } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getCoachTrainings, getUser } from "../../store/selectors";
 import { fetchTrainingsAction } from "../../store/api-actions";
 import { useEffect, useState } from "react";
 import { Training } from "../../types";
+import { clearEmptyFields } from "../../utils";
+
+export interface Filter {
+  priceFrom?: number;
+  priceTo?: number;
+  caloriesFrom?: number;
+  caloriesTo?: number;
+}
 
 export function MyTrainingsPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
   const data = useAppSelector((getCoachTrainings));
   const trainings: Training[] = data?.trainings || [];
-  const [filter, setFilter] = useState({
+  const totalItems = data?.totalItems || 0;
+  const [visibleItems, setVisibleItems] = useState<number>(DEFAULT_ITEMS_LIMIT);
+  const [filter, setFilter] = useState<Filter>({
     priceFrom: 0,
     priceTo: 50000,
     caloriesFrom: 0,
@@ -25,19 +34,14 @@ export function MyTrainingsPage(): JSX.Element {
   }
 
   useEffect(() => {
+    const cleanFilter = clearEmptyFields<Filter>(filter);
     if (user && user.id) {
-      dispatch(fetchTrainingsAction({ storeName: 'coach', coachId: user.id, ...filter }));
+      dispatch(fetchTrainingsAction({ storeName: 'coach', limit: visibleItems, coachId: user.id, ...cleanFilter }));
     }
-  }, [dispatch, filter, user, user.id]);
+  }, [dispatch, filter, user, user.id, visibleItems]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFilter(prevUserData => {
-      if (prevUserData === null) {
-        return prevUserData;
-      }
-      return { ...prevUserData, [name]: value };
-    });
+  const handleLoadMore = () => {
+    setVisibleItems((prev) => prev + DEFAULT_ITEMS_LIMIT);
   };
 
   return (
@@ -54,129 +58,9 @@ export function MyTrainingsPage(): JSX.Element {
               <div className="my-training-form">
                 <h2 className="visually-hidden">Мои тренировки Фильтр</h2>
                 <div className="my-training-form__wrapper">
-                  <Link to={AppRoute.AccountCoach}>
-                    <button className="btn-flat btn-flat--underlined my-training-form__btnback" type="button">
-                      <svg width="14" height="10" aria-hidden="true">
-                        <use xlinkHref="#arrow-left"></use>
-                      </svg>
-                      <span>Назад</span>
-                    </button>
-                  </Link>
+                  <GoBack url={AppRoute.AccountCoach} />
                   <h3 className="my-training-form__title">фильтры</h3>
-                  <form className="my-training-form__form">
-                    <div className="my-training-form__block my-training-form__block--price">
-                      <h4 className="my-training-form__block-title">Цена, ₽</h4>
-                      <div className="filter-price">
-                        <div className="filter-price__input-text filter-price__input-text--min">
-                          <input type="number" id="text-min" name="priceFrom" value={filter.priceFrom} onChange={handleInputChange} />
-                          <label htmlFor="text-min">от</label>
-                        </div>
-                        <div className="filter-price__input-text filter-price__input-text--max">
-                          <input type="number" id="text-max" name="priceTo" value={filter.priceTo} onChange={handleInputChange} />
-                          <label htmlFor="text-max">до</label>
-                        </div>
-                      </div>
-                      <div className="filter-range">
-                        <div className="filter-range__scale">
-                          <div className="filter-range__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-                        </div>
-                        <div className="filter-range__control">
-                          <button className="filter-range__min-toggle"><span className="visually-hidden">Минимальное значение</span></button>
-                          <button className="filter-range__max-toggle"><span className="visually-hidden">Максимальное значение</span></button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="my-training-form__block my-training-form__block--calories">
-                      <h4 className="my-training-form__block-title">Калории</h4>
-                      <div className="filter-calories">
-                        <div className="filter-calories__input-text filter-calories__input-text--min">
-                          <input type="number" id="text-min-cal" name="caloriesFrom" value={filter.caloriesFrom} onChange={handleInputChange} />
-                          <label htmlFor="text-min-cal">от</label>
-                        </div>
-                        <div className="filter-calories__input-text filter-calories__input-text--max">
-                          <input type="number" id="text-max-cal" name="caloriesTo" value={filter.caloriesTo} onChange={handleInputChange} />
-                          <label htmlFor="text-max-cal">до</label>
-                        </div>
-                      </div>
-                      <div className="filter-range">
-                        <div className="filter-range__scale">
-                          <div className="filter-range__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-                        </div>
-                        <div className="filter-range__control">
-                          <button className="filter-range__min-toggle"><span className="visually-hidden">Минимальное значение</span></button>
-                          <button className="filter-range__max-toggle"><span className="visually-hidden">Максимальное значение</span></button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="my-training-form__block my-training-form__block--raiting">
-                      <h4 className="my-training-form__block-title">Рейтинг</h4>
-                      <div className="filter-raiting">
-                        <div className="filter-raiting__scale">
-                          <div className="filter-raiting__bar"><span className="visually-hidden">Полоса прокрутки</span></div>
-                        </div>
-                        <div className="filter-raiting__control">
-                          <button className="filter-raiting__min-toggle"><span className="visually-hidden">Минимальное значение</span></button><span>0</span>
-                          <button className="filter-raiting__max-toggle"><span className="visually-hidden">Максимальное значение</span></button><span>5</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="my-training-form__block my-training-form__block--duration">
-                      <h4 className="my-training-form__block-title">Длительность</h4>
-                      <ul className="my-training-form__check-list">
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg></span>
-                              <span className="custom-toggle__label">10 мин - 30 мин</span>
-                            </label>
-                          </div>
-                        </li>
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" checked />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg>
-                              </span>
-                              <span className="custom-toggle__label">30 мин - 50 мин</span>
-                            </label>
-                          </div>
-                        </li>
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg>
-                              </span>
-                              <span className="custom-toggle__label">50 мин - 80 мин</span>
-                            </label>
-                          </div>
-                        </li>
-                        <li className="my-training-form__check-list-item">
-                          <div className="custom-toggle custom-toggle--checkbox">
-                            <label>
-                              <input type="checkbox" value="duration-1" name="duration" />
-                              <span className="custom-toggle__icon">
-                                <svg width="9" height="6" aria-hidden="true">
-                                  <use xlinkHref="#arrow-check"></use>
-                                </svg>
-                              </span>
-                              <span className="custom-toggle__label">80 мин - 100 мин</span>
-                            </label>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </form>
+                  <TrainingFilter filter={filter} setFilter={setFilter} />
                 </div>
               </div>
               <div className="inner-page__content">
@@ -189,8 +73,16 @@ export function MyTrainingsPage(): JSX.Element {
                     ))}
                   </ul>
                   <div className="show-more my-trainings__show-more">
-                    <button className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
-                    <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
+                    {visibleItems < totalItems &&
+                      <button
+                        className="btn show-more__button show-more__button--more"
+                        type="button"
+                        onClick={handleLoadMore}
+                      >
+                        Показать еще
+                      </button>
+                    }
+                      <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
                   </div>
                 </div>
               </div>

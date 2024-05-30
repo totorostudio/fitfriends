@@ -5,7 +5,8 @@ export const TIMEOUT_SHOW_ERROR = 2000;
 export const MESSAGE_SHORT_TIMEOUT = 750;
 export const MESSAGE_LONG_TIMEOUT = 750;
 
-export const DEFAULT_ITEMS_LIMIT = 4;
+export const DEFAULT_ITEMS_LIMIT = 6;
+export const DEFAULT_ORDERS_LIMIT = 4;
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
@@ -47,4 +48,5 @@ export enum AppRoute {
   CreateTraining = '/create-training',
   Orders = '/my-orders',
   Purchases = '/my-purchases',
+  ReviewsHash = 'reviews'
 }

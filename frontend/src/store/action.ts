@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Balances, FullUser, Notify, Reviews, Training, Trainings, UserData, Users } from '../types';
+import { Balances, CoachOrders, FullReview, FullTraining, FullUser, Notify, Trainings, UserData, Users } from '../types';
 import {AuthorizationStatus} from '../const';
 
 type LoadUsersPayload = {
@@ -9,7 +9,7 @@ type LoadUsersPayload = {
 
 type LoadTrainingPayload = {
   isLoading: boolean;
-  data: Training | null;
+  data: FullTraining | null;
 };
 
 type LoadTrainingsPayload = {
@@ -19,7 +19,7 @@ type LoadTrainingsPayload = {
 
 type LoadReviewPayload = {
   isLoading: boolean;
-  data: Reviews | null;
+  data: FullReview[] | null;
 };
 
 type LoadNotifyPayload = {
@@ -30,6 +30,11 @@ type LoadNotifyPayload = {
 type LoadBalancePayload = {
   isLoading: boolean;
   data: Balances | null;
+};
+
+type LoadOrdersPayload = {
+  isLoading: boolean;
+  data: CoachOrders | null;
 };
 
 type LoadUserPayload = {
@@ -51,6 +56,8 @@ export const loadNotify = createAction<LoadNotifyPayload>('user/loadNotify');
 
 export const loadBalance = createAction<LoadBalancePayload>('user/loadBalance');
 
+export const loadOrders = createAction<LoadOrdersPayload>('coach/loadOrders');
+
 export const loadCoachTrainings = createAction<LoadTrainingsPayload>('myTrainingsPage/loadTrainings');
 
 export const loadRelatedTrainings = createAction<LoadTrainingsPayload>('mainPage/loadRelatedTrainings');
@@ -62,6 +69,8 @@ export const loadPopularTrainings = createAction<LoadTrainingsPayload>('mainPage
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
 export const setAuthUser = createAction<UserData>('user/authUser');
+
+export const setActiveTraining = createAction<string | null>('user/activeTraining');
 
 export const clearUserData = createAction('user/clearData');
 

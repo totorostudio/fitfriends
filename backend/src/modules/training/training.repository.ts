@@ -46,12 +46,18 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
       caloriesConditions.push({ calories: { lte: +query.caloriesTo } });
     }
 
-    if (priceConditions.length > 0 || caloriesConditions.length > 0) {
-      whereClause.AND = [...priceConditions, ...caloriesConditions];
+    const ratingConditions: Prisma.TrainingWhereInput[] = [];
+
+    if (query?.ratingFrom !== undefined) {
+      ratingConditions.push({ rating: { gte: +query.ratingFrom } });
     }
 
-    if (query?.rating !== undefined) {
-      whereClause.rating = +query.rating;
+    if (query?.ratingTo !== undefined) {
+      ratingConditions.push({ rating: { lte: +query.ratingTo } });
+    }
+
+    if (priceConditions.length > 0 || caloriesConditions.length > 0 || ratingConditions.length > 0) {
+      whereClause.AND = [...priceConditions, ...caloriesConditions, ...ratingConditions];
     }
 
     if (query?.trainingTime && query.trainingTime.length > 0) {
@@ -64,7 +70,7 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
 
     const prismaQuery: Prisma.TrainingFindManyArgs = {
       where: whereClause,
-      orderBy: { price: sortDirection },
+      orderBy: { createdAt: sortDirection },
       take: limit,
       skip: page,
     };

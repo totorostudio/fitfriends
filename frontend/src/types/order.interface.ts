@@ -1,4 +1,4 @@
-import { OrderType, PaymentType } from ".";
+import { FullTraining, OrderType, PaymentType } from ".";
 
 export interface Order {
   id?: string;
@@ -19,3 +19,17 @@ export interface NewOrderBody {
   quantity: number;
   paymentType: PaymentType;
 };
+
+export interface CoachOrders {
+  totalPages: number;
+  totalItems: number;
+  currentPage: number;
+  itemsPerPage: number;
+  orders: CoachOrder[];
+}
+
+export interface CoachOrder {
+  training: FullTraining;
+  quantity: number;
+  cost: number;
+}

@@ -25,3 +25,16 @@ export interface Training {
   coachId?: string;
   isFeatured?: boolean;
 }
+
+export interface FullTraining extends Training {
+  coachName: string;
+  coachAvatar?: string;
+  count: number;
+}
+
+export interface EditableTrainingData {
+  title: string;
+  description: string;
+  price: number | string | null;
+  isFeatured: boolean;
+};

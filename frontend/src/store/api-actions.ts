@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
-import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType, Balances, Order, NewOrderBody, Review, Notify } from '../types';
-import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends, loadBalance, loadNotify } from './action';
+import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType, Balances, Order, NewOrderBody, Review, Notify, FullTraining, FullReview, EditableTrainingData, SortOrder, CoachOrders } from '../types';
+import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends, loadBalance, loadNotify, loadOrders } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token-service';
@@ -40,17 +40,59 @@ export const createTrainingAction = createAsyncThunk<void, Training, {
   },
 );
 
-export const fetchTrainingAction = createAsyncThunk<void, String, {
+export const updateTrainingAction = createAsyncThunk<void, { id: String, editableData: EditableTrainingData }, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchUserInfo',
-  async (id, {dispatch, extra: api}) => {
+  'data/updateTraining',
+  async ({id, editableData}, { dispatch, extra: api }) => {
+    try {
+      const {data} = await api.patch(`${APIRoute.Training}/${id}`, editableData);
+      console.log(data);
+    } catch (error) {
+      dispatch(setError('Error updating the training on the server'));
+      throw error;
+    }
+  },
+);
+
+export const fetchTrainingAction = createAsyncThunk<void, { id: String, role: String }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchTraining',
+  async ({ id, role }, {dispatch, extra: api}) => {
     dispatch(loadTraining({isLoading: true, data: null}));
     try {
-      const {data} = await api.get<Training>(`${APIRoute.Training}/${id}`);
-      dispatch(loadTraining({isLoading: false, data}));
+      const trainingResponse  = await api.get<Training>(`${APIRoute.Training}/${id}`);
+
+      let balanceResponse;
+      let count = 0;
+
+      if (role === UserRole.Customer) {
+        balanceResponse = await api.get<Balances>(APIRoute.Balance);
+
+        const balances = balanceResponse.data.balances;
+        const balance = balances.find(balance => balance.training.id === id);
+
+        if (balance) {
+          count = balance.count;
+        }
+      }
+
+      const userResponse = await api.get<FullUser>(`${APIRoute.Users}/${trainingResponse.data.coachId}`);
+
+      const fullTraining: FullTraining = {
+        ...trainingResponse.data,
+        coachName: userResponse.data.name,
+        coachAvatar: userResponse.data.avatar,
+        count
+      };
+
+      console.log('fullTraining:', fullTraining);
+      dispatch(loadTraining({isLoading: false, data: fullTraining}));
     } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
@@ -75,10 +117,6 @@ export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingsParams,
   'data/fetchTrainings',
   async (params, {dispatch, extra: api}) => {
     const { storeName, ...apiParams } = params;
-
-    console.log('params:', params);
-    console.log('storeName:', storeName);
-    console.log('apiParams:', apiParams);
 
     if (storeName === 'related') {
       dispatch(loadRelatedTrainings({isLoading: true, data: null}));
@@ -133,19 +171,32 @@ export const fetchReviewsAction = createAsyncThunk<void, FetchReviewsParams, {
 }>(
   'data/fetchReviews',
   async (params, {dispatch, extra: api}) => {
+    const { trainingId, ...apiParams } = params;
     dispatch(loadReview({isLoading: true, data: null}));
 
     const searchParams = new URLSearchParams();
-    Object.keys(params).forEach(key => {
-      const value = params[key as keyof typeof params];
+    Object.keys(apiParams).forEach(key => {
+      const value = apiParams[key as keyof typeof apiParams];
       if (value !== undefined) {
         searchParams.append(key, String(value));
       }
     });
 
     try {
-      const {data} = await api.get<Reviews>(`${APIRoute.Review}?${searchParams.toString()}`);
-      dispatch(loadReview({isLoading: false, data}));
+      const {data} = await api.get<Reviews>(`${APIRoute.Review}/${trainingId}?${searchParams.toString()}`);
+      const reviews = data.reviews;
+
+      const fullReviews: FullReview[] = await Promise.all(reviews.map(async (review) => {
+        const userResponse = await api.get<FullUser>(`${APIRoute.Users}/${review.userId}`);
+        const user = userResponse.data;
+        return {
+          ...review,
+          userName: user.name,
+          userAvatar: user.avatar
+        };
+      }));
+
+      dispatch(loadReview({isLoading: false, data: fullReviews}));
     } catch (error) {
       dispatch(loadReview({isLoading: false, data: null}));
       dispatch(setError('Error connection to the server'));
@@ -179,6 +230,54 @@ export const fetchBalanceAction = createAsyncThunk<void, FetchBalanceParams, {
       console.log((`${APIRoute.Balance}?${searchParams.toString()}`));
       const {data} = await api.get<Balances>(`${APIRoute.Balance}?${searchParams.toString()}`);
       dispatch(loadBalance({isLoading: false, data}));
+    } catch (error) {
+      dispatch(setError('Error connection to the server'));
+      throw error;
+    }
+  },
+);
+
+export const spendBalanceAction = createAsyncThunk<void, String, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/spendBalance',
+  async (trainingId, { dispatch, extra: api }) => {
+    try {
+      await api.patch(`${APIRoute.Balance}/${trainingId}`);
+    } catch (error) {
+      dispatch(setError('Error connection to the server'));
+      throw error;
+    }
+  },
+);
+
+interface FetchOrdersParams extends BaseFetchParams {
+  sort?: SortDirection;
+  sortOrder?: SortOrder;
+}
+
+export const fetchOrdersAction = createAsyncThunk<void, FetchOrdersParams, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchOrders',
+  async (params, {dispatch, extra: api}) => {
+    dispatch(loadOrders({isLoading: true, data: null}));
+
+    const searchParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+      const value = params[key as keyof typeof params];
+      if (value !== undefined) {
+        searchParams.append(key, String(value));
+      }
+    });
+
+    try {
+      const {data} = await api.get<CoachOrders>(`${APIRoute.Orders}?${searchParams.toString()}`);
+      dispatch(loadOrders({isLoading: false, data}));
     } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
@@ -266,6 +365,7 @@ export const fetchFriendsAction = createAsyncThunk<void, FriendsParams, {
 
 export interface UsersFilterParams {
   limit?: number;
+  page?: number;
   sort?: SortDirection;
   currentPage?: number;
   trainingType?: TrainingType[];
@@ -287,7 +387,6 @@ export const fetchUsersAction = createAsyncThunk<void, UsersFilterParams, {
     const queryString = buildQueryString(params);
 
     try {
-      console.log('queryString:', queryString);
       const { data } = await api.get<Users>(`${APIRoute.Users}?${queryString}`);
       dispatch(loadUsers({isLoading: false, data}));
     } catch (error) {
