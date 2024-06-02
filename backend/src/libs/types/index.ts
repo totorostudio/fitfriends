@@ -18,3 +18,4 @@ export * from './subscriber.interface';
 export * from './file-upload.interface';
 export * from './file-store.interface';
 export * from './rabbit-routing.enum';
+export * from './sort-trainings.enum';

@@ -27,7 +27,7 @@ export function AccountCoachPage(): JSX.Element {
               <div className="inner-page__content">
                 <div className="personal-account-coach">
                   <div className="personal-account-coach__navigation">
-                    <Link to={AppRoute.MyTrainings} className="thumbnail-link thumbnail-link--theme-light">
+                    <Link to={AppRoute.Trainings} className="thumbnail-link thumbnail-link--theme-light">
                       <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                         <svg width="30" height="26" aria-hidden="true">
                           <use xlinkHref="#icon-flash"></use>

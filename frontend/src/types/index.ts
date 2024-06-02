@@ -21,3 +21,5 @@ export * from './rabbit-routing.enum';
 export * from './state';
 export * from './auth-data';
 export * from './user-data';
+export * from './training-request.enum';
+export * from './sort-trainings.enum';

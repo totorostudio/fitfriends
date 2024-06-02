@@ -1,11 +1,17 @@
-import { IsIn, IsNumber, IsOptional, IsUUID, Max, Min } from 'class-validator';
+import { IsEnum, IsIn, IsNumber, IsOptional, IsUUID, Max, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
 import lodash from 'lodash';
-import { TrainingTime } from 'src/libs//types';
+import { SortType, TrainingTime } from 'src/libs//types';
 import { BaseQuery } from 'src/libs/query';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class TrainingQuery extends BaseQuery {
+  @ApiPropertyOptional({ description: 'Тип сортировки', enum: SortType })
+  @Transform(({ value }) => value)
+  @IsEnum(SortType)
+  @IsOptional()
+  public sortType?: SortType;
+
   @ApiPropertyOptional({ description: 'Цена от', type: Number  })
   @Transform(({ value }) => +value)
   @IsNumber()

@@ -7,10 +7,11 @@ import { fetchTrainingsAction, fetchUsersAction } from "../../store/api-actions"
 import { FeaturedCards, Header, RelatedCard, TrainingCard, UserCard } from "../../components";
 import './styles.css';
 import { AppRoute } from "../../const";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector(getUser);
   const relatedData = useAppSelector((getRelatedTrainings));
   const featuredData = useAppSelector((getFeaturedTrainings));
@@ -151,7 +152,7 @@ export function MainPage(): JSX.Element {
             <div className="popular-trainings__wrapper">
               <div className="popular-trainings__title-wrapper">
                 <h2 className="popular-trainings__title">Популярные тренировки</h2>
-                <button className="btn-flat popular-trainings__button" type="button">
+                <button onClick={() => {navigate(AppRoute.Trainings)}} className="btn-flat popular-trainings__button" type="button">
                   <span>Смотреть все</span>
                   <svg width="14" height="10" aria-hidden="true">
                     <use xlinkHref="#arrow-right"></use>

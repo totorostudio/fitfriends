@@ -20,7 +20,7 @@ export const getBalance = (state: State) => state.balance.data;
 
 export const getOrders = (state: State) => state.orders.data;
 
-export const getCoachTrainings = (state: State) => state.coachTrainings.data;
+export const getCatalogTrainings = (state: State) => state.catalogTrainings.data;
 
 export const getRelatedTrainings = (state: State) => state.relatedTrainings.data;
 

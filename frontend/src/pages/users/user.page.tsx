@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { CoachInfo, CustomerInfo } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { getCoachTrainings, getUser } from "../../store/selectors";
+import { getCatalogTrainings, getUser } from "../../store/selectors";
 import { fetchTrainingsAction, fetchUserAction } from "../../store/api-actions";
 import { useParams } from "react-router-dom";
 import { UserRole } from "../../types";
@@ -10,7 +10,7 @@ export function UserPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
-  const trainingsData = useAppSelector((getCoachTrainings));
+  const trainingsData = useAppSelector((getCatalogTrainings));
   const trainings = trainingsData?.trainings || [];
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export function UserPage(): JSX.Element {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchTrainingsAction({ storeName: 'coach', coachId: id }));
+      dispatch(fetchTrainingsAction({ storeName: 'catalog', coachId: id }));
     }
   }, [dispatch, id]);
 

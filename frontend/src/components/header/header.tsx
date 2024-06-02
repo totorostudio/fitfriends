@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AppRoute } from "../../const";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getAuthUser, getNotify } from "../../store/selectors";
@@ -9,8 +9,20 @@ import { NotifyMessages } from "..";
 
 export function Header(): JSX.Element {
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const authUser = useAppSelector(getAuthUser);
   const notify = useAppSelector(getNotify);
+  let isActiveMain = false;
+  let isActiveAccount = false;
+  const isActiveFriends = location.pathname === AppRoute.Friends;
+
+  if (authUser.role === UserRole.Coach) {
+    isActiveMain = location.pathname === AppRoute.AccountCoach;
+    isActiveAccount = location.pathname === AppRoute.AccountCoach;
+  } else {
+    isActiveMain = location.pathname === AppRoute.Main;
+    isActiveAccount = location.pathname === AppRoute.AccountCustomer;
+  }
 
   useEffect(() => {
     dispatch(fetchNotifyAction());
@@ -36,21 +48,21 @@ export function Header(): JSX.Element {
       <nav className="main-nav">
         <ul className="main-nav__list">
           <li className="main-nav__item">
-            <Link to={AppRoute.AccountCoach} className="main-nav__link is-active" aria-label="На главную">
+            <Link to={authUser.role === UserRole.Coach ? AppRoute.AccountCoach : AppRoute.Main} className={`main-nav__link ${isActiveMain ? 'is-active' : ''}`} aria-label="На главную">
               <svg width="18" height="18" aria-hidden="true">
                 <use xlinkHref="#icon-home"></use>
               </svg>
             </Link>
           </li>
           <li className="main-nav__item">
-            <Link to={authUser.role === UserRole.Coach ? AppRoute.AccountCoach : AppRoute.AccountCustomer} className="main-nav__link" aria-label="Личный кабинет">
+            <Link to={authUser.role === UserRole.Coach ? AppRoute.AccountCoach : AppRoute.AccountCustomer} className={`main-nav__link ${isActiveAccount ? 'is-active' : ''}`} aria-label="Личный кабинет">
               <svg width="16" height="18" aria-hidden="true">
                 <use xlinkHref="#icon-user"></use>
               </svg>
             </Link>
           </li>
           <li className="main-nav__item">
-            <Link to={AppRoute.Friends} className="main-nav__link" aria-label="Друзья">
+            <Link to={AppRoute.Friends} className={`main-nav__link ${isActiveFriends ? 'is-active' : ''}`} aria-label="Друзья">
               <svg width="22" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-friends"></use>
               </svg>

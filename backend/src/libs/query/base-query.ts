@@ -13,7 +13,7 @@ export class BaseQuery {
   public limit?: number;
 
   @ApiPropertyOptional({ description: 'Направление сортировки', enum: SortDirection })
-  @Transform(({ value }) => +value)
+  @Transform(({ value }) => value)
   @IsEnum(SortDirection)
   @IsOptional()
   public sort?: SortDirection;

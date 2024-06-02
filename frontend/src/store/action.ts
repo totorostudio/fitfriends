@@ -58,7 +58,7 @@ export const loadBalance = createAction<LoadBalancePayload>('user/loadBalance');
 
 export const loadOrders = createAction<LoadOrdersPayload>('coach/loadOrders');
 
-export const loadCoachTrainings = createAction<LoadTrainingsPayload>('myTrainingsPage/loadTrainings');
+export const loadCatalogTrainings = createAction<LoadTrainingsPayload>('myTrainingsPage/loadCatalogTrainings');
 
 export const loadRelatedTrainings = createAction<LoadTrainingsPayload>('mainPage/loadRelatedTrainings');
 

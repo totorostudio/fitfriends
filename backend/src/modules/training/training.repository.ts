@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaClientService } from 'src/libs/models/prisma/prisma-client.service';
 import { BasePostgresRepository } from 'src/libs/models/repository/base-postgres.repository';
-import { Training } from 'src/libs/types';
+import { SortType, Training } from 'src/libs/types';
 import { DefaultPojoType } from 'src/libs/models/repository/entity.interface';
 import { DEFAULT_PAGE, DEFAULT_SORT_DIRECTION, LIST_LIMIT } from 'src/app.const';
 import { Pagination } from 'src/libs/types';
@@ -21,6 +21,8 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
 
   public async find(query?: TrainingQuery): Promise<Pagination<TrainingEntity>> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
+    const sortType = query?.sortType ?? SortType.Default;
+    console.log('sortType', sortType);
     const limit = Number(query?.limit) || LIST_LIMIT;
     const page = query?.page ? (query.page - 1) * limit : 0;
 
@@ -70,7 +72,7 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
 
     const prismaQuery: Prisma.TrainingFindManyArgs = {
       where: whereClause,
-      orderBy: { createdAt: sortDirection },
+      orderBy: { [sortType]: sortDirection },
       take: limit,
       skip: page,
     };

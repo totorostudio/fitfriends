@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { loadUsers, loadCoachTrainings, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance, loadNotify, setActiveTraining, loadOrders } from './action';
+import { loadUsers, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance, loadNotify, setActiveTraining, loadOrders, loadCatalogTrainings } from './action';
 import { Balances, CoachOrders, FullReview, FullTraining, FullUser, Notify, Trainings, UserData, UserRole, Users } from '../types';
 import { AuthorizationStatus } from '../const';
 
@@ -36,7 +36,7 @@ type InitialState = {
     isLoading: boolean;
     data: CoachOrders | null;
   };
-  coachTrainings: {
+  catalogTrainings: {
     isLoading: boolean;
     data: Trainings | null;
   };
@@ -91,7 +91,7 @@ const initialState: InitialState = {
     isLoading: false,
     data: null
   },
-  coachTrainings: {
+  catalogTrainings: {
     isLoading: false,
     data: null
   },
@@ -143,8 +143,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOrders, (state, action) => {
       state.orders = action.payload;
     })
-    .addCase(loadCoachTrainings, (state, action) => {
-      state.coachTrainings = action.payload;
+    .addCase(loadCatalogTrainings, (state, action) => {
+      state.catalogTrainings = action.payload;
     })
     .addCase(loadRelatedTrainings, (state, action) => {
       state.relatedTrainings = action.payload;

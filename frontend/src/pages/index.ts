@@ -8,7 +8,7 @@ export * from './intro/intro.page';
 export * from './questionnaire-coach/questionnaire-coach.page';
 export * from './questionnaire-customer/questionnaire-customer.page';
 export * from './loading/loading.page';
-export * from './my-trainings/my-trainings.page';
+export * from './trainings/trainings.page';
 export * from './friends/friends.page';
 export * from './create-training/create-training.page';
 export * from './my-orders/my-orders.page';

@@ -8,6 +8,8 @@ export const MESSAGE_LONG_TIMEOUT = 750;
 export const DEFAULT_ITEMS_LIMIT = 6;
 export const DEFAULT_ORDERS_LIMIT = 4;
 
+export const FEATURED_DISCOUNT = 0.9;
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
@@ -39,7 +41,7 @@ export enum AppRoute {
   Main = '/main',
   AccountCoach = '/account-coach',
   AccountCustomer = '/account-customer',
-  MyTrainings = '/my-trainings',
+  Trainings = '/trainings',
   Training = '/training/:id',
   TrainingUrl = '/training',
   Users = '/users',

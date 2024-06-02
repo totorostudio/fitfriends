@@ -1,4 +1,3 @@
-import { UsersFilterParams } from "../store/api-actions";
 import { Gender } from "../types";
 
 export const removeNullFields = <T extends object>(obj: T): T => {
@@ -12,14 +11,14 @@ export const removeNullFields = <T extends object>(obj: T): T => {
   return newObj;
 };
 
-export const buildQueryString = (params: UsersFilterParams) => {
+export const buildQueryString = <T>(params: T): string => {
   const queryParts: string[] = [];
-  Object.keys(params).forEach(key => {
-    const value = params[key as keyof typeof params];
+  Object.keys(params as object).forEach(key => {
+    const value = params[key as keyof T];
     if (value !== undefined) {
       if (Array.isArray(value)) {
-        value.forEach(item => {
-          queryParts.push(`${encodeURIComponent(key)}[]=${encodeURIComponent(item)}`);
+        (value as unknown[]).forEach(item => {
+          queryParts.push(`${encodeURIComponent(key)}[]=${encodeURIComponent(String(item))}`);
         });
       } else {
         queryParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
@@ -48,8 +47,14 @@ export function formatGender(gender: Gender): string {
 export function clearEmptyFields<T>(object: T): Partial<T> {
   const cleanedFilter: Partial<T> = {};
   for (const key in object) {
-    if (object[key] !== null && object[key] !== undefined && object[key] !== '') {
-      cleanedFilter[key] = object[key];
+    const value = object[key];
+    if (
+      value !== null &&
+      value !== undefined &&
+      value !== '' &&
+      (!Array.isArray(value) || value.length > 0)
+    ) {
+      cleanedFilter[key] = value;
     }
   }
   return cleanedFilter;

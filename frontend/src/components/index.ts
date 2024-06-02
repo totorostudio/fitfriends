@@ -21,5 +21,6 @@ export * from './training-video/training-video';
 export * from './training-info/training-info-customer';
 export * from './training-info/training-info-coach';
 export * from './training-filter/training-filter';
+export * from './training-filter/training-filter-sort';
 export * from './go-back/go-back';
 

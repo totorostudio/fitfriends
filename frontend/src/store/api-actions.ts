@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
-import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType, Balances, Order, NewOrderBody, Review, Notify, FullTraining, FullReview, EditableTrainingData, SortOrder, CoachOrders } from '../types';
-import { clearUserData, loadCoachTrainings, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends, loadBalance, loadNotify, loadOrders } from './action';
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import { AppDispatch, State, AuthData, UserData, FullUser, Trainings, Users, UserRole, Level, Metro, SortDirection, Training, Reviews, TrainingType, Balances, Order, NewOrderBody, Review, Notify, FullTraining, FullReview, EditableTrainingData, SortOrder, CoachOrders, TrainingRequest, TrainingTime, SortType } from '../types';
+import { clearUserData, loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, loadReview, loadTraining, loadUser, loadUsers, requireAuthorization, setError, setAuthUser, loadFriends, loadBalance, loadNotify, loadOrders, loadCatalogTrainings } from './action';
+import { APIRoute, AuthorizationStatus, FEATURED_DISCOUNT, TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../services/token-service';
 import { buildQueryString } from '../utils';
@@ -101,12 +101,15 @@ export const fetchTrainingAction = createAsyncThunk<void, { id: String, role: St
 );
 
 interface FetchTrainingsParams extends BaseFetchParams {
-  storeName: 'related' | 'featured' | 'popular' | 'coach';
+  storeName: 'related' | 'featured' | 'popular' | 'catalog';
+  sort?: SortDirection;
+  sortType?: SortType;
   coachId?: string;
   priceFrom?: number;
   priceTo?: number;
   caloriesFrom?: number;
   caloriesTo?: number;
+  trainingTime?: TrainingTime[];
 }
 
 export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingsParams, {
@@ -124,32 +127,52 @@ export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingsParams,
       dispatch(loadFeaturedTrainings({isLoading: true, data: null}));
     } else if (storeName === 'popular') {
       dispatch(loadPopularTrainings({isLoading: true, data: null}));
-    } else if (storeName === 'coach') {
-      dispatch(loadCoachTrainings({isLoading: true, data: null}));
+    } else if (storeName === 'catalog') {
+      dispatch(loadCatalogTrainings({isLoading: true, data: null}));
     } else {
       throw new Error('Unknown storeName');
     }
 
-    const searchParams = new URLSearchParams();
-    Object.keys(apiParams).forEach(key => {
-      const value = apiParams[key as keyof typeof apiParams];
-      if (value !== undefined) {
-        searchParams.append(key, String(value));
-      }
-    });
+    const queryString = buildQueryString(apiParams);
 
     try {
-      const {data} = await api.get<Trainings>(`${APIRoute.Training}?${searchParams.toString()}`);
+      const {data} = await api.get<Trainings>(`${APIRoute.Training}?${queryString}`);
 
-      if (storeName === 'related') {
+      data.trainings.forEach(training => {
+        if (training.isFeatured) {
+          training.price *= FEATURED_DISCOUNT;
+        }
+      });
+
+      if (storeName === TrainingRequest.Catalog) {
+        const countData = await api.get<Trainings>(APIRoute.Training);
+        countData.data.trainings.forEach(training => {
+          if (training.isFeatured) {
+            training.price *= FEATURED_DISCOUNT;
+          }
+        });
+        const minPrice = Math.min(...countData.data.trainings.map(t => t.price));
+        const maxPrice = Math.max(...countData.data.trainings.map(t => t.price));
+        const minCalories = Math.min(...countData.data.trainings.map(t => t.calories));
+        const maxCalories = Math.max(...countData.data.trainings.map(t => t.calories));
+
+        const updatedData = {
+          ...data,
+          minPrice,
+          maxPrice,
+          minCalories,
+          maxCalories
+        };
+
+        dispatch(loadCatalogTrainings({isLoading: false, data: updatedData}));
+      } else if (storeName === TrainingRequest.Related) {
         dispatch(loadRelatedTrainings({isLoading: false, data}));
-      } else if (storeName === 'featured') {
+      } else if (storeName === TrainingRequest.Featured) {
         dispatch(loadFeaturedTrainings({isLoading: false, data}));
-      } else if (storeName === 'popular') {
+      } else if (storeName === TrainingRequest.Popular) {
         dispatch(loadPopularTrainings({isLoading: false, data}));
-      } else if (storeName === 'coach') {
-        dispatch(loadCoachTrainings({isLoading: false, data}));
       }
+
     } catch (error) {
       dispatch(setError('Error connection to the server'));
       throw error;
@@ -350,7 +373,7 @@ export const fetchFriendsAction = createAsyncThunk<void, FriendsParams, {
   async (params, {dispatch, extra: api}) => {
     dispatch(loadFriends({isLoading: true, data: null}));
 
-    const queryString = buildQueryString(params);
+    const queryString = buildQueryString<FriendsParams>(params);
 
     try {
       console.log('queryString:', queryString);
@@ -384,7 +407,7 @@ export const fetchUsersAction = createAsyncThunk<void, UsersFilterParams, {
     dispatch(loadUsers({isLoading: true, data: null}));
     console.log('params:', params);
 
-    const queryString = buildQueryString(params);
+    const queryString = buildQueryString<UsersFilterParams>(params);
 
     try {
       const { data } = await api.get<Users>(`${APIRoute.Users}?${queryString}`);
