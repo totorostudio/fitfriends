@@ -1,9 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { Range, getTrackBackground } from 'react-range';
-import { Filter } from "../../pages";
-import './styles.css';
-import { FullUser, SortTrainings, TrainingTime, UserRole } from "../../types";
-import { TrainingFilterSort } from "..";
+import { Filter, FilterRange, FullUser, HandleRange, SortTrainings, UserRole } from "../../types";
+import { TrainingFilterCalories, TrainingFilterPrice, TrainingFilterRating, TrainingFilterSort, TrainingFilterTime, TrainingFilterTypes } from "..";
+import { DEFAULT_ITEMS_LIMIT } from "../../const";
 
 interface TrainingFilterProps {
   minPrice: number;
@@ -15,29 +13,23 @@ interface TrainingFilterProps {
   sort: SortTrainings;
   setSort: Dispatch<SetStateAction<SortTrainings>>;
   user: FullUser
+  setVisibleItems: Dispatch<SetStateAction<number>>;
 };
 
-type HandleRangeChangeType = (
-  rangeName: string,
-  setFilter: React.Dispatch<React.SetStateAction<Filter>>,
-  filter: Filter,
-  setValues: React.Dispatch<React.SetStateAction<number[]>>
-) => (newValues: number[]) => void;
-
-export function TrainingFilter({ minPrice, maxPrice, minCalories, maxCalories, filter, setFilter, sort, setSort, user }: TrainingFilterProps): JSX.Element {
-  const RatingRange = {
+export function TrainingFilter({ minPrice, maxPrice, minCalories, maxCalories, filter, setFilter, sort, setSort, user, setVisibleItems }: TrainingFilterProps): JSX.Element {
+  const ratingRange: FilterRange = {
     STEP: 1,
     MIN: 0,
     MAX: 5
   };
 
-  const PriceRange = {
+  const priceRange: FilterRange = {
     STEP: 100,
     Min: minPrice,
     Max: maxPrice
   };
 
-  const CaloriesRange = {
+  const caloriesRange: FilterRange = {
     STEP: 100,
     Min: minCalories,
     Max: maxCalories
@@ -47,9 +39,9 @@ export function TrainingFilter({ minPrice, maxPrice, minCalories, maxCalories, f
   const [onInitCalories, setOnInitCalories] = useState(false);
   const [priceValues, setPriceValues] = useState([minPrice, maxPrice]);
   const [caloriesValues, setCaloriesValues] = useState([minCalories, maxCalories]);
-  const [ratingValues, setRatingValues] = useState([RatingRange.MIN, RatingRange.MAX]);
+  const [ratingValues, setRatingValues] = useState([ratingRange.MIN, ratingRange.MAX]);
 
-  const handleRangeChange: HandleRangeChangeType = (rangeName, setFilter, filter, setValues) => (newValues) => {
+  const handleRangeChange: HandleRange = (rangeName, setFilter, filter, setValues) => (newValues) => {
     if (rangeName === 'price') {
       setOnInitPrice(true);
     } else if (rangeName === 'calories') {
@@ -62,6 +54,7 @@ export function TrainingFilter({ minPrice, maxPrice, minCalories, maxCalories, f
       [rangeName + 'From']: newValues[0],
       [rangeName + 'To']: newValues[1],
     });
+    setVisibleItems(DEFAULT_ITEMS_LIMIT);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,257 +68,79 @@ export function TrainingFilter({ minPrice, maxPrice, minCalories, maxCalories, f
     }
 
     if (name === 'priceFrom' || name === 'priceTo') {
-      numericValue = Math.min(Math.max(numericValue, PriceRange.Min), PriceRange.Max);
+      numericValue = Math.min(Math.max(numericValue, priceRange.Min), priceRange.Max);
     } else if (name === 'caloriesFrom' || name === 'caloriesTo') {
-      numericValue = Math.min(Math.max(numericValue, CaloriesRange.Min), CaloriesRange.Max);
+      numericValue = Math.min(Math.max(numericValue, caloriesRange.Min), caloriesRange.Max);
     } else if (name === 'ratingFrom' || name === 'ratingTo') {
-      numericValue = Math.min(Math.max(numericValue, RatingRange.MIN), RatingRange.MAX);
+      numericValue = Math.min(Math.max(numericValue, ratingRange.MIN), ratingRange.MAX);
     }
 
     setFilter((prevFilter) => {
       const newFilter = { ...prevFilter, [name]: numericValue };
 
-      if (name === 'priceFrom' && numericValue > (newFilter.priceTo ?? PriceRange.Max)) {
+      if (name === 'priceFrom' && numericValue > (newFilter.priceTo ?? priceRange.Max)) {
         newFilter.priceTo = numericValue;
-      } else if (name === 'priceTo' && numericValue < (newFilter.priceFrom ?? PriceRange.Min)) {
+      } else if (name === 'priceTo' && numericValue < (newFilter.priceFrom ?? priceRange.Min)) {
         newFilter.priceFrom = numericValue;
-      } else if (name === 'caloriesFrom' && numericValue > (newFilter.caloriesTo ?? CaloriesRange.Max)) {
+      } else if (name === 'caloriesFrom' && numericValue > (newFilter.caloriesTo ?? caloriesRange.Max)) {
         newFilter.caloriesTo = numericValue;
-      } else if (name === 'caloriesTo' && numericValue < (newFilter.caloriesFrom ?? CaloriesRange.Min)) {
+      } else if (name === 'caloriesTo' && numericValue < (newFilter.caloriesFrom ?? caloriesRange.Min)) {
         newFilter.caloriesFrom = numericValue;
-      } else if (name === 'ratingFrom' && numericValue > (newFilter.ratingTo ?? RatingRange.MAX)) {
+      } else if (name === 'ratingFrom' && numericValue > (newFilter.ratingTo ?? ratingRange.MAX)) {
         newFilter.ratingTo = numericValue;
-      } else if (name === 'ratingTo' && numericValue < (newFilter.ratingFrom ?? RatingRange.MIN)) {
+      } else if (name === 'ratingTo' && numericValue < (newFilter.ratingFrom ?? ratingRange.MIN)) {
         newFilter.ratingFrom = numericValue;
       }
 
-      setPriceValues([newFilter.priceFrom ?? 0, newFilter.priceTo ?? PriceRange.Max]);
-      setCaloriesValues([newFilter.caloriesFrom ?? CaloriesRange.Min, newFilter.caloriesTo ?? CaloriesRange.Max]);
-      setRatingValues([newFilter.ratingFrom ?? 0, newFilter.ratingTo ?? RatingRange.MAX]);
+      setPriceValues([newFilter.priceFrom ?? 0, newFilter.priceTo ?? priceRange.Max]);
+      setCaloriesValues([newFilter.caloriesFrom ?? caloriesRange.Min, newFilter.caloriesTo ?? caloriesRange.Max]);
+      setRatingValues([newFilter.ratingFrom ?? 0, newFilter.ratingTo ?? ratingRange.MAX]);
 
       return newFilter;
     });
 
     e.target.value = numericValue.toString();
-  };
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, duration: TrainingTime) => {
-    setFilter((prevFilter) => {
-      const trainingTime = prevFilter.trainingTime ?? [];
-      if (event.target.checked) {
-        return { ...prevFilter, trainingTime: [...trainingTime, duration] };
-      } else {
-        return { ...prevFilter, trainingTime: trainingTime.filter(item => item !== duration) };
-      }
-    });
+    setVisibleItems(DEFAULT_ITEMS_LIMIT);
   };
 
   return(
     <form className="my-training-form__form">
-      <div className="my-training-form__block my-training-form__block--price">
-        <h4 className="my-training-form__block-title">Цена, ₽</h4>
-        <div className="filter-price">
-          <div className="filter-price__input-text filter-price__input-text--min">
-            <input
-              type="number"
-              name="priceFrom"
-              placeholder={minPrice.toString()}
-              value={filter.priceFrom}
-              min={PriceRange.Min}
-              max={PriceRange.Max}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="text-min">от</label>
-          </div>
-          <div className="filter-price__input-text filter-price__input-text--max">
-            <input
-              type="number"
-              name="priceTo"
-              placeholder={maxPrice.toString()}
-              value={filter.priceTo}
-              min={PriceRange.Min}
-              max={PriceRange.Max}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="text-max">до</label>
-          </div>
-        </div>
-        <div className="filter-range">
-          <div className="filter-range__scale">
-            <div className="filter-range__scale-container">
-              <Range
-                step={PriceRange.STEP}
-                min={PriceRange.Min}
-                max={PriceRange.Max > PriceRange.Min ? PriceRange.Max : PriceRange.Min + PriceRange.STEP}
-                values={onInitPrice ? priceValues : [minPrice, maxPrice] }
-                onChange={handleRangeChange('price', setFilter, filter, setPriceValues)}
-                renderTrack={({ props, children }) => (
-                  <div
-                    {...props}
-                    className="filter-range__track"
-                    style={{
-                      ...props.style,
-                      background: getTrackBackground({
-                        values: priceValues,
-                        colors: ['#ccc', '#333', '#ccc'],
-                        min: PriceRange.Min,
-                        max: PriceRange.Max
-                      }),
-                    }}
-                  >
-                    {children}
-                  </div>
-                )}
-                renderThumb={({ props }) => (
-                  <div
-                    {...props}
-                    className="filter-range__thumb"
-                  />
-                )}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="my-training-form__block my-training-form__block--calories">
-        <h4 className="my-training-form__block-title">Калории</h4>
-        <div className="filter-calories">
-          <div className="filter-calories__input-text filter-calories__input-text--min">
-            <input
-              type="number"
-              name="caloriesFrom"
-              placeholder={CaloriesRange.Min.toString()}
-              value={filter.caloriesFrom}
-              min={CaloriesRange.Min}
-              max={CaloriesRange.Max}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="text-min-cal">от</label>
-          </div>
-          <div className="filter-calories__input-text filter-calories__input-text--max">
-            <input
-              type="number"
-              name="caloriesTo"
-              placeholder={CaloriesRange.Max.toString()}
-              value={filter.caloriesTo}
-              min={CaloriesRange.Min}
-              max={CaloriesRange.Max}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="text-max-cal">до</label>
-          </div>
-        </div>
-        <div className="filter-range">
-          <div className="filter-range__scale">
-            <div className="filter-range__scale-container">
-              <Range
-                step={CaloriesRange.STEP}
-                min={CaloriesRange.Min}
-                max={CaloriesRange.Max > CaloriesRange.Min ? CaloriesRange.Max : CaloriesRange.Min + CaloriesRange.STEP}
-                values={onInitCalories ? caloriesValues : [CaloriesRange.Min, CaloriesRange.Max] }
-                onChange={handleRangeChange('calories', setFilter, filter, setCaloriesValues)}
-                renderTrack={({ props, children }) => (
-                  <div
-                    {...props}
-                    className="filter-range__track"
-                    style={{
-                      ...props.style,
-                      background: getTrackBackground({
-                        values: caloriesValues,
-                        colors: ['#ccc', '#333', '#ccc'],
-                        min: CaloriesRange.Min,
-                        max: CaloriesRange.Max
-                      }),
-                    }}
-                  >
-                    {children}
-                  </div>
-                )}
-                renderThumb={({ props }) => (
-                  <div
-                    {...props}
-                    className="filter-range__thumb"
-                  />
-                )}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="my-training-form__block my-training-form__block--raiting">
-        <h4 className="my-training-form__block-title">Рейтинг</h4>
-        <div className="filter-raiting">
-          <div className="filter-raiting__scale">
-            <div className="filter-range__scale-container">
-              <Range
-                step={RatingRange.STEP}
-                min={RatingRange.MIN}
-                max={RatingRange.MAX}
-                values={ratingValues}
-                onChange={handleRangeChange('rating', setFilter, filter, setRatingValues)}
-                renderTrack={({ props, children }) => (
-                  <div
-                    {...props}
-                    className="filter-range__track"
-                    style={{
-                      ...props.style,
-                      background: getTrackBackground({
-                        values: ratingValues,
-                        colors: ['#ccc', '#333', '#ccc'],
-                        min: RatingRange.MIN,
-                        max: RatingRange.MAX
-                      }),
-                    }}
-                  >
-                    {children}
-                  </div>
-                )}
-                renderThumb={({ props }) => (
-                  <div
-                    {...props}
-                    className="filter-range__thumb"
-                  />
-                )}
-              />
-            </div>
-          </div>
-          <div className="filter-raiting__control">
-            <span className="visually-hidden">Минимальное значение</span>
-            <span>{ratingValues[0]}</span>
-            <span className="visually-hidden">Максимальное значение</span>
-            <span>{ratingValues[1]}</span>
-          </div>
-        </div>
-      </div>
+      <TrainingFilterPrice
+        priceRange={priceRange}
+        filter={filter}
+        setFilter={setFilter}
+        priceValues={priceValues}
+        setPriceValues={setPriceValues}
+        onInitPrice={onInitPrice}
+        handleInputChange={handleInputChange}
+        handleRangeChange={handleRangeChange}
+      />
+      <TrainingFilterCalories
+        caloriesRange={caloriesRange}
+        filter={filter}
+        setFilter={setFilter}
+        caloriesValues={caloriesValues}
+        setCaloriesValues={setCaloriesValues}
+        onInitCalories={onInitCalories}
+        handleInputChange={handleInputChange}
+        handleRangeChange={handleRangeChange}
+      />
+      <TrainingFilterRating
+        ratingRange={ratingRange}
+        filter={filter}
+        setFilter={setFilter}
+        ratingValues={ratingValues}
+        setRatingValues={setRatingValues}
+        handleRangeChange={handleRangeChange}
+      />
       {user.role === UserRole.Coach &&
-        <div className="my-training-form__block my-training-form__block--duration">
-          <h4 className="my-training-form__block-title">Длительность</h4>
-          <ul className="my-training-form__check-list">
-            {Object.values(TrainingTime).map((duration) => (
-              <li key={duration} className="my-training-form__check-list-item">
-                <div className="custom-toggle custom-toggle--checkbox">
-                  <label>
-                    <input
-                      type="checkbox"
-                      value={duration}
-                      name="trainingTime"
-                      checked={filter.trainingTime?.includes(duration as TrainingTime) || false}
-                      onChange={(e) => handleCheckboxChange(e, duration as TrainingTime)}
-                    />
-                    <span className="custom-toggle__icon">
-                      <svg width="9" height="6" aria-hidden="true">
-                        <use xlinkHref="#arrow-check"></use>
-                      </svg></span>
-                    <span className="custom-toggle__label">{duration}</span>
-                  </label>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <TrainingFilterTime filter={filter} setFilter={setFilter} setVisibleItems={setVisibleItems} />
       }
       {user.role === UserRole.Customer &&
-        <TrainingFilterSort sort={sort} setSort={setSort} filter={filter} setFilter={setFilter} />
+        <>
+          <TrainingFilterTypes filter={filter} setFilter={setFilter} setVisibleItems={setVisibleItems} />
+          <TrainingFilterSort sort={sort} setSort={setSort} filter={filter} setFilter={setFilter} />
+        </>
       }
     </form>
   );

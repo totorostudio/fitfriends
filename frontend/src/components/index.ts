@@ -1,4 +1,7 @@
 export * from './app/app';
+export * from './go-back/go-back';
+export * from './show-more/show-more';
+export * from './no-items/no-items';
 export * from './scroll-to-top/scroll-to-top';
 export * from './error-message/error-message';
 export * from './header/header';
@@ -22,5 +25,8 @@ export * from './training-info/training-info-customer';
 export * from './training-info/training-info-coach';
 export * from './training-filter/training-filter';
 export * from './training-filter/training-filter-sort';
-export * from './go-back/go-back';
-
+export * from './training-filter/training-filter-types';
+export * from './training-filter/training-filter-time';
+export * from './training-filter/training-filter-rating';
+export * from './training-filter/training-filter-calories';
+export * from './training-filter/training-filter-price';

@@ -1,22 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { AppRoute, DEFAULT_ITEMS_LIMIT } from "../../const";
-import { GoBack, Header, TrainingCard, TrainingFilter } from "../../components";
+import { GoBack, Header, NoItems, ShowMore, TrainingCard, TrainingFilter } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getCatalogTrainings, getUser } from "../../store/selectors";
 import { fetchTrainingsAction } from "../../store/api-actions";
 import { useEffect, useState } from "react";
-import { SortDirection, SortTrainings, SortType, Training, TrainingRequest, TrainingTime, UserRole } from "../../types";
+import { Filter, SortDirection, SortTrainings, SortType, Training, TrainingRequest, UserRole } from "../../types";
 import { clearEmptyFields } from "../../utils";
-
-export interface Filter {
-  priceFrom?: number;
-  priceTo?: number;
-  caloriesFrom?: number;
-  caloriesTo?: number;
-  ratingFrom?: number;
-  ratingTo?: number;
-  trainingTime?: TrainingTime[];
-}
 
 export function TrainingsPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -37,11 +27,12 @@ export function TrainingsPage(): JSX.Element {
     caloriesTo: undefined,
     ratingFrom: 0,
     ratingTo: 5,
+    trainingType: [],
     trainingTime: [],
   });
 
   if (!user || !user.id) {
-    return <div>Loading user data...</div>;
+    return <div>Загрузка данных...</div>;
   }
 
   useEffect(() => {
@@ -63,10 +54,6 @@ export function TrainingsPage(): JSX.Element {
       dispatch(fetchTrainingsAction({ storeName: TrainingRequest.Catalog, limit: visibleItems, sort: sortDirection, sortType, ...cleanFilter }));
     }
   }, [dispatch, filter, user, user.id, visibleItems, sort]);
-
-  const handleLoadMore = () => {
-    setVisibleItems((prev) => prev + DEFAULT_ITEMS_LIMIT);
-  };
 
   return (
     <div className="wrapper">
@@ -94,6 +81,7 @@ export function TrainingsPage(): JSX.Element {
                     sort={sort}
                     setSort={setSort}
                     user={user}
+                    setVisibleItems={setVisibleItems}
                   />
                 </div>
               </div>
@@ -101,11 +89,7 @@ export function TrainingsPage(): JSX.Element {
                 <div className="my-trainings">
                   <ul className="my-trainings__list">
                     {trainings.length === 0 &&
-                      <li className="my-trainings__item">
-                        <div className="thumbnail-training">
-                          <h3 className="thumbnail-training__title">Ничего нет</h3>
-                        </div>
-                      </li>
+                      <NoItems />
                     }
                     {trainings.map((training) => (
                       <li key={training.id} className="my-trainings__item">
@@ -113,18 +97,9 @@ export function TrainingsPage(): JSX.Element {
                       </li>
                     ))}
                   </ul>
-                  <div className="show-more my-trainings__show-more">
-                    {visibleItems < totalItems &&
-                      <button
-                        className="btn show-more__button show-more__button--more"
-                        type="button"
-                        onClick={handleLoadMore}
-                      >
-                        Показать еще
-                      </button>
-                    }
-                      <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
-                  </div>
+                  {visibleItems < totalItems &&
+                    <ShowMore setVisibleItems={setVisibleItems} />
+                  }
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { IsEnum, IsIn, IsNumber, IsOptional, IsUUID, Max, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
-import lodash from 'lodash';
-import { SortType, TrainingTime } from 'src/libs//types';
+import * as lodash from 'lodash';
+import { SortType, TrainingTime, TrainingType } from 'src/libs//types';
 import { BaseQuery } from 'src/libs/query';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -58,12 +58,25 @@ export class TrainingQuery extends BaseQuery {
 
   @ApiPropertyOptional({ description: 'Длительность тренировок', enum: TrainingTime, isArray: true })
   @Transform(({ value }) => {
-    const durations = typeof value === 'string' ? [value] : value;
-    return durations.map((item: string) => lodash.lowerCase(item));
+    if (typeof value === 'string') {
+      value = [value];
+    }
+    return value;
   })
   @IsIn(Object.values(TrainingTime), { each: true })
   @IsOptional()
   public trainingTime?: TrainingTime[];
+
+  @ApiPropertyOptional({ description: 'Типы тренировок', enum: TrainingType, isArray: true })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      value = [value];
+    }
+    return value;
+  })
+  @IsIn(Object.values(TrainingType), { each: true })
+  @IsOptional()
+  public trainingType?: TrainingType[];
 
   @ApiPropertyOptional({ description: 'Id тренера', type: String  })
   @IsUUID()

@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { SortTrainings } from "../../types";
-import { Filter } from "../../pages";
+import { Filter, SortTrainings } from "../../types";
 
 interface TrainingFilterSortProps {
   sort: SortTrainings;
@@ -10,6 +9,7 @@ interface TrainingFilterSortProps {
 };
 
 export function TrainingFilterSort({sort, setSort, filter, setFilter}: TrainingFilterSortProps): JSX.Element {
+
   const handleSortChange = (sortValue: SortTrainings): void => {
     if (sortValue === sort) {
       setSort(SortTrainings.Default);

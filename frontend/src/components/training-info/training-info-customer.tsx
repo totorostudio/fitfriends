@@ -1,4 +1,5 @@
 import { PopupBuy } from "..";
+import { FEATURED_DISCOUNT } from "../../const";
 import { FullTraining } from "../../types";
 
 type TrainingInfoCustomerProps = {
@@ -72,7 +73,7 @@ export function TrainingInfoCustomer({ training, isPopupBuyVisible, handlePopupB
             <div className="training-info__price-wrapper">
               <div className="training-info__input training-info__input--price">
                 <label><span className="training-info__label">Стоимость</span>
-                  <input type="text" name="price" value={training.price > 0 ? `${training.price} ₽` : 'Бесплатно'} disabled />
+                  <input type="text" name="price" value={training.price > 0 ? `${training.isFeatured ? Number(training.price) * FEATURED_DISCOUNT : training.price} ₽` : 'Бесплатно'} disabled />
                 </label>
                 <div className="training-info__error">Введите число</div>
               </div>

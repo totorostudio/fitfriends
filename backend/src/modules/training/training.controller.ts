@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, HttpStatus, Query, ValidationPipe, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, HttpStatus, Query, ValidationPipe, Req, UseGuards, UsePipes } from '@nestjs/common';
 import { TrainingService } from './training.service';
 import { CreateTrainingDto } from './dto/create-training.dto';
 import { UpdateTrainingDto } from './dto/update-training.dto';
@@ -27,6 +27,7 @@ export class TrainingController {
     description: 'Список всех тренировок',
   })
   @ApiBearerAuth('access-token')
+  @UsePipes(new ValidationPipe({ transform: true }))
   @Get()
   public async index(@Query() query: TrainingQuery): Promise<TrainingsRdo> {
     return this.trainingService.findAll(query);

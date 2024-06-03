@@ -23,3 +23,5 @@ export * from './auth-data';
 export * from './user-data';
 export * from './training-request.enum';
 export * from './sort-trainings.enum';
+export * from './training-filter.interface';
+export * from './handle-range.interface';

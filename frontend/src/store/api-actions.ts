@@ -110,6 +110,7 @@ interface FetchTrainingsParams extends BaseFetchParams {
   caloriesFrom?: number;
   caloriesTo?: number;
   trainingTime?: TrainingTime[];
+  trainingType?: TrainingType[];
 }
 
 export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingsParams, {

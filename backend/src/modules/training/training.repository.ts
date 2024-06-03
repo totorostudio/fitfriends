@@ -22,7 +22,6 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
   public async find(query?: TrainingQuery): Promise<Pagination<TrainingEntity>> {
     const sortDirection = query?.sort ?? DEFAULT_SORT_DIRECTION;
     const sortType = query?.sortType ?? SortType.Default;
-    console.log('sortType', sortType);
     const limit = Number(query?.limit) || LIST_LIMIT;
     const page = query?.page ? (query.page - 1) * limit : 0;
 
@@ -64,6 +63,10 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
 
     if (query?.trainingTime && query.trainingTime.length > 0) {
       whereClause.trainingTime = { in: query.trainingTime };
+    }
+
+    if (query?.trainingType && query.trainingType.length > 0) {
+      whereClause.trainingType = { in: query.trainingType };
     }
 
     if (query?.coachId !== undefined) {

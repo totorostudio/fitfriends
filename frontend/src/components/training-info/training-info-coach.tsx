@@ -3,6 +3,7 @@ import { EditableTrainingData, FullTraining } from "../../types";
 import { formatGender, handleButtonChange, handleInputChange, handleTextareaChange } from "../../utils";
 import { useAppDispatch } from "../../hooks";
 import { updateTrainingAction } from "../../store/api-actions";
+import { FEATURED_DISCOUNT } from "../../const";
 
 interface FormError {
   title: string | null;
@@ -167,7 +168,7 @@ export function TrainingInfoCoach({ training, isEditMode, setIsEditMode }: Train
                     <input
                       type="text"
                       name="price"
-                      value={`${editableData.isFeatured ? Number(editableData.price) * 0.9 : editableData.price} ₽`}
+                      value={`${editableData.isFeatured ? Number(editableData.price) * FEATURED_DISCOUNT : editableData.price} ₽`}
                       disabled={true}
                     />
                   }

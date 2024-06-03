@@ -5,9 +5,9 @@ import { FullUser, Training, UserRole } from "../../types";
 import { useEffect, useState } from "react";
 import { fetchTrainingsAction, fetchUsersAction } from "../../store/api-actions";
 import { FeaturedCards, Header, RelatedCard, TrainingCard, UserCard } from "../../components";
-import './styles.css';
 import { AppRoute } from "../../const";
 import { Link, useNavigate } from "react-router-dom";
+import './styles.css';
 
 export function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();

@@ -170,7 +170,7 @@ export function UserEditForm({ userInfo }: UserEditFormProps): JSX.Element {
                   <input
                     className="visually-hidden"
                     type="checkbox"
-                    name="specialization"
+                    name="trainingType"
                     value={type}
                     checked={user.trainingType.includes(type)}
                     onChange={() => handleTrainingTypesChange(type)}
