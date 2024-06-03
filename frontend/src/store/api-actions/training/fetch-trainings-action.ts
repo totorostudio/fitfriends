@@ -1,9 +1,10 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, FetchTrainingsParams, State,  TrainingRequest, Trainings } from '../../../types';
+import { FetchTrainingsParams, TrainingRequest, Trainings } from '../../../types';
 import { loadFeaturedTrainings, loadPopularTrainings, loadRelatedTrainings, setError, loadCatalogTrainings } from '../../action';
 import { APIRoute, FEATURED_DISCOUNT } from '../../../const';
 import { buildQueryString } from '../../../utils';
+import { AppDispatch, State } from '../../state';
 
 export const fetchTrainingsAction = createAsyncThunk<void, FetchTrainingsParams, {
   dispatch: AppDispatch;

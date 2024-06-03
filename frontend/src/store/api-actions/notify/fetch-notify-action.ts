@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State, Notify } from '../../../types';
+import { Notify } from '../../../types';
 import { setError, loadNotify } from '../../action';
 import { APIRoute } from '../../../const';
+import { AppDispatch, State } from '../../state';
 
 export const fetchNotifyAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;

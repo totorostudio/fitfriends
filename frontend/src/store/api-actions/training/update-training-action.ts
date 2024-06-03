@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State, EditableTrainingData } from '../../../types';
+import { EditableTrainingData } from '../../../types';
 import { APIRoute } from '../../../const';
 import { setError } from '../../action';
+import { AppDispatch, State } from '../../state';
 
 export const updateTrainingAction = createAsyncThunk<void, { id: String, editableData: EditableTrainingData }, {
   dispatch: AppDispatch;

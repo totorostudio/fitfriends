@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Base64 } from 'js-base64';
-import { AppDispatch, State, AuthData, UserData, FullUser } from '../../../types';
+import { AuthData, UserData, FullUser } from '../../../types';
 import { clearUserData, loadUser, requireAuthorization, setError, setAuthUser } from '../../action';
 import { APIRoute, AuthorizationStatus } from '../../../const';
 import { clearTokens, dropAccessToken, dropRefreshToken, getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from '../../../services/token-service';
+import { AppDispatch, State } from '../../state';
 
 const checkTokenExpired = (token: string): boolean => {
   console.log('token:', token);

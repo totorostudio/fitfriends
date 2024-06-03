@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State, Review } from '../../../types';
+import { Review } from '../../../types';
 import { APIRoute } from '../../../const';
 import { setError } from '../../action';
+import { AppDispatch, State } from '../../state';
 
 export const createReviewAction = createAsyncThunk<void, Review, {
   dispatch: AppDispatch;

@@ -13,6 +13,6 @@ export * from './friends/friends.page';
 export * from './create-training/create-training.page';
 export * from './my-orders/my-orders.page';
 export * from './training/training.page';
-export * from './users/users-catalog.page';
+export * from './users-catalog/users-catalog.page';
 export * from './user/user.page';
 export * from './my-purchases/my-purchases';

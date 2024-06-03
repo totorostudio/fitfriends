@@ -1,4 +1,4 @@
-import {State} from '../types';
+import { State } from "./state";
 
 export const getAuthorizationStatus = (state: State) => state.authorizationStatus;
 

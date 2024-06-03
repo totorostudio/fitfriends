@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Header, UserCatalogCard } from "../../components";
-import { AppRoute } from "../../const";
+import { Header, ShowMore, UserCatalogCard } from "../../components";
+import { AppRoute, DEFAULT_ITEMS_LIMIT } from "../../const";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getUsers } from "../../store/selectors";
 import { fetchUsersAction } from "../../store/api-actions";
@@ -13,30 +13,22 @@ export function UsersPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const usersData = useAppSelector(getUsers);
   const users = usersData?.users || [];
-  const VISIBLE_USERS = 3;
-  const [trainingTypes, setTrainingTypes] = useState(Object.values(TrainingType).slice(0, 5));
+  const totalItems = usersData?.totalItems || 0;
+  const [visibleItems, setVisibleItems] = useState<number>(DEFAULT_ITEMS_LIMIT);
+  const VISIBLE_TYPES = 5;
+  const [trainingTypes, setTrainingTypes] = useState(Object.values(TrainingType).slice(0, VISIBLE_TYPES));
+  const [showTypes, setShowTypes] = useState(false);
   const [filter, setFilter] = useState<UsersFilterParams>({
-    page: 1,
-    limit: VISIBLE_USERS,
+    limit: visibleItems,
     trainingType: undefined,
     level: undefined,
     role: undefined,
   });
-  const [showTypes, setShowTypes] = useState(false);
-  const totalPages = usersData?.totalPages || 0;
 
   useEffect(() => {
     const params = removeNullFields<UsersFilterParams>(filter);
     dispatch(fetchUsersAction(params));
-  }, [dispatch, filter]);
-
-  const handleLoadMore = () => {
-      setFilter(prevFilter => ({
-        ...prevFilter,
-        limit: (prevFilter.limit || 0) + VISIBLE_USERS,
-      }));
-      console.log('filter:', filter);
-  };
+  }, [dispatch, filter, visibleItems]);
 
   const handleShowTypes = () => {
     setShowTypes(!showTypes);
@@ -54,13 +46,13 @@ export function UsersPage(): JSX.Element {
         return {
           ...prevFilter,
           trainingType: newTrainingTypes.filter(t => t !== type),
-          limit: VISIBLE_USERS,
+          limit: DEFAULT_ITEMS_LIMIT,
         };
       } else {
         return {
           ...prevFilter,
           trainingType: [...newTrainingTypes, type],
-          limit: VISIBLE_USERS,
+          limit: DEFAULT_ITEMS_LIMIT,
         };
       }
     });
@@ -70,7 +62,7 @@ export function UsersPage(): JSX.Element {
     setFilter((prevFilter) => ({
       ...prevFilter,
       level,
-      limit: VISIBLE_USERS,
+      limit: DEFAULT_ITEMS_LIMIT,
     }));
   };
 
@@ -78,12 +70,12 @@ export function UsersPage(): JSX.Element {
     setFilter((prevFilter) => ({
       ...prevFilter,
       role,
-      limit: VISIBLE_USERS,
+      limit: DEFAULT_ITEMS_LIMIT,
     }));
   };
 
   if (!usersData) {
-    return <div>Loading user data...</div>;
+    return <div>Загрузка данных...</div>;
   }
 
   return (
@@ -277,12 +269,9 @@ export function UsersPage(): JSX.Element {
                       </li>
                     ))}
                   </ul>
-                  <div className="show-more users-catalog__show-more">
-                    {filter.page && filter.page < totalPages &&
-                      <button onClick={handleLoadMore} className="btn show-more__button show-more__button--more" type="button">Показать еще</button>
-                    }
-                    <button className="btn show-more__button show-more__button--to-top" type="button">Вернуться в начало</button>
-                  </div>
+                  {visibleItems < totalItems &&
+                    <ShowMore setVisibleItems={setVisibleItems} className={'users-catalog__show-more'} />
+                  }
                 </div>
               </div>
             </div>
@@ -292,4 +281,3 @@ export function UsersPage(): JSX.Element {
     </div>
   );
 }
-

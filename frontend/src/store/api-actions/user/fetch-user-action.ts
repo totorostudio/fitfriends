@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State, FullUser } from '../../../types';
+import { FullUser } from '../../../types';
 import { loadUser, setError } from '../../action';
 import { APIRoute } from '../../../const';
+import { AppDispatch, State } from '../../state';
 
 export const fetchUserAction = createAsyncThunk<void, String, {
   dispatch: AppDispatch;

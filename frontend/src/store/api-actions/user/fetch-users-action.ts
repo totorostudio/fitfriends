@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State, Users} from '../../../types';
+import { Users} from '../../../types';
 import { loadUsers, setError } from '../../action';
 import { APIRoute } from '../../../const';
 import { buildQueryString } from '../../../utils';
-import { UsersFilterParams } from '../../../types/api-params.interface';
+import { UsersFilterParams } from '../../../types';
+import { AppDispatch, State } from '../../state';
 
 export const fetchUsersAction = createAsyncThunk<void, UsersFilterParams, {
   dispatch: AppDispatch;
