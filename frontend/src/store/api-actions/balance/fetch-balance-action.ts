@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, Balances, State } from '../../../types';
-import { FetchBalanceParams } from '..';
+import { AppDispatch, Balances, FetchBalanceParams, State } from '../../../types';
 import { loadBalance, setError } from '../../action';
 import { APIRoute } from '../../../const';
 

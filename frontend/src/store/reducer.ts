@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { loadUsers, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance, loadNotify, setActiveTraining, loadOrders, loadCatalogTrainings } from './action';
 import { UserRole } from '../types';
 import { AuthorizationStatus } from '../const';
-import { InitialState } from '../types/initial-state.type';
+import { InitialState } from '../types';
 
 const initialState: InitialState = {
   allUsers: {

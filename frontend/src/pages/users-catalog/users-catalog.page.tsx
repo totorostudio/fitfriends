@@ -5,8 +5,8 @@ import { Header, UserCatalogCard } from "../../components";
 import { AppRoute } from "../../const";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getUsers } from "../../store/selectors";
-import { UsersFilterParams, fetchUsersAction } from "../../store/api-actions";
-import { Level, TrainingType, UserRole } from "../../types";
+import { fetchUsersAction } from "../../store/api-actions";
+import { Level, TrainingType, UserRole, UsersFilterParams } from "../../types";
 import { capitalizeFirst, removeNullFields } from "../../utils";
 
 export function UsersPage(): JSX.Element {

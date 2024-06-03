@@ -1,8 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, CoachOrders, State } from '../../../types';
+import { AppDispatch, CoachOrders, FetchOrdersParams, State } from '../../../types';
 import { loadOrders, setError } from '../../action';
-import { FetchOrdersParams } from '..';
 import { APIRoute } from '../../../const';
 
 export const fetchOrdersAction = createAsyncThunk<void, FetchOrdersParams, {

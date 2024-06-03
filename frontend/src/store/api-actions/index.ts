@@ -1,4 +1,3 @@
-export * from '../../types/api-params.interface';
 export * from './friends/add-to-friend-action';
 export * from './auth/auth-actions';
 export * from './error/clear-error-action';

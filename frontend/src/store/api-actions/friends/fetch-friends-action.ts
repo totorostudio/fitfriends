@@ -1,10 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State, Users } from '../../../types';
+import { AppDispatch, FriendsParams, State, Users } from '../../../types';
 import { setError, loadFriends } from '../../action';
 import { APIRoute } from '../../../const';
 import { buildQueryString } from '../../../utils';
-import { FriendsParams } from '..';
 
 export const fetchFriendsAction = createAsyncThunk<void, FriendsParams, {
   dispatch: AppDispatch;
