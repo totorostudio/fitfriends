@@ -4,7 +4,7 @@ import { AuthorizationStatus } from "../../const";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { getAuthorizationStatus } from "../../store/selectors";
 import { AuthData } from "../../types";
-import { loginAction } from "../../store/api-actions";
+import { loginAction } from "../../store/api-actions/auth/auth-actions";
 
 export function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();

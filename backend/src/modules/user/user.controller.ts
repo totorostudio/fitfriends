@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, HttpStatus, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, HttpStatus, Query, UseGuards, ValidationPipe, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiTags, ApiResponse, ApiBody, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UserRole } from 'src/libs/types';
@@ -29,6 +29,7 @@ export class UserController {
   @Role(UserRole.Customer)
   @UseGuards(RoleGuard)
   @ApiBearerAuth('access-token')
+  @UsePipes(new ValidationPipe({ transform: true }))
   @Get()
   public async index(@Query() query: UsersQuery): Promise<UsersRdo> {
     return this.userService.getAllUsers(query);

@@ -1,46 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Balances, CoachOrders, FullReview, FullTraining, FullUser, Notify, Trainings, UserData, Users } from '../types';
+import { UserData } from '../types';
 import {AuthorizationStatus} from '../const';
-
-type LoadUsersPayload = {
-  isLoading: boolean;
-  data: Users | null;
-};
-
-type LoadTrainingPayload = {
-  isLoading: boolean;
-  data: FullTraining | null;
-};
-
-type LoadTrainingsPayload = {
-  isLoading: boolean;
-  data: Trainings | null;
-};
-
-type LoadReviewPayload = {
-  isLoading: boolean;
-  data: FullReview[] | null;
-};
-
-type LoadNotifyPayload = {
-  isLoading: boolean;
-  data: Notify[] | null;
-};
-
-type LoadBalancePayload = {
-  isLoading: boolean;
-  data: Balances | null;
-};
-
-type LoadOrdersPayload = {
-  isLoading: boolean;
-  data: CoachOrders | null;
-};
-
-type LoadUserPayload = {
-  isLoading: boolean;
-  data: FullUser | null;
-};
+import { LoadUsersPayload, LoadUserPayload, LoadTrainingPayload, LoadReviewPayload, LoadNotifyPayload, LoadBalancePayload, LoadOrdersPayload, LoadTrainingsPayload } from '../types/action-payload.type';
 
 export const loadUsers = createAction<LoadUsersPayload>('mainScreen/loadUsers');
 

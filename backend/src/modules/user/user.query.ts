@@ -1,4 +1,4 @@
-import { IsEnum, IsIn, IsOptional } from 'class-validator';
+import { IsBoolean, IsEnum, IsIn, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import * as lodash from 'lodash';
 import { Metro, Level, UserRole, TrainingType } from 'src/libs//types';
@@ -35,4 +35,10 @@ export class UsersQuery extends BaseQuery {
   @IsEnum(UserRole)
   @IsOptional()
   public role?: UserRole;
+
+  @ApiPropertyOptional({ description: 'Готов к тренировке', type: Boolean  })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === 'true')
+  public isReady?: boolean;
 }

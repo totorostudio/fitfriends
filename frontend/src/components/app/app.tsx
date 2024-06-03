@@ -6,7 +6,7 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { getAuthUser, getAuthorizationStatus, getError } from '../../store/selectors';
 import { UserRole } from '../../types';
 import { Logout } from '../logout/logout';
-import { checkAuthAction } from '../../store/api-actions';
+import { checkAuthAction } from '../../store/api-actions/auth/auth-actions';
 
 export function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -40,7 +40,7 @@ export function App(): JSX.Element {
             <Route path={AppRoute.Trainings} element={<TrainingsPage />} />
             <Route path={AppRoute.Training} element={<TrainingPage />} />
             <Route path={AppRoute.Users} element={<Navigate to={AppRoute.AccountCoach} />} />
-            <Route path={AppRoute.User} element={<UserPage />} />
+            <Route path={AppRoute.UserPage} element={<UserPage />} />
             <Route path={AppRoute.Friends} element={<FriendsPage />} />
             <Route path={AppRoute.CreateTraining} element={<CreateTrainingPage />} />
             <Route path={AppRoute.Orders} element={<MyOrdersPage />} />
@@ -61,7 +61,7 @@ export function App(): JSX.Element {
             <Route path={AppRoute.Trainings} element={<TrainingsPage />} />
             <Route path={AppRoute.Training} element={<TrainingPage />} />
             <Route path={AppRoute.Users} element={<UsersPage />} />
-            <Route path={AppRoute.User} element={<UserPage />} />
+            <Route path={AppRoute.UserPage} element={<UserPage />} />
             <Route path={AppRoute.Friends} element={<FriendsPage />} />
             <Route path={AppRoute.CreateTraining} element={<Navigate to={AppRoute.Main} />} />
             <Route path={AppRoute.Orders} element={<Navigate to={AppRoute.Main} />} />
@@ -83,7 +83,7 @@ export function App(): JSX.Element {
             <Route path={AppRoute.Trainings} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.Training} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.Users} element={<Navigate to={AppRoute.Intro} />} />
-            <Route path={AppRoute.User} element={<Navigate to={AppRoute.Intro} />} />
+            <Route path={AppRoute.UserPage} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.Friends} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.CreateTraining} element={<Navigate to={AppRoute.Intro} />} />
             <Route path={AppRoute.Orders} element={<Navigate to={AppRoute.Intro} />} />

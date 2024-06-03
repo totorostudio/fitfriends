@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { Gender, Level, Training, TrainingTime, TrainingType } from "../../types";
 import { useEffect, useState } from "react";
 import { capitalizeFirst, handleInputChange, handleSelectChange, handleTextareaChange } from "../../utils";
-import './styles.css';
 import { createTrainingAction } from "../../store/api-actions";
 import { useAppDispatch } from "../../hooks";
 import { AppRoute } from "../../const";
+import './styles.css';
 
 interface FormError {
   title: string | null;

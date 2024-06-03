@@ -18,6 +18,12 @@
   list-style: none;
 }
 
+.special-for-you__list > li {
+  flex: 0 0 calc(100% / 3);
+  box-sizing: border-box;
+  list-style: none;
+}
+
 .popular-trainings__wrapper {
   position: relative;
   overflow: hidden;

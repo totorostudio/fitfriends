@@ -18,7 +18,6 @@ export function CustomerInfo({ user }: UserProps): JSX.Element {
   const handleAddToFriend = () => {
     if (user.id) {
       dispatch(addToFriendAction({friendId: user.id}));
-      console.log('Добавлен в друзья:', user.id);
     }
   }
 

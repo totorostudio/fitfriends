@@ -1,62 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { loadUsers, requireAuthorization, setError, setAuthUser, loadUser, clearUserData, loadRelatedTrainings, loadFeaturedTrainings, loadPopularTrainings, loadTraining, loadReview, loadFriends, loadBalance, loadNotify, setActiveTraining, loadOrders, loadCatalogTrainings } from './action';
-import { Balances, CoachOrders, FullReview, FullTraining, FullUser, Notify, Trainings, UserData, UserRole, Users } from '../types';
+import { UserRole } from '../types';
 import { AuthorizationStatus } from '../const';
-
-type InitialState = {
-  allUsers: {
-    isLoading: boolean;
-    data: Users | null;
-  };
-  friends: {
-    isLoading: boolean;
-    data: Users | null;
-  };
-  user: {
-    isLoading: boolean;
-    data: FullUser | null;
-  };
-  training: {
-    isLoading: boolean;
-    data: FullTraining | null;
-  };
-  review: {
-    isLoading: boolean;
-    data: FullReview[] | null;
-  };
-  notify: {
-    isLoading: boolean;
-    data: Notify[] | null;
-  };
-  balance: {
-    isLoading: boolean;
-    data: Balances | null;
-  };
-  orders: {
-    isLoading: boolean;
-    data: CoachOrders | null;
-  };
-  catalogTrainings: {
-    isLoading: boolean;
-    data: Trainings | null;
-  };
-  relatedTrainings: {
-    isLoading: boolean;
-    data: Trainings | null;
-  };
-  featuredTrainings: {
-    isLoading: boolean;
-    data: Trainings | null;
-  };
-  popularTrainings: {
-    isLoading: boolean;
-    data: Trainings | null;
-  };
-  authorizationStatus: AuthorizationStatus;
-  activeTraining: string | null;
-  authUser: UserData;
-  error: string | null;
-};
+import { InitialState } from '../types/initial-state.type';
 
 const initialState: InitialState = {
   allUsers: {
@@ -117,7 +63,7 @@ const initialState: InitialState = {
   error: null,
 };
 
-const reducer = createReducer(initialState, (builder) => {
+export const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadUsers, (state, action) => {
       state.allUsers = action.payload;
@@ -177,5 +123,3 @@ const reducer = createReducer(initialState, (builder) => {
       };
     });
 });
-
-export {reducer};

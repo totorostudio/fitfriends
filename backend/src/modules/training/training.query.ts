@@ -1,7 +1,6 @@
-import { IsEnum, IsIn, IsNumber, IsOptional, IsUUID, Max, Min } from 'class-validator';
+import { IsBoolean, IsEnum, IsIn, IsNumber, IsOptional, IsUUID, Max, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
-import * as lodash from 'lodash';
-import { SortType, TrainingTime, TrainingType } from 'src/libs//types';
+import { Gender, Level, SortType, TrainingTime, TrainingType } from 'src/libs//types';
 import { BaseQuery } from 'src/libs/query';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -77,6 +76,24 @@ export class TrainingQuery extends BaseQuery {
   @IsIn(Object.values(TrainingType), { each: true })
   @IsOptional()
   public trainingType?: TrainingType[];
+
+  @ApiPropertyOptional({ description: 'Исключить пол', enum: Gender })
+  @Transform(({ value }) => value)
+  @IsEnum(Gender)
+  @IsOptional()
+  public genderExclude?: Gender;
+
+  @ApiPropertyOptional({ description: 'Уровень', enum: Level })
+  @Transform(({ value }) => value)
+  @IsEnum(Level)
+  @IsOptional()
+  public level?: Level;
+
+  @ApiPropertyOptional({ description: 'Тренировки со скидкой', type: Boolean  })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === 'true')
+  public isFeatured?: boolean;
 
   @ApiPropertyOptional({ description: 'Id тренера', type: String  })
   @IsUUID()

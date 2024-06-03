@@ -9,6 +9,7 @@ export const DEFAULT_ITEMS_LIMIT = 6;
 export const DEFAULT_ORDERS_LIMIT = 4;
 
 export const FEATURED_DISCOUNT = 0.9;
+export const SLIDER_STEP = 1;
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
@@ -45,7 +46,29 @@ export enum AppRoute {
   Training = '/training/:id',
   TrainingUrl = '/training',
   Users = '/users',
-  User = '/users/:id',
+  UserPage = '/users/:id',
+  Friends = '/friends',
+  CreateTraining = '/create-training',
+  Orders = '/my-orders',
+  Purchases = '/my-purchases',
+  ReviewsHash = 'reviews'
+}
+
+export enum AppTitle {
+  Intro = '/',
+  Login = '/login',
+  Logout = '/logout',
+  Register = '/register',
+  QuestionnaireCoach = '/questionnaire-coach',
+  QuestionnaireCustomer = '/questionnaire-customer',
+  Main = 'FitFriends — Время находить тренировки, спортзалы и друзей спортсменов',
+  AccountCoach = '/account-coach',
+  AccountCustomer = '/account-customer',
+  Trainings = '/trainings',
+  Training = '/training/:id',
+  TrainingUrl = '/training',
+  Users = '/users',
+  UserPage = 'Карточка пользователя — FitFriends',
   Friends = '/friends',
   CreateTraining = '/create-training',
   Orders = '/my-orders',

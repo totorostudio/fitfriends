@@ -44,6 +44,10 @@ export class UserRepository extends BasePostgresRepository<UserEntity> {
       whereClause.role = query.role;
     }
 
+    if (query?.isReady) {
+      whereClause.isReady = query.isReady;
+    }
+
     const prismaQuery: Prisma.UserFindManyArgs = {
       where: whereClause,
       orderBy: { id: sortDirection },

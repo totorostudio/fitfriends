@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { Training } from "../../types";
-import { AppRoute } from "../../const";
+import { AppRoute, FEATURED_DISCOUNT } from "../../const";
 import { Link } from "react-router-dom";
+import './styles.css';
 
-interface FeaturedCardProps {
+interface FeaturedTrainingsListProps {
   featuredTrainings: Training[];
 }
 
-export function FeaturedCards({ featuredTrainings }: FeaturedCardProps): JSX.Element {
+export function FeaturedTrainingsList({ featuredTrainings }: FeaturedTrainingsListProps): JSX.Element {
   const [activeSlide, setActiveSlide] = useState<number>(0);
-  console.log('featuredTrainings', featuredTrainings);
 
   const handleDotClick = (index: number) => {
     setActiveSlide(index);
@@ -57,7 +57,7 @@ export function FeaturedCards({ featuredTrainings }: FeaturedCardProps): JSX.Ele
                   <div className="promo-slider__price-container">
                     <p className="promo-slider__price">{training.price} ₽</p>
                     <p className="promo-slider__sup">за занятие</p>
-                    <p className="promo-slider__old-price">2000 ₽</p>
+                    <p className="promo-slider__old-price">{training.isFeatured ? training.price / FEATURED_DISCOUNT : training.price} ₽</p>
                   </div>
                 </div>
               </aside>

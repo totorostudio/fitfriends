@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { AppRoute } from "../../const";
+import { AppRoute, AppTitle } from "../../const";
 import { FullUser, Training } from "../../types";
 import { Header, TrainingCard } from "../";
 import { useState } from "react";
@@ -45,7 +45,7 @@ export function CoachInfo({ user, trainings }: UserProps): JSX.Element {
   return (
     <div className="wrapper">
       <Helmet>
-        <title>Карточка пользователя — FitFriends</title>
+        <title>{AppTitle.UserPage}</title>
       </Helmet>
       <Header />
       <main>

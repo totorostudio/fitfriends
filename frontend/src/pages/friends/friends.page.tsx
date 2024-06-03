@@ -4,8 +4,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getFriends } from "../../store/selectors";
 import { useEffect, useState } from "react";
 import { fetchFriendsAction } from "../../store/api-actions";
-import { AppRoute } from "../../const";
-import { Link } from "react-router-dom";
 
 export function FriendsPage(): JSX.Element {
   const dispatch = useAppDispatch();

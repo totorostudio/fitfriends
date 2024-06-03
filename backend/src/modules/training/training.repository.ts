@@ -69,6 +69,18 @@ export class TrainingRepository extends BasePostgresRepository<TrainingEntity> {
       whereClause.trainingType = { in: query.trainingType };
     }
 
+    if (query?.genderExclude !== undefined) {
+      whereClause.gender = { not: query.genderExclude };
+    }
+
+    if (query?.level !== undefined) {
+      whereClause.level = query.level;
+    }
+
+    if (query?.isFeatured !== undefined) {
+      whereClause.isFeatured = query.isFeatured;
+    }
+
     if (query?.coachId !== undefined) {
       whereClause.coachId = query.coachId;
     }

@@ -11,7 +11,26 @@ export const removeNullFields = <T extends object>(obj: T): T => {
   return newObj;
 };
 
-export const buildQueryString = <T>(params: T): string => {
+export const buildQueryString = <T>(params: T, excludeFields: string[] = []): string => {
+  const queryParts: string[] = [];
+  Object.keys(params as object).forEach(key => {
+    if (!excludeFields.includes(key)) {
+      const value = params[key as keyof T];
+      if (value !== undefined) {
+        if (Array.isArray(value)) {
+          (value as unknown[]).forEach(item => {
+            queryParts.push(`${encodeURIComponent(key)}[]=${encodeURIComponent(String(item))}`);
+          });
+        } else {
+          queryParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+        }
+      }
+    }
+  });
+  return queryParts.join('&');
+};
+
+/*export const buildQueryString = <T>(params: T): string => {
   const queryParts: string[] = [];
   Object.keys(params as object).forEach(key => {
     const value = params[key as keyof T];
@@ -26,7 +45,7 @@ export const buildQueryString = <T>(params: T): string => {
     }
   });
   return queryParts.join('&');
-};
+};*/
 
 export const capitalizeFirst = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);

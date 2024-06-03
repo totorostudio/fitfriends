@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AppRoute } from "../../const";
 import { useAppDispatch } from "../../hooks";
 import { useEffect } from "react";
-import { checkAuthAction } from "../../store/api-actions";
+import { checkAuthAction } from "../../store/api-actions/auth/auth-actions";
 
 export function IntroPage(): JSX.Element {
   const dispatch = useAppDispatch();
