@@ -1,4 +1,4 @@
-import { Filter } from "..";
+import { Filter } from "@types";
 
 export interface HandleRange {
   (

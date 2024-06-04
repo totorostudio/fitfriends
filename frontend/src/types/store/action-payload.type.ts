@@ -1,4 +1,4 @@
-import { Users, FullTraining, Trainings, FullReview, Notify, Balances, CoachOrders, FullUser } from "..";
+import { Users, FullTraining, Trainings, FullReview, Notify, Balances, CoachOrders, FullUser } from "@types";
 
 export type LoadUsersPayload = {
   isLoading: boolean;

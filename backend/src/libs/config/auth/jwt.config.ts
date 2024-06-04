@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import * as Joi from 'joi';
 import { validateConfig } from '../../helpers/validate-config';
-import { ValidateConfigErrorMessage } from '../../types/validate-config-error-message.enum';
+import { ValidateConfigErrorMessage } from '../../types';
 
 export interface JWTConfig {
   accessTokenSecret: string;

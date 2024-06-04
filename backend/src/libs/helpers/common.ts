@@ -1,5 +1,4 @@
 import { ValidationError } from 'class-validator';
-import dayjs from 'dayjs';
 
 export function transformObjectValuesToString(items: Object) {
   return Object.values(items).join(', ');

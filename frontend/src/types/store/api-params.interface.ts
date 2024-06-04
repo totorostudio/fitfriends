@@ -1,4 +1,4 @@
-import { Gender, Level, Metro, SortDirection, SortOrder, SortType, TrainingTime, TrainingType, UserRole } from "..";
+import { Gender, Level, Metro, SortDirection, SortOrder, SortType, TrainingTime, TrainingType, UserRole } from "@types";
 
 export interface BaseFetchParams {
   limit?: number;

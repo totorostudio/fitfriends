@@ -1,5 +1,5 @@
-import { Balances, CoachOrders, FullReview, FullTraining, FullUser, Notify, Trainings, UserData, Users } from '..';
-import { AuthorizationStatus } from '../../../frontend/src/const';
+import { Balances, CoachOrders, FullReview, FullTraining, FullUser, Notify, Trainings, UserData, Users } from '@types';
+import { AuthorizationStatus } from '@/const';
 
 export type InitialState = {
   allUsers: {

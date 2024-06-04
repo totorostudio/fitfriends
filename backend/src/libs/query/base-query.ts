@@ -1,7 +1,7 @@
 import { IsEnum, IsNumber, IsOptional, Max } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { SortDirection } from 'src/libs/types/sort.enum';
+import { SortDirection } from 'src/libs/types';
 import { LIST_LIMIT } from 'src/app.const';
 
 export class BaseQuery {

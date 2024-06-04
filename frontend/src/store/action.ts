@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import {AuthorizationStatus} from '../const';
-import { UserData, LoadUsersPayload, LoadUserPayload, LoadTrainingPayload, LoadReviewPayload, LoadNotifyPayload, LoadBalancePayload, LoadOrdersPayload, LoadTrainingsPayload } from '../types';
+import {AuthorizationStatus} from '@/const';
+import { UserData, LoadUsersPayload, LoadUserPayload, LoadTrainingPayload, LoadReviewPayload, LoadNotifyPayload, LoadBalancePayload, LoadOrdersPayload, LoadTrainingsPayload } from '@types';
 
 export const loadUsers = createAction<LoadUsersPayload>('mainScreen/loadUsers');
 
